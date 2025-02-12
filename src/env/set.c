@@ -1,33 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   set.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/12 12:44:58 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/01/21 08:54:01 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/12 12:50:48 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
+#include "env.h"
+#include "minishell.h"
 
-# define MINISHELL_H
-
-# include "colors.h"
-# include "ft_fprintf.h"
-# include "ft_strings.h"
-# include "garbadge.h"
-# include "get_next_line.h"
-# include "libft.h"
-# include "env.h"
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-
-typedef struct s_minishell
+void	set_env(const char **envp, const char *variable, char *value)
 {
-	/* data */
-}	t_minishell;
+	char	*new_line;
+	int		index;
 
-#endif
+	if (!envp || !*envp || !variable)
+		return ;
+	index = get_env_index(envp, variable);
+	if (index == -1)
+		return ;
+	new_line = ft_strjoin(variable, "=");
+	new_line = ft_strjoin(new_line, value);
+	envp[index] = new_line;
+}
