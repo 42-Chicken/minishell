@@ -25,7 +25,8 @@ INFO				=	ⓘ
 # Sources and Objects
 FT_LIBC 			= ./dependencies/ft_libc/ft_libc.a
 
-SRCS				=	src/main.c
+SRCS				=	src/main.c\
+						src/env/get.c
 
 SRC_COUNT			=	$(words $(SRCS))
 
