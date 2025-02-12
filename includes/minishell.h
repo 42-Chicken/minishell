@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/12 16:26:01 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/12 16:34:39 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,19 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-# define PROMPT GRN "➜  " BCYN "$PWD " RESET
-
 typedef struct s_minishell
 {
 	int			argc;
 	char const	**argv;
-	char		**envp;
+	char const	**envp;
+	int			exit_code;
 }				t_minishell;
+
+// ---------------------------------
+//
+// PROMPT
+//
+// ---------------------------------
+const char		*get_prompt(t_minishell *minishell);
 
 #endif

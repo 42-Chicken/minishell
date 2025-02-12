@@ -4,6 +4,8 @@
 		"minishell.h": "c",
 		"ft_strings.h": "c",
 		"type_traits": "c",
-		"garbadge.h": "c"
+		"garbadge.h": "c",
+		"colors.h": "c",
+		"get_next_line.h": "c"
 	}
 }

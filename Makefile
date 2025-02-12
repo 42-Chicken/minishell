@@ -27,6 +27,7 @@ INFO				=	ⓘ
 FT_LIBC 			= ./dependencies/ft_libc/ft_libc.a
 
 SRCS				=	src/main.c\
+						src/prompt/get.c\
 						src/env/get.c\
 						src/env/set.c
 
