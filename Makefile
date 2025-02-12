@@ -1,8 +1,9 @@
 # Main
 NAME				=	minishell
-CC					=	gcc
+CC					=	cc
 
-CFLAGS				=	-Wall -Werror -Wextra -Idependencies/ft_libc/includes -Iincludes -fPIE
+CFLAGS				=	-Wall -Werror -Wextra -Idependencies/ft_libc/includes  -Iincludes -fPIE
+READLINE_FLAG		=	-lreadline
 RM					=	rm -rf
 MAKE				=	make --no-print-directory -C
 
@@ -42,7 +43,7 @@ endif
 all : $(NAME)
 
 $(NAME) : header $(FT_LIBC) $(OBJ_DIR)
-		@$(CC) $(CFLAGS) $(OBJS) $(FT_LIBC) -o $(NAME)
+		@$(CC) $(CFLAGS) $(READLINE_FLAG) $(OBJS) $(FT_LIBC) -o $(NAME)
 
 $(OBJ_DIR)/%.o: %.c
 		@mkdir -p $(dir $@)
