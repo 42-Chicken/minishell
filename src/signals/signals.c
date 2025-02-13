@@ -1,0 +1,49 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/13 19:07:07 by romain            #+#    #+#             */
+/*   Updated: 2025/02/13 20:12:54 by romain           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+void	exit_sig(int sig)
+{
+	ft_fprintf(1, "\nexit\n");
+	rl_on_new_line();
+	g_sig = sig;
+	(void)sig;
+}
+
+void	new_line(int sig)
+{
+	ft_fprintf(STDOUT_FILENO, "\n");
+	display_arrow(YEL);
+	g_sig = sig;
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+	(void)sig;
+}
+
+void	cancel(int sig)
+{
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+	g_sig = sig;
+	(void)sig;
+}
+
+void	init_signals(t_minishell *data)
+{
+	signal(SIGINT, new_line);
+	signal(SIGTSTP, cancel);
+	signal(EOF, exit_sig);
+	(void)data;
+}

@@ -1,6 +1,6 @@
 # Main
 NAME				=	minishell
-CC					=	cc
+CC					=	clang
 
 CFLAGS				=	-Wall -Werror -Wextra -Idependencies/ft_libc/includes  -Iincludes -fPIE
 READLINE_FLAG		=	-lreadline
@@ -28,6 +28,9 @@ FT_LIBC 			= ./dependencies/ft_libc/ft_libc.a
 
 SRCS				=	src/main.c\
 						src/prompt/get.c\
+						src/prompt/arrow.c\
+						src/line/readline.c\
+						src/signals/signals.c\
 						src/env/get.c\
 						src/env/set.c
 
