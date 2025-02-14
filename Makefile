@@ -28,6 +28,8 @@ FT_LIBC 			= ./dependencies/ft_libc/ft_libc.a
 
 SRCS				=	src/main.c\
 						src/prompt/get.c\
+						src/initialisation/init.c\
+						src/paths/get.c\
 						src/line/readline.c\
 						src/signals/signals.c\
 						src/signals/exit_codes.c\
@@ -68,6 +70,9 @@ $(FT_LIBC) :
 		git clone git@github.com:R0-main/ft_libc.git $(shell dirname $@); \
 	fi;
 	@$(MAKE) $(shell dirname $@) SAFE=1
+
+dev	 : re
+	valgrind --show-leak-kinds=all --leak-check=full ./minishell
 
 header:
 		@printf "\

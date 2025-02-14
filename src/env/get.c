@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 08:54:01 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/12 12:49:47 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/14 11:20:25 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,16 @@ int	get_env_index(const char **envp, const char *variable)
 		if (ft_strncmp(envp[i], target, ft_strlen(target)) == 0)
 			return (free(target), i);
 	return (free(target), -1);
+}
+
+int	get_env_length(const char **envp)
+{
+	int		i;
+
+	i = 0;
+	while (envp && envp[i])
+		i++;
+	return (i);
 }
 
 const char	*get_env(const char **envp, const char *variable)

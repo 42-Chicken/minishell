@@ -1,32 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get.c                                              :+:      :+:    :+:   */
+/*   paths.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/12 16:27:31 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/14 11:07:40 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/14 11:07:59 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef PATH_H
+
+# define PATH_H
+
 #include "minishell.h"
-#include "paths.h"
 
-static const char	*get_base_prompt(void)
-{
-	return ("➜  " BCYN "$PWD " RESET);
-}
+extern int		g_sig;
 
-const char	*get_prompt(t_minishell *data)
-{
-	char	*prompt;
+// ---------------------------------
+//
+// PATHS
+//
+// ---------------------------------
+char			*get_current_path(t_minishell *data);
+void			set_current_path(t_minishell *data, char *new_path);
+char			*combine_paths(t_minishell *data, char *path1, char *path2);
 
-	prompt = (char *)get_base_prompt();
-	if (data->exit_code != 0)
-		ft_fprintf(STDOUT_FILENO, RED);
-	else
-		ft_fprintf(STDOUT_FILENO, GRN);
-	prompt = ft_strreplace(prompt, "$PWD", get_current_path(data));
-	return ((const char *)prompt);
-}
+#endif

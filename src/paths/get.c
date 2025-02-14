@@ -5,28 +5,19 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/12 16:27:31 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/14 11:07:40 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/02/14 10:54:00 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/14 11:07:45 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "paths.h"
 
-static const char	*get_base_prompt(void)
+char	*get_current_path(t_minishell *data)
 {
-	return ("➜  " BCYN "$PWD " RESET);
-}
+	char	*path;
 
-const char	*get_prompt(t_minishell *data)
-{
-	char	*prompt;
-
-	prompt = (char *)get_base_prompt();
-	if (data->exit_code != 0)
-		ft_fprintf(STDOUT_FILENO, RED);
-	else
-		ft_fprintf(STDOUT_FILENO, GRN);
-	prompt = ft_strreplace(prompt, "$PWD", get_current_path(data));
-	return ((const char *)prompt);
+	path = (char *)get_env(data->envp, "PWD");
+	if (!path)
+		path = (char *)data->started_path;
+	return (path);
 }

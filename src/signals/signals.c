@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:07:07 by romain            #+#    #+#             */
-/*   Updated: 2025/02/14 10:51:40 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/14 11:31:34 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 void	exit_sig(int sig)
 {
-	ft_fprintf(STDOUT_FILENO, "\nexit\n");
 	ft_fprintf(STDOUT_FILENO, RED);
 	rl_on_new_line();
 	g_sig = sig;
@@ -46,6 +45,5 @@ void	init_signals(t_minishell *data)
 {
 	signal(SIGINT, new_line);
 	signal(SIGTSTP, cancel);
-	signal(EOF, exit_sig);
 	(void)data;
 }
