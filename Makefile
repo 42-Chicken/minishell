@@ -31,6 +31,7 @@ SRCS				=	src/main.c\
 						src/paths/get.c\
 						src/paths/set.c\
 						src/paths/combine.c\
+						src/parsing/parsing.c\
 						src/initialisation/init.c\
 						src/line/readline.c\
 						src/signals/signals.c\
