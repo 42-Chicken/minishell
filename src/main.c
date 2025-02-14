@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:25:23 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/14 10:42:12 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/14 10:46:23 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	main(int argc, char const **argv, const char **envp)
 	if (!isatty(0))
 		return (EXIT_FAILURE);
 	init_signals(&data);
-	while (1)
+	while (!data.stop)
 	{
 		create_safe_memory_context();
 		handle_signals_exit_codes(&data);

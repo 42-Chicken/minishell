@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/14 10:27:48 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/14 10:46:18 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_minishell
 	char const	**argv;
 	char const	**envp;
 	int			exit_code;
+	bool		stop;
 }				t_minishell;
 
 extern int		g_sig;
