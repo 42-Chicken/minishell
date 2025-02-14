@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:07:07 by romain            #+#    #+#             */
-/*   Updated: 2025/02/13 20:12:54 by romain           ###   ########.fr       */
+/*   Updated: 2025/02/14 10:34:14 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	exit_sig(int sig)
 {
-	ft_fprintf(1, "\nexit\n");
+	ft_fprintf(STDOUT_FILENO, "\nexit\n");
+	ft_fprintf(STDOUT_FILENO, RED);
 	rl_on_new_line();
 	g_sig = sig;
 	(void)sig;
@@ -23,7 +24,7 @@ void	exit_sig(int sig)
 void	new_line(int sig)
 {
 	ft_fprintf(STDOUT_FILENO, "\n");
-	display_arrow(YEL);
+	ft_fprintf(STDOUT_FILENO, YEL);
 	g_sig = sig;
 	rl_replace_line("", 0);
 	rl_on_new_line();

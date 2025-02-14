@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arrow.c                                            :+:      :+:    :+:   */
+/*   exit_codes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/13 20:05:55 by romain            #+#    #+#             */
-/*   Updated: 2025/02/13 20:10:13 by romain           ###   ########.fr       */
+/*   Created: 2025/02/14 10:26:38 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/14 10:27:38 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	display_arrow(const char *color)
+void	handle_signals_exit_codes(t_minishell *data)
 {
-	ft_fprintf(STDERR_FILENO, color);
-	ft_fprintf(STDERR_FILENO, "➜  ");
+	if (g_sig == SIGINT)
+	{
+		data->exit_code = 130;
+	}
 }

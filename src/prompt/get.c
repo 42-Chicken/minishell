@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 16:27:31 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/13 20:13:03 by romain           ###   ########.fr       */
+/*   Updated: 2025/02/14 10:36:26 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static const char	*get_base_prompt(void)
 {
-	return (BCYN "$PWD " RESET);
+	return ("➜  " BCYN "$PWD " RESET);
 }
 
 const char	*get_prompt(t_minishell *minishell)
@@ -23,9 +23,9 @@ const char	*get_prompt(t_minishell *minishell)
 
 	prompt = (char *)get_base_prompt();
 	if (minishell->exit_code != 0)
-		display_arrow(RED);
+		ft_fprintf(STDOUT_FILENO, RED);
 	else
-		display_arrow(GRN);
+		ft_fprintf(STDOUT_FILENO, GRN);
 	prompt = ft_strreplace(prompt, "$PWD", (char *)get_env(minishell->envp,
 				"PWD"));
 	return ((const char *)prompt);

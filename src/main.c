@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:25:23 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/13 19:57:40 by romain           ###   ########.fr       */
+/*   Updated: 2025/02/14 10:42:12 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	main(int argc, char const **argv, const char **envp)
 	while (1)
 	{
 		create_safe_memory_context();
+		handle_signals_exit_codes(&data);
 		handle_readline(&data);
 		exit_safe_memory_context();
 	}

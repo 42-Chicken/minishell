@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/02/13 20:12:43 by romain           ###   ########.fr       */
+/*   Updated: 2025/02/14 10:44:41 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,6 @@ void	handle_readline(t_minishell *data)
 	char	*line;
 
 	line = readline(get_prompt(data));
-	if (g_sig == 2)
-	{
-		data->exit_code = 130;
-	}
 	if (line && ft_strncmp(line, "exit", ft_strlen("exit")) == 0)
 	{
 		free(line);

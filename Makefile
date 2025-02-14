@@ -28,9 +28,9 @@ FT_LIBC 			= ./dependencies/ft_libc/ft_libc.a
 
 SRCS				=	src/main.c\
 						src/prompt/get.c\
-						src/prompt/arrow.c\
 						src/line/readline.c\
 						src/signals/signals.c\
+						src/signals/exit_codes.c\
 						src/env/get.c\
 						src/env/set.c
 
