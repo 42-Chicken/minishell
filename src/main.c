@@ -6,11 +6,12 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:25:23 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/14 10:46:23 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/14 10:51:36 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "signals.h"
 
 int	g_sig = 0;
 

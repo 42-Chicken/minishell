@@ -8,6 +8,7 @@
 		"colors.h": "c",
 		"get_next_line.h": "c",
 		"stdio.h": "c",
-		"signal.h": "c"
+		"signal.h": "c",
+		"ft_fprintf.h": "c"
 	}
 }
