@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/14 13:04:47 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/14 17:02:02 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ typedef struct s_minishell
 	int			exit_code;
 	bool		stop;
 }				t_minishell;
+
+
 
 // ---------------------------------
 //

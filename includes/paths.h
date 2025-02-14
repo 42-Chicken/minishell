@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/14 13:19:58 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/14 15:50:52 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ extern int	g_sig;
 // ---------------------------------
 char		*get_current_path(t_minishell *data);
 char		*get_home_path(t_minishell *data);
+char		*cleanup_path(t_minishell *data, char *path1);
 void		set_current_path(t_minishell *data, char *new_path);
 char		*combine_paths(t_minishell *data, char *path1, char *path2);
 
