@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:25:23 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/14 11:57:28 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/14 13:09:01 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ int	main(int argc, char const **argv, const char **envp)
 	if (!isatty(0))
 		return (EXIT_FAILURE);
 	init_minishell(&data);
-		// handle_readline(&data);
-	// while (!data.stop)
-	// {
-	// 	create_safe_memory_context();
-	// 	handle_signals_exit_codes(&data);
-	// 	handle_readline(&data);
-	// 	exit_safe_memory_context();
-	// }
+	handle_readline(&data);
+	while (!data.stop)
+	{
+		create_safe_memory_context();
+		handle_signals_exit_codes(&data);
+		handle_readline(&data);
+		exit_safe_memory_context();
+	}
 	free_all_contexts_garbadge();
 	return (EXIT_SUCCESS);
 }

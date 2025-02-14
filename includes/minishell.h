@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/14 11:05:00 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/14 13:04:47 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-#define MAX_PATH_LENGTH 4095
+# define MAX_PATH_LENGTH 4095
 
 typedef struct s_minishell
 {

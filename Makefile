@@ -28,8 +28,10 @@ FT_LIBC 			= ./dependencies/ft_libc/ft_libc.a
 
 SRCS				=	src/main.c\
 						src/prompt/get.c\
-						src/initialisation/init.c\
 						src/paths/get.c\
+						src/paths/set.c\
+						src/paths/combine.c\
+						src/initialisation/init.c\
 						src/line/readline.c\
 						src/signals/signals.c\
 						src/signals/exit_codes.c\
@@ -72,7 +74,7 @@ $(FT_LIBC) :
 	@$(MAKE) $(shell dirname $@) SAFE=1
 
 dev	 : re
-	valgrind --show-leak-kinds=all --leak-check=full ./minishell
+	valgrind --suppressions=readline.supp -s --show-leak-kinds=all --leak-check=full ./minishell
 
 header:
 		@printf "\

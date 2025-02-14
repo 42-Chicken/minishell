@@ -6,11 +6,12 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/02/14 11:27:57 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/14 13:38:09 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "paths.h"
 
 void	handle_readline(t_minishell *data)
 {
@@ -29,7 +30,11 @@ void	handle_readline(t_minishell *data)
 	else
 		data->exit_code = 1;
 	if (line)
+	{
 		add_history(line);
+		if (ft_strlen(line))
+			combine_paths(data, line, "../../");
+	}
 	if (!line)
 	{
 		ft_fprintf(STDOUT_FILENO, "\n");
