@@ -20,6 +20,7 @@
 		"binary_tree.h": "c",
 		"string_view": "c",
 		"unistd.h": "c",
-		"stdlib.h": "c"
+		"stdlib.h": "c",
+		"libft.h": "c"
 	}
 }

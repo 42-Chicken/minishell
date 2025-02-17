@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/17 12:03:31 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/17 12:35:38 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@
 
 # define PIPE_NO_VALUE -1
 
-# include "libft.h"
 # include "garbadge.h"
+# include "libft.h"
 
+typedef struct s_btree		t_btree;
 typedef struct s_minishell	t_minishell;
 
 typedef struct s_pipe
@@ -61,7 +62,7 @@ typedef struct s_command
 
 typedef struct s_btree_command_node
 {
-	t_list					*commands;
+	t_list					*commands[2];
 	t_pipe					in_pipe;
 	t_pipe					out_pipe;
 }							t_btree_command_node;
@@ -79,6 +80,7 @@ typedef struct s_btree_redirection_node
 //
 // ---------------------------------
 void						execution_pipeline(t_minishell *data);
+void						execute_binary_tree(t_minishell *data);
 
 // ---------------------------------
 //
@@ -90,6 +92,10 @@ void						set_pipe(t_pipe *pipe, t_pipe pipe_value);
 void						safe_close(int fd);
 void						safe_pipe_close(t_pipe pipe);
 void						link_execution_tree_pipes(t_minishell *data);
+void						execute_redirection_foreach(t_btree **head,
+								t_btree *node, void *other);
+void						execute_commands_foreach(t_btree **head,
+								t_btree *node, void *other);
 
 // ---------------------------------
 //

@@ -43,7 +43,10 @@ SRCS				=	src/main.c\
 						src/execution/pipes/get.c\
 						src/execution/pipes/set.c\
 						src/execution/pipes/link.c\
+						src/execution/pipes/links/commands.c\
+						src/execution/pipes/links/redirections.c\
 						src/execution/pipes/utils/safe_close.c\
+						src/execution/execution.c\
 						src/execution/debug.c\
 						src/env/get.c\
 						src/env/set.c
@@ -83,8 +86,8 @@ $(FT_LIBC) :
 	fi;
 	@$(MAKE) $(shell dirname $@) SAFE=1
 
-dev	 : re
-	valgrind --suppressions=readline.supp -s --show-leak-kinds=all --leak-check=full ./minishell
+dev	 : clean-objs all
+	valgrind --suppressions=readline.supp -s --track-fds=yes --trace-children=yes --show-leak-kinds=all --leak-check=full ./minishell
 
 header:
 		@printf "\
@@ -100,8 +103,10 @@ header:
 			then printf "Compiling Project : ["; \
 		fi
 
-clean :
+clean-objs :
 		@$(RM) $(OBJ_DIR)
+
+clean : clean-objs
 		@$(MAKE) $(shell dirname $(FT_LIBC)) fclean
 
 fclean : clean

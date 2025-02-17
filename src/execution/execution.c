@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipeline.c                                         :+:      :+:    :+:   */
+/*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/17 08:22:24 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/17 12:23:13 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/02/17 12:23:29 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/17 12:36:00 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "execution.h"
+#include "minishell.h"
 
-void	execution_pipeline(t_minishell *data)
+void	execute_binary_tree(t_minishell *data)
 {
-	if (!data || !data->execution_tree)
-		return ;
-	link_execution_tree_pipes(data);
-	execute_binary_tree(data);
+	t_btree	*node;
+	(void)node;
+	(void)data;
 }
