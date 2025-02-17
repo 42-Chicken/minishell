@@ -12,6 +12,14 @@
 		"ft_fprintf.h": "c",
 		"paths.h": "c",
 		"execution.h": "c",
-		"errors.h": "c"
+		"errors.h": "c",
+		"compare": "c",
+		"array": "c",
+		"functional": "c",
+		"tuple": "c",
+		"binary_tree.h": "c",
+		"string_view": "c",
+		"unistd.h": "c",
+		"stdlib.h": "c"
 	}
 }

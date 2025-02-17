@@ -6,11 +6,12 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/02/14 18:51:31 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/17 10:50:02 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "execution.h"
 #include "parsing.h"
 #include "paths.h"
 
@@ -23,7 +24,7 @@ void	handle_readline(t_minishell *data)
 		data->stop = true;
 	if (line && ft_strlen(line) >= 0)
 	{
-		printf("%s\n", combine_paths(data, line, ""));
+		execution_pipeline(data);
 		data->exit_code = 0;
 	}
 	else

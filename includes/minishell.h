@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/17 08:46:37 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/17 10:48:59 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include "garbadge.h"
 # include "get_next_line.h"
 # include "libft.h"
+# include "binary_tree.h"
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
@@ -38,7 +39,7 @@ typedef struct s_minishell
 	char const				**argv;
 	char const				**envp;
 	char const				started_path[MAX_PATH_LENGTH];
-	t_command				*execution_tree;
+	t_btree					*execution_tree;
 	int						exit_code;
 	bool					stop;
 }							t_minishell;

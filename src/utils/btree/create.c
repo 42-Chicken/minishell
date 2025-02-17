@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set.c                                              :+:      :+:    :+:   */
+/*   create.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/17 08:36:00 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/17 09:55:59 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/02/17 11:15:06 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/17 11:27:09 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "errors.h"
-#include "execution.h"
-#include "minishell.h"
+#include "binary_tree.h"
 
-void	set_pipe(t_pipe	*pipe, t_pipe pipe_value)
+t_btree	*btree_create_node(t_btree_node_type type)
 {
-	if (!pipe)
-		return ;
-	if (pipe_value.read != PIPE_NO_VALUE)
-		pipe->read = pipe_value.read;
-	if (pipe_value.write != PIPE_NO_VALUE)
-		pipe->write = pipe_value.write;
+	t_btree	*node;
+
+	node = safe_malloc(sizeof(t_btree));
+	ft_bzero(node, sizeof(t_btree));
+	node->type = type;
+	return (node);
 }
