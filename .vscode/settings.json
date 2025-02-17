@@ -10,6 +10,8 @@
 		"stdio.h": "c",
 		"signal.h": "c",
 		"ft_fprintf.h": "c",
-		"paths.h": "c"
+		"paths.h": "c",
+		"execution.h": "c",
+		"errors.h": "c"
 	}
 }
