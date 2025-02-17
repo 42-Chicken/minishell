@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/17 12:35:38 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/17 15:43:57 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 # include "garbadge.h"
 # include "libft.h"
+# include <sys/wait.h>
 
 typedef struct s_btree		t_btree;
 typedef struct s_minishell	t_minishell;
@@ -81,6 +82,9 @@ typedef struct s_btree_redirection_node
 // ---------------------------------
 void						execution_pipeline(t_minishell *data);
 void						execute_binary_tree(t_minishell *data);
+void						wait_all_commands_executions(t_minishell *data);
+void						execute_commands_list(t_minishell *data,
+								t_list *lst);
 
 // ---------------------------------
 //

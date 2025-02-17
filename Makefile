@@ -40,6 +40,8 @@ SRCS				=	src/main.c\
 						src/signals/signals.c\
 						src/signals/exit_codes.c\
 						src/execution/pipeline.c\
+						src/execution/commands/execute.c\
+						src/execution/commands/wait.c\
 						src/execution/pipes/get.c\
 						src/execution/pipes/set.c\
 						src/execution/pipes/link.c\

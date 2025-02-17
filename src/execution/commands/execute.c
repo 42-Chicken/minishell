@@ -1,39 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 19:26:01 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/17 15:58:25 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/02/17 14:24:39 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/17 15:43:31 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "execution.h"
+#include "minishell.h"
 
-int	ft_atoi(const char *nptr)
+void	execute_commands_list(t_minishell *data, t_list *lst)
 {
-	int	i;
-	int	r;
-	int	sign;
+	t_list		*current;
 
-	i = 0;
-	r = 0;
-	sign = 1;
-	while ((nptr[i] >= 9 && nptr[i] <= 13) || nptr[i] == ' ')
-		i++;
-	if (nptr[i] == '-')
-	{
-		sign = -sign;
-		i++;
-	}
-	else if (nptr[i] == '+')
-		i++;
-	while (nptr[i] >= '0' && nptr[i] <= '9')
-	{
-		r = r * 10 + nptr[i] - '0';
-		i++;
-	}
-	return (r * sign);
+	current = lst;
+	(void)current;
+	(void)data;
+	// while (current)
+	// {
+	// 	command = (t_command *)current->content;
+	// 	exec_command(command);
+	// 	current = current->next;
+	// }
 }

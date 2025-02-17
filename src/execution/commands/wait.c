@@ -1,39 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   wait.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 19:26:01 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/17 15:58:25 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/02/17 14:28:29 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/17 14:29:20 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
+#include "execution.h"
 
-int	ft_atoi(const char *nptr)
+void	wait_all_commands_executions(t_minishell *data)
 {
-	int	i;
-	int	r;
-	int	sign;
+	pid_t	wpid;
+	int		status;
 
-	i = 0;
-	r = 0;
-	sign = 1;
-	while ((nptr[i] >= 9 && nptr[i] <= 13) || nptr[i] == ' ')
-		i++;
-	if (nptr[i] == '-')
+	wpid = 1;
+	status = 0;
+	while (wpid > 0)
 	{
-		sign = -sign;
-		i++;
+		wpid = wait(&status);
+		if (wpid > 0 && WIFEXITED(status) && data->exit_code != 127)
+			data->exit_code = WEXITSTATUS(status);
 	}
-	else if (nptr[i] == '+')
-		i++;
-	while (nptr[i] >= '0' && nptr[i] <= '9')
-	{
-		r = r * 10 + nptr[i] - '0';
-		i++;
-	}
-	return (r * sign);
 }
