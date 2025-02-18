@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 10:24:56 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:08:23 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ typedef enum e_command_status
 
 typedef enum e_command_errors
 {
-	NO_ERROR = -1,
-	PERMISSION_DENIED,
-	NO_SUCH_FILE_OR_DIRECTORY,
-	ERROR_OPENING_FILE,
+	COMMAND_NO_ERROR = -1,
+	COMMAND_PERMISSION_DENIED,
+	COMMAND_NO_SUCH_FILE_OR_DIRECTORY,
+	COMMAND_ERROR_OPENING_FILE,
 	COMMAND_NOT_FOUND,
 }							t_command_errors;
 

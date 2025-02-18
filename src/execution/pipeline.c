@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 08:22:24 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 11:00:04 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:10:58 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,21 @@ void	execution_pipeline(t_minishell *data)
 	create_safe_memory_context();
 	ft_bzero(&command, sizeof(t_command));
 	command.argv = safe_malloc(10000);
+	command.error = COMMAND_NO_ERROR;
 	command.argv[0] = ft_strdup("ls");
-	command.argv[1] = NULL;
+	command.argv[1] = ft_strdup("-l");
+	command.argv[2] = NULL;
 	command.envp = (char **)data->envp;
 	ft_bzero(&command2, sizeof(t_command));
 	command2.argv = safe_malloc(10000);
-	command2.argv[0] = ft_strdup("cat");
-	command2.argv[1] = ft_strdup("-e");
+	command2.error = COMMAND_NO_ERROR;
+	command2.argv[0] = ft_strdup("grep");
+	command2.argv[1] = ft_strdup("src");
 	command2.argv[2] = NULL;
 	command2.envp = (char **)data->envp;
 	node = ft_lstnew((void *)&command);
 	// ft_lstadd_back(&node, ft_lstnew((void *)&command));
-	// ft_lstadd_back(&node, ft_lstnew((void *)&command2));
+	ft_lstadd_back(&node, ft_lstnew((void *)&command2));
 	data->execution_tree = btree_create_node(BTREE_AND_TYPE);
 	data->execution_tree->left = btree_create_node(BTREE_COMMANDS_TYPE);
 	data->execution_tree->left->prev = data->execution_tree;

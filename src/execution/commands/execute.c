@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 14:24:39 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 10:58:52 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:10:38 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,16 @@ static void	execute_for_every_paths(t_command *command)
 	char	**path_env;
 
 	i = 0;
+	execve(command->argv[0], (char *const *)command->argv,
+			(char *const *)command->envp); // maybe move that to the top
 	path_env = ft_split(get_env((const char **)command->envp, "PATH"), ':');
 	while (path_env && path_env[i])
 	{
 		command_name = ft_strjoin(get_full_path(path_env[i++]),
-		command->argv[0]);
+				command->argv[0]);
 		execve(command_name, (char *const *)command->argv,
 			(char *const *)command->envp);
 	}
-	execve(command->argv[0], (char *const *)command->argv,
-			(char *const *)command->envp); // maybe move that to the top
 }
 
 void	close_and_dup(t_command *command)
@@ -70,10 +70,8 @@ void	close_and_dup(t_command *command)
 		safe_close(command->in_pipe.write);
 	if (command->in_pipe.read)
 		safe_close(command->out_pipe.read);
-	if (command->in_pipe.read != -1)
-		dup2(command->in_pipe.read, STDIN_FILENO);
-	if (command->in_pipe.read != -1)
-		dup2(command->out_pipe.write, STDOUT_FILENO);
+	dup2(command->in_pipe.read, STDIN_FILENO);
+	dup2(command->out_pipe.write, STDOUT_FILENO);
 	safe_close(command->in_pipe.read);
 	safe_close(command->out_pipe.write);
 }
@@ -89,10 +87,12 @@ void	exec_command(t_minishell *data, t_list *cmds_lst, t_command *command)
 	if (fork_id == 0)
 	{
 		(void)cmds_lst;
+		create_safe_memory_context();
 		close_and_dup(command);
 		close_pipes_until_end(cmds_lst, command);
-		// if (command->error == NO_ERROR)
-		execute_for_every_paths(command);
+		if (command->error == COMMAND_NO_ERROR)
+			execute_for_every_paths(command);
+		exit_safe_memory_context();
 		safe_exit(EXIT_FAILURE);
 	}
 	else
