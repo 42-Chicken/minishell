@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   array_len.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 15:26:38 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/02/18 15:21:58 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/18 15:23:12 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "paths.h"
 
-#define PWD_TOO_MANY_ARGS "pwd: too many arguments\n"
-
-int pwd_command(t_minishell *data, t_command *command)
+size_t	char_array_len(char **array)
 {
-	if (char_array_len(command->argv) > 1)
-	{
-		ft_fprintf(STDOUT_FILENO, PWD_TOO_MANY_ARGS);
-		return (EXIT_FAILURE);
-	}
-	ft_fprintf(STDOUT_FILENO, "%s\n", get_current_path(data));
-	return (EXIT_SUCCESS);
+	int i;
+
+	i = 0;
+	while (array && array[i])
+		i++;
+	return (i);
 }

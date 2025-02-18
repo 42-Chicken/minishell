@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 14:39:14 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 15:23:31 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 # define MINISHELL_H
 
+# include "binary_tree.h"
 # include "colors.h"
 # include "env.h"
 # include "ft_fprintf.h"
@@ -21,7 +22,6 @@
 # include "garbage.h"
 # include "get_next_line.h"
 # include "libft.h"
-# include "binary_tree.h"
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
@@ -64,5 +64,12 @@ void						handle_readline(t_minishell *data);
 //
 // ---------------------------------
 const char					*get_prompt(t_minishell *minishell);
+
+// ---------------------------------
+//
+// UTILS
+//
+// ---------------------------------
+size_t						char_array_len(char **array);
 
 #endif

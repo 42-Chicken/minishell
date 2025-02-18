@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 08:22:24 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 14:59:05 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 15:26:11 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ void	execution_pipeline(t_minishell *data)
 	ft_bzero(&command2, sizeof(t_command));
 	command2.argv = safe_malloc(10000);
 	command2.error = COMMAND_NO_ERROR;
-	command2.argv[0] = ft_strdup("cat");
-	command2.argv[1] = ft_strdup("-e");
-	command2.argv[2] = NULL;
+	command2.argv[0] = ft_strdup("pwd");
+	// command2.argv[1] = ft_strdup("-e");
+	command2.argv[1] = NULL;
 	command2.envp = (char **)data->envp;
 	node = ft_lstnew((void *)&command);
 	// ft_lstadd_back(&node, ft_lstnew((void *)&command));
