@@ -2,7 +2,7 @@
 NAME				=	minishell
 CC					=	clang
 
-CFLAGS				=	-Wall -Werror -Wextra -Idependencies/ft_libc/includes  -Iincludes -fPIE
+CFLAGS				=	-Idependencies/ft_libc/includes  -Iincludes -fPIE
 READLINE_FLAG		=	-lreadline
 RM					=	rm -rf
 MAKE				=	make --no-print-directory -C

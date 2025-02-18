@@ -6,12 +6,37 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 10:54:00 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/14 13:36:36 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 12:11:42 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "paths.h"
+
+char	*get_current_folder_name(void)
+{
+	int		i;
+	char	**path;
+	char	current[MAX_PATH_LENGTH];
+	char	*result;
+
+	result = NULL;
+	create_safe_memory_context();
+	getcwd(current, MAX_PATH_LENGTH);
+	path = ft_split(current, '/');
+	if (!path)
+		return (exit_safe_memory_context(), ft_strdup(current));
+	i = 0;
+	while (path[i])
+		i++;
+	if (i > 0)
+		result = ft_strdup(path[i - 1]);
+	else if (path[i])
+		result = ft_strdup(path[i]);
+	send_pointer_to_upper_context(result);
+	exit_safe_memory_context();
+	return (result);
+}
 
 char	*get_home_path(t_minishell *data)
 {

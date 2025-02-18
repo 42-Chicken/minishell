@@ -6,11 +6,13 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 14:11:51 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 11:19:39 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 12:04:09 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "colors.h"
 #include "garbage.h"
+#include <stdio.h>
 
 int	*get_current_context(void)
 {
@@ -54,7 +56,7 @@ void	send_pointer_to_upper_context(void *ptr)
 		return ;
 	context = get_current_context();
 	if (!context)
-		return ;
+	return ;
 	if (*context > 0)
 	{
 		add_to_garbage(ptr, *context - 1);
