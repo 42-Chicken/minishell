@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 14:24:39 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 11:10:38 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 14:52:40 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void	exec_command(t_minishell *data, t_list *cmds_lst, t_command *command)
 		create_safe_memory_context();
 		close_and_dup(command);
 		close_pipes_until_end(cmds_lst, command);
+		execute_built_in_command(data, command);
 		if (command->error == COMMAND_NO_ERROR)
 			execute_for_every_paths(command);
 		exit_safe_memory_context();

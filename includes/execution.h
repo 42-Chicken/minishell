@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 11:23:07 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 14:55:33 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,23 @@ typedef struct s_btree_command_node
 // 	char					*file;
 // 	t_redirection_types		type;
 // }							t_btree_redirection_node;
+
+// ---------------------------------
+//
+// BUILT_IN
+//
+// ---------------------------------
+void						execute_built_in_command(t_minishell *data,
+								t_command *command);
+int							cd_command(t_minishell *data, t_command *command);
+int							echo_command(t_minishell *data, t_command *command);
+int							pwd_command(t_minishell *data, t_command *command);
+int							export_command(t_minishell *data,
+								t_command *command);
+int							unset_command(t_minishell *data,
+								t_command *command);
+int							env_command(t_minishell *data, t_command *command);
+int							exit_command(t_minishell *data, t_command *command);
 
 // ---------------------------------
 //

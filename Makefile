@@ -2,7 +2,7 @@
 NAME				=	minishell
 CC					=	clang
 
-CFLAGS				=	-Idependencies/ft_libc/includes  -Iincludes -fPIE
+CFLAGS				=	-Wall -Werror -Wextra -Idependencies/ft_libc/includes  -Iincludes -fPIE
 READLINE_FLAG		=	-lreadline
 RM					=	rm -rf
 MAKE				=	make --no-print-directory -C
@@ -42,6 +42,14 @@ SRCS				=	src/main.c\
 						src/execution/pipeline.c\
 						src/execution/commands/execute.c\
 						src/execution/commands/wait.c\
+						src/execution/built_in/built_in.c\
+						src/execution/built_in/commands/cd.c\
+						src/execution/built_in/commands/export.c\
+						src/execution/built_in/commands/unset.c\
+						src/execution/built_in/commands/env.c\
+						src/execution/built_in/commands/pwd.c\
+						src/execution/built_in/commands/exit.c\
+						src/execution/built_in/commands/echo.c\
 						src/execution/pipes/get.c\
 						src/execution/pipes/set.c\
 						src/execution/pipes/links/commands.c\
