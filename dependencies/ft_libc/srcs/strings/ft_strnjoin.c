@@ -6,12 +6,12 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 15:53:23 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/12 16:10:52 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:17:59 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_strings.h"
-#include "garbadge.h"
+#include "garbage.h"
 
 char	*ft_strnjoin(char const *s1, char const *s2, size_t max)
 {

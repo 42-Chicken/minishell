@@ -4,7 +4,7 @@
 		"minishell.h": "c",
 		"ft_strings.h": "c",
 		"type_traits": "c",
-		"garbadge.h": "c",
+		"garbage.h": "c",
 		"colors.h": "c",
 		"get_next_line.h": "c",
 		"stdio.h": "c",

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:25:23 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 10:45:16 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:23:12 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,6 @@ int	main(int argc, char const **argv, const char **envp)
 		handle_readline(&data);
 		exit_safe_memory_context();
 	}
-	free_all_contexts_garbadge();
+	free_all_contexts_garbage();
 	return (data.exit_code);
 }

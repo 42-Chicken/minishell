@@ -1,4 +1,4 @@
-NAME				=	garbadge_collector.a
+NAME				=	garbage_collector.a
 
 INCLUDES_PATH		=	./includes
 CC					=	cc
@@ -12,7 +12,7 @@ COLOUR_ORANGE		=	${START_COLOR}150;20;20m
 COLOUR_PURPLE		=	${START_COLOR}175;50;150m
 COLOUR_RED			=	${START_COLOR}255;0;0m
 
-SRCS				=	garbadge.c \
+SRCS				=	garbage.c \
 						safe_exit.c\
 						safe_free.c\
 						safe_malloc.c\

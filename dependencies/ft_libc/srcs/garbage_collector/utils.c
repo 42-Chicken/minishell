@@ -6,13 +6,13 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 08:32:16 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 10:35:12 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:19:39 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "garbadge.h"
+#include "garbage.h"
 
-void	add_to_garbadge(void *pointer, int context)
+void	add_to_garbage(void *pointer, int context)
 {
 	t_list	**garbage_head;
 	t_list	*lst;
@@ -33,7 +33,7 @@ void	add_to_garbadge(void *pointer, int context)
 	ft_lstadd_front(garbage_head, lst);
 }
 
-void	reset_garbadge(int context)
+void	reset_garbage(int context)
 {
 	t_list	**garbage_head;
 
@@ -45,12 +45,11 @@ void	reset_garbadge(int context)
 	*garbage_head = NULL;
 }
 
-
-void	reset_all_garbadges(void)
+void	reset_all_garbages(void)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < CONTEXT_MAX)
-		reset_garbadge(i++);
+		reset_garbage(i++);
 }

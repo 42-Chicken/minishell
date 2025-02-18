@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 11:08:23 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:23:07 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 # define PIPE_NO_VALUE -1
 
-# include "garbadge.h"
+# include "garbage.h"
 # include "libft.h"
 # include <sys/wait.h>
 

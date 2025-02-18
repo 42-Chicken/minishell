@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:56:50 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/07 11:41:05 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:17:59 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 # define GET_NEXT_LINE_H
 
-# include "garbadge.h"
+# include "garbage.h"
 # include "libft.h"
 # include <fcntl.h>
 # include <stdio.h>

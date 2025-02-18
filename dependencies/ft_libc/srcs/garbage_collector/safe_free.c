@@ -6,11 +6,11 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 08:31:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/11 10:12:41 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:19:39 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "garbadge.h"
+#include "garbage.h"
 
 void	safe_free(void *pointer)
 {
@@ -65,7 +65,7 @@ bool	delete_from_context(void *pointer, int context)
 	return (delete_pointer_from_list(garbage_head, NULL, pointer));
 }
 
-void	free_garbadge(int context)
+void	free_garbage(int context)
 {
 	t_list	*lst;
 	t_list	**garbage_head;
@@ -87,11 +87,11 @@ void	free_garbadge(int context)
 	*garbage_head = NULL;
 }
 
-void	free_all_contexts_garbadge(void)
+void	free_all_contexts_garbage(void)
 {
 	int	context;
 
 	context = -1;
 	while (++context < CONTEXT_MAX)
-		free_garbadge(context);
+		free_garbage(context);
 }

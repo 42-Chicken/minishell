@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   safe_malloc.c                                      :+:      :+:    :+:   */
+/*   garbage.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/27 08:31:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/11 09:22:09 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/01/23 14:55:20 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/18 10:34:03 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "garbadge.h"
+#include "garbage.h"
 
-void	*safe_malloc(size_t size)
+t_list	**get_garbage_from_context(int context)
 {
-	void	*memory;
-	int		*context;
+	static t_list	*collector[CONTEXT_MAX];
 
-	memory = malloc(size);
-	if (!memory)
-		safe_exit(1);
-	context = get_current_context();
-	if (!context)
-		safe_exit(1);
-	add_to_garbadge(memory, *context);
-	return (memory);
+	if (context < 0 || context >= CONTEXT_MAX)
+		return (NULL);
+	return (&collector[context]);
 }

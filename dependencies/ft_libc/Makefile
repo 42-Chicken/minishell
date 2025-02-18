@@ -13,13 +13,13 @@ FT_FPRINTF_PATH 	=	$(SRCS_PATH)/ft_fprintf/
 LIBFT_PATH			=	$(SRCS_PATH)/libft/
 GNL_PATH			=	$(SRCS_PATH)/get_next_line/
 STRINGS_PATH		=	$(SRCS_PATH)/strings/
-GARBADGE_PATH		=	$(SRCS_PATH)/garbadge_collector/
+GARBAGE_PATH		=	$(SRCS_PATH)/garbage_collector/
 
 SRCS				=	$(LIBFT_PATH)\
 						$(FT_FPRINTF_PATH)\
 						$(GNL_PATH)\
 						$(STRINGS_PATH)\
-						$(GARBADGE_PATH)
+						$(GARBAGE_PATH)
 
 ifeq ($(SAFE), 1)
     CFLAGS += -DMALLOC=safe_malloc
