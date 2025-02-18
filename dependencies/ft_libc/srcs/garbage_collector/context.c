@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 14:11:51 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 12:04:09 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 15:36:06 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	send_pointer_to_upper_context(void *ptr)
 		return ;
 	context = get_current_context();
 	if (!context)
-	return ;
+		return ;
 	if (*context > 0)
 	{
 		add_to_garbage(ptr, *context - 1);
