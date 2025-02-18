@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:05:42 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/17 09:14:13 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 10:29:49 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	safe_close(int fd)
 {
-	if (fd && fd != -1)
+	if (fd && fd != -1 && fd != STDERR_FILENO && fd != STDOUT_FILENO)
 		close(fd);
 }
 

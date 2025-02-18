@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:25:23 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/17 15:56:28 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 10:45:16 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	main(int argc, char const **argv, const char **envp)
 	if (!isatty(0))
 		return (EXIT_FAILURE);
 	init_minishell(&data);
-	handle_readline(&data);
 	while (!data.stop)
 	{
 		create_safe_memory_context();

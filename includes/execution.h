@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 09:46:39 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 10:24:56 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,9 @@ t_pipe						get_pipe(void);
 void						set_pipe(t_pipe *pipe, t_pipe pipe_value);
 void						safe_close(int fd);
 void						safe_pipe_close(t_pipe pipe);
-
-void						link_commands_pipes(t_list *lst, t_pipe default_in_pipe,
+void						link_commands_pipes(t_list *lst,
+								t_pipe default_in_pipe,
 								t_pipe default_out_pipe);
-void						execute_redirection_foreach(t_btree **head,
-								t_btree *node, void *other);
-void						execute_commands_foreach(t_btree **head,
-								t_btree *node, void *other);
 
 // ---------------------------------
 //
