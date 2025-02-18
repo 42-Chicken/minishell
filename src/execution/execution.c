@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:23:29 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 10:57:30 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 15:55:18 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,18 @@ static void	execute_commands_and_wait(t_minishell *data, t_btree *node)
 static bool	handle_commands(t_minishell *data, t_btree *node,
 		t_btree_node_type condition)
 {
-	execute_commands_and_wait(data, node->right);
+	execute_commands_and_wait(data, node->left);
+	if (!node->right)
+		return (true);
 	if (condition == BTREE_AND_TYPE && data->exit_code == 0)
 	{
-		execute_commands_and_wait(data, node->left);
+		execute_commands_and_wait(data, node->right);
 		if (data->exit_code != 0)
 			return (false);
 	}
 	else if (condition == BTREE_OR_TYPE && data->exit_code != 0)
 	{
-		execute_commands_and_wait(data, node->left);
+		execute_commands_and_wait(data, node->right);
 		if (data->exit_code != 0)
 			return (false);
 	}
@@ -58,7 +60,7 @@ void	recusrive_execute_binary_tree(t_minishell *data, t_btree *node,
 	}
 	else if (node->type == BTREE_COMMANDS_TYPE)
 	{
-		if (handle_commands(data, node, type))
+		if (handle_commands(data, node, type) && node->prev)
 			recusrive_execute_binary_tree(data, node->prev->right,
 				BTREE_NONE_TYPE);
 	}
