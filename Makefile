@@ -44,9 +44,7 @@ SRCS				=	src/main.c\
 						src/execution/commands/wait.c\
 						src/execution/pipes/get.c\
 						src/execution/pipes/set.c\
-						src/execution/pipes/link.c\
 						src/execution/pipes/links/commands.c\
-						src/execution/pipes/links/redirections.c\
 						src/execution/pipes/utils/safe_close.c\
 						src/execution/execution.c\
 						src/execution/debug.c\

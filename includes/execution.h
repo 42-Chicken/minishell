@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/17 15:43:57 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 09:46:39 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,17 +63,17 @@ typedef struct s_command
 
 typedef struct s_btree_command_node
 {
-	t_list					*commands[2];
+	t_list					*commands;
 	t_pipe					in_pipe;
 	t_pipe					out_pipe;
 }							t_btree_command_node;
 
-typedef struct s_btree_redirection_node
-{
-	int						fd;
-	char					*file;
-	t_redirection_types		type;
-}							t_btree_redirection_node;
+// typedef struct s_btree_redirection_node
+// {
+// 	int						fd;
+// 	char					*file;
+// 	t_redirection_types		type;
+// }							t_btree_redirection_node;
 
 // ---------------------------------
 //
@@ -95,7 +95,9 @@ t_pipe						get_pipe(void);
 void						set_pipe(t_pipe *pipe, t_pipe pipe_value);
 void						safe_close(int fd);
 void						safe_pipe_close(t_pipe pipe);
-void						link_execution_tree_pipes(t_minishell *data);
+
+void						link_commands_pipes(t_list *lst, t_pipe default_in_pipe,
+								t_pipe default_out_pipe);
 void						execute_redirection_foreach(t_btree **head,
 								t_btree *node, void *other);
 void						execute_commands_foreach(t_btree **head,
