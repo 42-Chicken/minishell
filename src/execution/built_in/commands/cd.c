@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 09:40:43 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 09:56:18 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 #include "paths.h"
 
 #define CD_HOME_NOT_SET "minishell: cd: HOME not set\n"
-#define CD_COULD_NOT_OPEN_WORKING_DIRECTORY \
-	"minishell: could not open\
+#define CD_COULD_NOT_OPEN_WORKING_DIRECTORY "minishell: could not open\
  working directory\n"
 #define CD_COULD_NOT_FIND_DIRECTORY "bash: cd: %s: No such file or directory\n"
 
