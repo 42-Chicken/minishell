@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 10:54:00 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 15:18:06 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 08:44:32 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	*get_current_path(t_minishell *data)
 
 	getcwd(current, MAX_PATH_LENGTH);
 	if (ft_strlen(current) > 0)
-		return (ft_strdup(current));
+		return (NULL);
 	path = (char *)get_env(data->envp, "PWD");
 	if (!path)
 		path = (char *)data->started_path;
