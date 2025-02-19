@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:31:09 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 10:24:01 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 11:15:08 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,25 @@ static bool	is_same_str(char *str1, char *str2)
 static void	handle_execution(t_minishell *data, t_command *command,
 		int (*func)(t_minishell *, t_command *))
 {
+	// int	in;
+	// int	out;
+
 	create_safe_memory_context();
+	// if (command->in_pipe.write)
+	// 	safe_close(command->in_pipe.write);
+	// if (command->in_pipe.read)
+	// 	safe_close(command->out_pipe.read);
+	// in = dup(STDIN_FILENO);
+	// out = dup(STDOUT_FILENO);
+	// dup2(command->in_pipe.read, STDIN_FILENO);
+	// dup2(command->out_pipe.write, STDOUT_FILENO);
 	data->exit_code = func(data, command);
+	// dup2(command->in_pipe.read, STDIN_FILENO);
+	// dup2(command->out_pipe.write, STDOUT_FILENO);
+	// safe_close(in);
+	// safe_close(out);
+	// safe_close(command->in_pipe.read);
+	// safe_close(command->out_pipe.write);
 	exit_safe_memory_context();
 }
 

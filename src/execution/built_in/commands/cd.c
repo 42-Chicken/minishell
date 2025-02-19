@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 09:56:18 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 10:56:47 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 #include "paths.h"
 
 #define CD_HOME_NOT_SET "minishell: cd: HOME not set\n"
-#define CD_COULD_NOT_OPEN_WORKING_DIRECTORY "minishell: could not open\
+#define CD_COULD_NOT_OPEN_WORKING_DIRECTORY \
+	"minishell: could not open\
  working directory\n"
 #define CD_COULD_NOT_FIND_DIRECTORY "bash: cd: %s: No such file or directory\n"
 
-static void	update_env(t_minishell *data, char *key)
+static bool	update_env(t_minishell *data, char *key)
 {
 	char	*path;
 
@@ -26,9 +27,10 @@ static void	update_env(t_minishell *data, char *key)
 	if (!path)
 	{
 		ft_fprintf(STDERR_FILENO, CD_COULD_NOT_OPEN_WORKING_DIRECTORY);
-		safe_exit(EXIT_FAILURE);
+		return (false);
 	}
 	set_env(&data->envp, key, path);
+	return (true);
 }
 
 static char	*get_home(t_minishell *data)
@@ -59,10 +61,12 @@ int	cd_command(t_minishell *data, t_command *command)
 		else
 			target_path = command->argv[1];
 	}
-	update_env(data, "OLDPWD");
+	if (!update_env(data, "OLDPWD"))
+		return (EXIT_FAILURE);
 	if (chdir(target_path) == -1)
 		return (ft_fprintf(STDERR_FILENO, CD_COULD_NOT_FIND_DIRECTORY,
 				target_path), EXIT_FAILURE);
-	update_env(data, "PWD");
+	if (!update_env(data, "PWD"))
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

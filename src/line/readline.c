@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/02/19 08:35:18 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 10:54:18 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ void	handle_readline(t_minishell *data)
 	char		*line;
 	t_command	*command;
 	t_btree		*node;
+	t_list		*lst;
+	int			d;
+	char		**pipes;
 
 	line = readline(get_prompt(data));
 	// if (line && ft_strncmp(line, "exit", ft_strlen("exit")) == 0)
@@ -37,15 +40,25 @@ void	handle_readline(t_minishell *data)
 	(void)node;
 	if (line && ft_strlen(line) > 0)
 	{
-		command = safe_malloc(sizeof(t_command));
-		ft_bzero(command, sizeof(t_command));
-		command->argv = ft_split(line, ' ');
-		command->envp = (char **)data->envp;
-		command->error = COMMAND_NO_ERROR;
+		d = 0;
+		pipes = ft_split(line, '|');
 		node = btree_create_node(BTREE_COMMANDS_TYPE);
 		node->right = NULL;
 		node->left = btree_create_node(BTREE_COMMANDS_CONTENT_TYPE);
-		node->left->content = ft_lstnew(command);
+		while (pipes[d])
+		{
+			command = safe_malloc(sizeof(t_command));
+			lst = ft_lstnew(command);
+			if (!node->left->content)
+				node->left->content = lst;
+			else
+				ft_lstadd_back((t_list **)&node->left->content, lst);
+			ft_bzero(command, sizeof(t_command));
+			command->argv = ft_split(pipes[d], ' ');
+			command->envp = (char **)data->envp;
+			command->error = COMMAND_NO_ERROR;
+			d++;
+		}
 		data->execution_tree = node;
 		execution_pipeline(data);
 	}
