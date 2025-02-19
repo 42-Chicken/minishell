@@ -6,12 +6,12 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 14:48:28 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/01/27 08:56:47 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:17:59 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "garbadge.h"
+#include "garbage.h"
 
 void	free_split_until_end(char **tab, int from)
 {

@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   safe_close.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 19:26:01 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 11:17:59 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/01/29 15:05:42 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/19 11:05:47 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "garbage.h"
+#include "execution.h"
 
-t_list	*ft_lstnew(void *content)
+void	safe_close(int fd)
 {
-	t_list	*result;
+	if (fd && fd != -1 && fd != STDERR_FILENO && fd != STDOUT_FILENO)
+		close(fd);
+}
 
-	result = MALLOC(sizeof(t_list));
-	if (!result)
-		return (NULL);
-	result->content = content;
-	result->next = NULL;
-	return (result);
+void	safe_pipe_close(t_pipe pipe)
+{
+	safe_close(pipe.read);
+	safe_close(pipe.write);
 }

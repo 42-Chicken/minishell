@@ -1,26 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   safe_exit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 19:26:01 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 11:17:59 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/01/27 08:32:36 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/18 11:19:39 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "garbage.h"
 
-t_list	*ft_lstnew(void *content)
+void	safe_exit(int exit_code)
 {
-	t_list	*result;
-
-	result = MALLOC(sizeof(t_list));
-	if (!result)
-		return (NULL);
-	result->content = content;
-	result->next = NULL;
-	return (result);
+	free_all_contexts_garbage();
+	exit(exit_code);
 }

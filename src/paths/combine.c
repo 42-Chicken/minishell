@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:03:06 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/14 15:52:56 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 10:03:34 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,19 @@ static char	*remove_double_dots(char *path1)
 	return (path1);
 }
 
-char	*cleanup_path(t_minishell *data, char *path1)
+char	*cleanup_path(t_minishell *data, char *path)
 {
 	char	*newstr;
+	char	*home_path;
 
-	newstr = ft_strtrim(path1, " \t\n\v\f\r");
+	if (!path || ft_strlen(path) <= 0)
+		return (ft_strdup(""));
+	newstr = ft_strtrim(path, SPACES);
 	if (newstr == NULL)
 		return (ft_strdup(""));
-	newstr = ft_strreplace(newstr, "~", get_home_path(data));
+	home_path = get_home_path(data);
+	if (home_path)
+		newstr = ft_strreplace(newstr, "~", home_path); // maybe error messages
 	return (remove_double_dots(newstr));
 }
 
@@ -86,6 +91,5 @@ char	*combine_paths(t_minishell *data, char *path1, char *path2)
 {
 	path1 = cleanup_path(data, path1);
 	path2 = cleanup_path(data, path2);
-
 	return (ft_strjoin(path1, path2));
 }

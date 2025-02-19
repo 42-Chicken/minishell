@@ -28,13 +28,35 @@ FT_LIBC 			= ./dependencies/ft_libc/ft_libc.a
 
 SRCS				=	src/main.c\
 						src/prompt/get.c\
+						src/utils/array/len.c\
+						src/utils/btree/create.c\
+						src/utils/btree/foreach.c\
+						src/utils/btree/get.c\
 						src/paths/get.c\
 						src/paths/set.c\
 						src/paths/combine.c\
+						src/parsing/parsing.c\
 						src/initialisation/init.c\
 						src/line/readline.c\
 						src/signals/signals.c\
 						src/signals/exit_codes.c\
+						src/execution/pipeline.c\
+						src/execution/commands/execute.c\
+						src/execution/commands/wait.c\
+						src/execution/built_in/built_in.c\
+						src/execution/built_in/commands/cd.c\
+						src/execution/built_in/commands/export.c\
+						src/execution/built_in/commands/unset.c\
+						src/execution/built_in/commands/env.c\
+						src/execution/built_in/commands/pwd.c\
+						src/execution/built_in/commands/exit.c\
+						src/execution/built_in/commands/echo.c\
+						src/execution/pipes/get.c\
+						src/execution/pipes/set.c\
+						src/execution/pipes/links/commands.c\
+						src/execution/pipes/utils/safe_close.c\
+						src/execution/execution.c\
+						src/execution/debug.c\
 						src/env/get.c\
 						src/env/set.c
 
@@ -73,8 +95,8 @@ $(FT_LIBC) :
 	fi;
 	@$(MAKE) $(shell dirname $@) SAFE=1
 
-dev	 : re
-	valgrind --suppressions=readline.supp -s --show-leak-kinds=all --leak-check=full ./minishell
+dev	 : clean-objs all
+	valgrind --suppressions=readline.supp -s --track-fds=yes --trace-children=yes --show-leak-kinds=all --leak-check=full ./minishell
 
 header:
 		@printf "\
@@ -90,8 +112,10 @@ header:
 			then printf "Compiling Project : ["; \
 		fi
 
-clean :
+clean-objs :
 		@$(RM) $(OBJ_DIR)
+
+clean : clean-objs
 		@$(MAKE) $(shell dirname $(FT_LIBC)) fclean
 
 fclean : clean

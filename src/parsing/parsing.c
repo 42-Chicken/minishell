@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/14 14:29:50 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/14 18:33:33 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 
 void	parse_line(t_minishell *data, char *line)
 {
-	
+	(void)data;
+	(void)line;
 }

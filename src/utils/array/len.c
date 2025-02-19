@@ -1,19 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   safe_exit.c                                        :+:      :+:    :+:   */
+/*   len.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/27 08:32:36 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/11 09:21:47 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/02/18 15:21:58 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/18 15:36:02 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "garbadge.h"
+#include "minishell.h"
 
-void	safe_exit(int exit_code)
+size_t	char_array_len(char **array)
 {
-	free_all_contexts_garbadge();
-	exit(exit_code);
+	int	i;
+
+	i = 0;
+	while (array && array[i])
+		i++;
+	return (i);
 }

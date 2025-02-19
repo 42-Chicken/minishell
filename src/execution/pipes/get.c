@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   get.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 19:26:01 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 11:17:59 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/02/17 08:36:00 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/17 08:39:58 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "garbage.h"
+#include "errors.h"
+#include "execution.h"
+#include "minishell.h"
 
-t_list	*ft_lstnew(void *content)
+t_pipe	get_pipe(void)
 {
-	t_list	*result;
+	t_pipe	in_pipe;
 
-	result = MALLOC(sizeof(t_list));
-	if (!result)
-		return (NULL);
-	result->content = content;
-	result->next = NULL;
-	return (result);
+	if (pipe((int *)(&in_pipe)) == -1)
+	{
+		ft_fprintf(STDERR_FILENO, FAIL_PIPE_MESSAGE);
+		safe_exit(FAIL_PIPE_EXIT_CODE);
+	}
+	return (in_pipe);
 }

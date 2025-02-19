@@ -6,11 +6,13 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 14:11:51 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/11 10:19:24 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/18 15:36:06 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "garbadge.h"
+#include "colors.h"
+#include "garbage.h"
+#include <stdio.h>
 
 int	*get_current_context(void)
 {
@@ -41,7 +43,7 @@ void	exit_safe_memory_context(void)
 	context = get_current_context();
 	if (!context)
 		return ;
-	free_garbadge(*context);
+	free_garbage(*context);
 	if (*context > 0)
 		(*context)--;
 }
@@ -57,7 +59,23 @@ void	send_pointer_to_upper_context(void *ptr)
 		return ;
 	if (*context > 0)
 	{
-		add_to_garbadge(ptr, *context - 1);
+		add_to_garbage(ptr, *context - 1);
+		delete_from_context(ptr, *context);
+	}
+}
+
+void	send_pointer_to_main_context(void *ptr)
+{
+	int	*context;
+
+	if (!ptr)
+		return ;
+	context = get_current_context();
+	if (!context)
+		return ;
+	if (*context > 0)
+	{
+		add_to_garbage(ptr, 0);
 		delete_from_context(ptr, *context);
 	}
 }

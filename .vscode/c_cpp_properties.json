@@ -3,9 +3,13 @@
         {
             "name": "Linux",
             "includePath": [
+<<<<<<< HEAD
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/includes/**",
                 "${workspaceFolder}/dependencies/ft_libc/includes/**"
+=======
+                "${workspaceFolder}/**"
+>>>>>>> 1cc67ee5ee370ef3b76f8e4cfec71f4d34177ae2
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

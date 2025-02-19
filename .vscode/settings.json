@@ -4,12 +4,23 @@
 		"minishell.h": "c",
 		"ft_strings.h": "c",
 		"type_traits": "c",
-		"garbadge.h": "c",
+		"garbage.h": "c",
 		"colors.h": "c",
 		"get_next_line.h": "c",
 		"stdio.h": "c",
 		"signal.h": "c",
 		"ft_fprintf.h": "c",
-		"paths.h": "c"
+		"paths.h": "c",
+		"execution.h": "c",
+		"errors.h": "c",
+		"compare": "c",
+		"array": "c",
+		"functional": "c",
+		"tuple": "c",
+		"binary_tree.h": "c",
+		"string_view": "c",
+		"unistd.h": "c",
+		"stdlib.h": "c",
+		"libft.h": "c"
 	}
 }

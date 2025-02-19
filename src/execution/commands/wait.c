@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   wait.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 19:26:01 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 11:17:59 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/02/17 14:28:29 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/17 14:29:20 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "garbage.h"
+#include "minishell.h"
+#include "execution.h"
 
-t_list	*ft_lstnew(void *content)
+void	wait_all_commands_executions(t_minishell *data)
 {
-	t_list	*result;
+	pid_t	wpid;
+	int		status;
 
-	result = MALLOC(sizeof(t_list));
-	if (!result)
-		return (NULL);
-	result->content = content;
-	result->next = NULL;
-	return (result);
+	wpid = 1;
+	status = 0;
+	while (wpid > 0)
+	{
+		wpid = wait(&status);
+		if (wpid > 0 && WIFEXITED(status) && data->exit_code != 127)
+			data->exit_code = WEXITSTATUS(status);
+	}
 }

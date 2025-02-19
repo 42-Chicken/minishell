@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   safe_malloc.c                                      :+:      :+:    :+:   */
+/*   set.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/27 08:31:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/11 09:22:09 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/02/17 08:36:00 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/17 09:55:59 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "garbadge.h"
+#include "errors.h"
+#include "execution.h"
+#include "minishell.h"
 
-void	*safe_malloc(size_t size)
+void	set_pipe(t_pipe	*pipe, t_pipe pipe_value)
 {
-	void	*memory;
-	int		*context;
-
-	memory = malloc(size);
-	if (!memory)
-		safe_exit(1);
-	context = get_current_context();
-	if (!context)
-		safe_exit(1);
-	add_to_garbadge(memory, *context);
-	return (memory);
+	if (!pipe)
+		return ;
+	if (pipe_value.read != PIPE_NO_VALUE)
+		pipe->read = pipe_value.read;
+	if (pipe_value.write != PIPE_NO_VALUE)
+		pipe->write = pipe_value.write;
 }

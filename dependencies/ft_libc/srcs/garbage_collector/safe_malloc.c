@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   safe_malloc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 19:26:01 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 11:17:59 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/01/27 08:31:08 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/18 11:19:39 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "garbage.h"
 
-t_list	*ft_lstnew(void *content)
+void	*safe_malloc(size_t size)
 {
-	t_list	*result;
+	void	*memory;
+	int		*context;
 
-	result = MALLOC(sizeof(t_list));
-	if (!result)
-		return (NULL);
-	result->content = content;
-	result->next = NULL;
-	return (result);
+	memory = malloc(size);
+	if (!memory)
+		safe_exit(1);
+	context = get_current_context();
+	if (!context)
+		safe_exit(1);
+	add_to_garbage(memory, *context);
+	return (memory);
 }

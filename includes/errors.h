@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   paths.h                                            :+:      :+:    :+:   */
+/*   errors.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 11:47:54 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/02/17 08:36:57 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/17 08:39:44 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PATHS_H
+#ifndef ERRORS_H
 
-# define PATHS_H
+# define ERRORS_H
 
 # include "minishell.h"
 
-extern int	g_sig;
-
 // ---------------------------------
 //
-// PATHS
+// ERRORS
 //
 // ---------------------------------
-char		*get_current_path(t_minishell *data);
-char		*get_home_path(t_minishell *data);
-char		*cleanup_path(t_minishell *data, char *path1);
-void		set_current_path(t_minishell *data, char *new_path);
-char		*combine_paths(t_minishell *data, char *path1, char *path2);
-char		*get_current_folder_name(void);
+# define FAIL_PIPE_MESSAGE "a pipe failed to create !"
+# define FAIL_PIPE_EXIT_CODE 1
 
 #endif

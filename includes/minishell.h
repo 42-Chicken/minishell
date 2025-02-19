@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/14 17:02:02 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 10:03:26 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 # define MINISHELL_H
 
+# include "binary_tree.h"
 # include "colors.h"
 # include "env.h"
 # include "ft_fprintf.h"
 # include "ft_strings.h"
-# include "garbadge.h"
+# include "garbage.h"
 # include "get_next_line.h"
 # include "libft.h"
 # include <readline/history.h>
@@ -29,38 +30,47 @@
 # include <unistd.h>
 
 # define MAX_PATH_LENGTH 4095
+# define SPACES " \t\n\v\f\r"
+
+typedef struct s_command	t_command;
 
 typedef struct s_minishell
 {
-	int			argc;
-	char const	**argv;
-	char const	**envp;
-	char const	started_path[MAX_PATH_LENGTH];
-	int			exit_code;
-	bool		stop;
-}				t_minishell;
-
-
+	int						argc;
+	char const				**argv;
+	char const				**envp;
+	char const				started_path[MAX_PATH_LENGTH];
+	t_btree					*execution_tree;
+	int						exit_code;
+	bool					stop;
+}							t_minishell;
 
 // ---------------------------------
 //
 // INITIALISATION
 //
 // ---------------------------------
-void			init_minishell(t_minishell *data);
+void						init_minishell(t_minishell *data);
 
 // ---------------------------------
 //
 // READLINE
 //
 // ---------------------------------
-void			handle_readline(t_minishell *data);
+void						handle_readline(t_minishell *data);
 
 // ---------------------------------
 //
 // PROMPT
 //
 // ---------------------------------
-const char		*get_prompt(t_minishell *minishell);
+const char					*get_prompt(t_minishell *minishell);
+
+// ---------------------------------
+//
+// UTILS
+//
+// ---------------------------------
+size_t						char_array_len(char **array);
 
 #endif

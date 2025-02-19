@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   create.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 19:26:01 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 11:17:59 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/02/17 11:15:06 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/17 11:27:09 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "garbage.h"
+#include "binary_tree.h"
 
-t_list	*ft_lstnew(void *content)
+t_btree	*btree_create_node(t_btree_node_type type)
 {
-	t_list	*result;
+	t_btree	*node;
 
-	result = MALLOC(sizeof(t_list));
-	if (!result)
-		return (NULL);
-	result->content = content;
-	result->next = NULL;
-	return (result);
+	node = safe_malloc(sizeof(t_btree));
+	ft_bzero(node, sizeof(t_btree));
+	node->type = type;
+	return (node);
 }
