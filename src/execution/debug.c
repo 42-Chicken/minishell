@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:38:44 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 12:59:01 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:14:33 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,14 @@ static void	print_recustive(t_minishell *data, t_btree *node, int offset)
 	i = -1;
 	while (++i < offset)
 		ft_fprintf(STDOUT_FILENO, "	");
-	if (node->type == BTREE_COMMANDS_CONTENT_TYPE)
+	if (node->type == BTREE_COMMAND_TYPE)
 	{
-		ft_lstiter((t_list *)node->content, print_commands);
+		ft_lstiter((t_command *)node->content, print_commands);
 		ft_fprintf(STDOUT_FILENO, "\n");
 	}
 	else if (node->type == BTREE_OR_TYPE)
 	{
 		ft_fprintf(STDOUT_FILENO, "OR\n");
-		print_recustive(data, node->left, offset + 1);
-		print_recustive(data, node->right, offset + 1);
-	}
-	else if (node->type == BTREE_COMMANDS_TYPE)
-	{
-		ft_fprintf(STDOUT_FILENO, "COMMANDS\n");
 		print_recustive(data, node->left, offset + 1);
 		print_recustive(data, node->right, offset + 1);
 	}

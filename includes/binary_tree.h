@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:47:33 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 09:52:10 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:12:29 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ typedef enum e_btree_node_type
 {
 	BTREE_NONE_TYPE = -1,
 	BTREE_REDIRECTION_TYPE,
-	BTREE_COMMANDS_TYPE,
-	BTREE_COMMANDS_CONTENT_TYPE,
+	BTREE_COMMAND_TYPE,
+	BTREE_PIPE_TYPE,
 	BTREE_OR_TYPE,
 	BTREE_AND_TYPE
 }						t_btree_node_type;

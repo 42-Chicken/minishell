@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 13:06:08 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 15:21:24 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # define EXECUTION_H
 
 # define PIPE_NO_VALUE -1
+# define DEFAULT_PIPE (t_pipe){PIPE_NO_VALUE, PIPE_NO_VALUE}
 
 # include "garbage.h"
 # include "libft.h"
@@ -69,12 +70,12 @@ typedef struct s_btree_command_node
 	t_pipe					out_pipe;
 }							t_btree_command_node;
 
-// typedef struct s_btree_redirection_node
-// {
-// 	int						fd;
-// 	char					*file;
-// 	t_redirection_types		type;
-// }							t_btree_redirection_node;
+typedef struct s_btree_redirection_node
+{
+	int						fd;
+	char					*file;
+	t_redirection_types		type;
+}							t_btree_redirection_node;
 
 // ---------------------------------
 //
