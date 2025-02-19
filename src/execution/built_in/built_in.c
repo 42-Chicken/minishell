@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:31:09 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 15:38:42 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 08:32:51 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,6 @@ void	execute_built_in_command(t_minishell *data, t_command *command)
 	else
 		return ;
 	data->exit_code = exit_code;
-	safe_exit(EXIT_SUCCESS);
+	
+	safe_exit(data->exit_code);
 }
