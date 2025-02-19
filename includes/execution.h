@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 15:21:24 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:27:43 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,11 @@
 # define EXECUTION_H
 
 # define PIPE_NO_VALUE -1
-# define DEFAULT_PIPE (t_pipe){PIPE_NO_VALUE, PIPE_NO_VALUE}
+# define DEFAULT_PIPE                 \
+	(t_pipe)                         \
+	{                                \
+		PIPE_NO_VALUE, PIPE_NO_VALUE \
+	}
 
 # include "garbage.h"
 # include "libft.h"
@@ -84,7 +88,7 @@ typedef struct s_btree_redirection_node
 // ---------------------------------
 
 bool						execute_built_in_command(t_minishell *data,
-								t_list *cmds_list, t_command *command);
+								t_command *command);
 int							cd_command(t_minishell *data, t_command *command);
 int							echo_command(t_minishell *data, t_command *command);
 int							pwd_command(t_minishell *data, t_command *command);
@@ -103,8 +107,8 @@ int							exit_command(t_minishell *data, t_command *command);
 void						execution_pipeline(t_minishell *data);
 void						execute_binary_tree(t_minishell *data);
 void						wait_all_commands_executions(t_minishell *data);
-void						execute_commands_list(t_minishell *data,
-								t_list *lst);
+void						exec_command(t_minishell *data, t_btree *cmd_node,
+								t_command *command);
 
 // ---------------------------------
 //
@@ -115,9 +119,8 @@ t_pipe						get_pipe(void);
 void						set_pipe(t_pipe *pipe, t_pipe pipe_value);
 void						safe_close(int fd);
 void						safe_pipe_close(t_pipe pipe);
-void						link_commands_pipes(t_list *lst,
-								t_pipe default_in_pipe,
-								t_pipe default_out_pipe);
+void						link_commands_pipes(t_btree *lst);
+void						link_commands_redirections(t_btree *redir_node);
 void						close_and_dup(t_command *command);
 
 // ---------------------------------

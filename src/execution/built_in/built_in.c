@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:31:09 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 12:59:48 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:24:44 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,8 @@ static void	handle_execution(t_minishell *data, t_command *command,
 // 	return (ft_lstsize(cmds_list) == 1); // to test
 // }
 
-bool	execute_built_in_command(t_minishell *data, t_list *cmds_list,
-		t_command *command)
+bool	execute_built_in_command(t_minishell *data, t_command *command)
 {
-	(void)cmds_list;
 	if (!data || !command || !command->argv || !command->argv[0])
 		return (true);
 	if (is_same_str(command->argv[0], "cd"))

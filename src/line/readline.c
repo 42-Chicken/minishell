@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/02/19 14:13:05 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:33:11 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	handle_readline(t_minishell *data)
 	char		*line;
 	t_command	*command;
 	t_btree		*node;
-	t_list		*lst;
+	t_btree		*prev;
 	int			d;
 	char		**pipes;
 
@@ -38,27 +38,41 @@ void	handle_readline(t_minishell *data)
 	// }
 	(void)command;
 	(void)node;
+	data->execution_tree = NULL;
 	if (line && ft_strlen(line) > 0)
 	{
 		d = 0;
 		pipes = ft_split(line, '|');
-		node = btree_create_node(BTREE_COMMAND_TYPE);
-		node->right = NULL;
 		while (pipes[d])
 		{
-			command = safe_malloc(sizeof(t_command));
-			lst = ft_lstnew(command);
-			if (!node->left->content)
-				node->left->content = lst;
+			node = btree_create_node(BTREE_COMMAND_TYPE);
+			if (!data->execution_tree)
+			{
+				data->execution_tree = node;
+				prev = node;
+			}
 			else
-				ft_lstadd_back((t_list **)&node->left->content, lst);
+			{
+				prev->left = node;
+				prev = node;
+			}
+			command = safe_malloc(sizeof(t_command));
 			ft_bzero(command, sizeof(t_command));
 			command->argv = ft_split(pipes[d], ' ');
 			command->envp = (char **)data->envp;
 			command->error = COMMAND_NO_ERROR;
+			command->out_pipe = (t_pipe){PIPE_NO_VALUE, STDOUT_FILENO};
+			command->in_pipe = (t_pipe){PIPE_NO_VALUE, PIPE_NO_VALUE};
+			node->content = (void *)command;
+			if (pipes[d + 1])
+			{
+				node = btree_create_node(BTREE_PIPE_TYPE);
+				prev->left = node;
+				node->prev = prev;
+				prev = node;
+			}
 			d++;
 		}
-		data->execution_tree = node;
 		execution_pipeline(data);
 	}
 	else if ((!line || ft_strlen(line) <= 0) && data->exit_code == 0)

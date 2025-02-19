@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:23:29 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 15:05:58 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:28:05 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,58 +15,62 @@
 
 static void	execute_commands_and_wait(t_minishell *data, t_btree *node)
 {
-	t_list	*cmds_list;
+	t_btree		*current;
+	t_command	*command;
 
-	cmds_list = (t_list *)node->content;
-	execute_commands_list(data, cmds_list);
+	current = node;
+	while (current)
+	{
+		if (current->type == BTREE_COMMAND_TYPE && current->content)
+		{
+			command = (t_command *)current->content;
+			exec_command(data, current, command);
+		}
+		current = current->left;
+	}
 	wait_all_commands_executions(data);
 }
 
-static bool	handle_commands(t_minishell *data, t_btree *node,
-		t_btree_node_type condition)
+static void	handle_commands(t_minishell *data, t_btree *node)
 {
-	execute_commands_and_wait(data, node->left);
-	if (!node->right)
-		return (true);
-	if (condition == BTREE_AND_TYPE && data->exit_code == 0)
-	{
-		execute_commands_and_wait(data, node->right);
-		if (data->exit_code != 0)
-			return (false);
-	}
-	else if (condition == BTREE_OR_TYPE && data->exit_code != 0)
-	{
-		execute_commands_and_wait(data, node->right);
-		if (data->exit_code != 0)
-			return (false);
-	}
-	return (true);
+	link_commands_pipes(node);
+	link_commands_redirections(node);
+	execute_commands_and_wait(data, node);
 }
 
-void	recusrive_execute_binary_tree(t_minishell *data, t_btree *node,
-		t_btree_node_type type)
+void	recusrive_execute_binary_tree(t_minishell *data, t_btree *node)
 {
 	if (!node)
 		return ;
 	if (node->type == BTREE_AND_TYPE)
 	{
-		recusrive_execute_binary_tree(data, node->left, BTREE_AND_TYPE);
+		if (node->left && node->left->type == BTREE_COMMAND_TYPE)
+		{
+			handle_commands(data, node->left);
+			if (data->exit_code == 0)
+				handle_commands(data, node->right);
+		}
+		else
+			recusrive_execute_binary_tree(data, node->left);
 	}
 	else if (node->type == BTREE_OR_TYPE)
 	{
-		recusrive_execute_binary_tree(data, node->left, BTREE_OR_TYPE);
+		if (node->left && node->left->type == BTREE_COMMAND_TYPE)
+		{
+			handle_commands(data, node->left);
+			if (data->exit_code != 0)
+				handle_commands(data, node->right);
+		}
+		else
+			recusrive_execute_binary_tree(data, node->left);
 	}
 	else if (node->type == BTREE_COMMAND_TYPE)
 	{
-		link_commands_pipes(node, (t_pipe){PIPE_NO_VALUE, PIPE_NO_VALUE},
-			(t_pipe){PIPE_NO_VALUE, STDOUT_FILENO});
-		if (handle_commands(data, node, type) && node->prev)
-			recusrive_execute_binary_tree(data, node->prev->right,
-				BTREE_NONE_TYPE);
+		handle_commands(data, node);
 	}
 }
 
 void	execute_binary_tree(t_minishell *data)
 {
-	recusrive_execute_binary_tree(data, data->execution_tree, BTREE_NONE_TYPE);
+	recusrive_execute_binary_tree(data, data->execution_tree);
 }

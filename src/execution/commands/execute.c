@@ -6,33 +6,30 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 14:24:39 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 14:55:34 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:27:39 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "minishell.h"
 
-void	close_pipes_until_end(t_list *cmds_lst, t_command *target)
+void	close_pipes_until_end(t_btree *cmd_node)
 {
-	t_list		*current;
+	t_btree		*current;
 	t_command	*command;
 
-	current = cmds_lst;
-	while (current && current->content != target)
+	current = cmd_node;
+	while (current)
 	{
-		current = current->next;
-	}
-	if (current)
-		current = current->next;
-	while (current && current->content)
-	{
-		command = (t_command *)current->content;
-		if (command->in_pipe.read)
-			safe_close(command->in_pipe.read);
-		if (command->in_pipe.write)
-			safe_close(command->in_pipe.write);
-		current = current->next;
+		if (current->type == BTREE_COMMAND_TYPE && current->content)
+		{
+			command = (t_command *)current->content;
+			if (command->in_pipe.read)
+				safe_close(command->in_pipe.read);
+			if (command->in_pipe.write)
+				safe_close(command->in_pipe.write);
+		}
+		current = current->left;
 	}
 	// if (data->in_file_fd != -1)
 	// 	safe_close(data->in_file_fd);
@@ -76,22 +73,21 @@ void	close_and_dup(t_command *command)
 	safe_close(command->out_pipe.write);
 }
 
-void	exec_command(t_minishell *data, t_list *cmds_lst, t_command *command)
+void	exec_command(t_minishell *data, t_btree *cmd_node, t_command *command)
 {
 	pid_t	fork_id;
 
 	(void)data;
-	if (!execute_built_in_command(data, cmds_lst, command))
+	if (!execute_built_in_command(data, command))
 	{
 		fork_id = fork();
 		if (fork_id == -1)
 			safe_exit(EXIT_FAILURE);
 		if (fork_id == 0)
 		{
-			(void)cmds_lst;
 			create_safe_memory_context();
 			close_and_dup(command);
-			close_pipes_until_end(cmds_lst, command);
+			close_pipes_until_end(cmd_node);
 			if (command->error == COMMAND_NO_ERROR)
 				execute_for_every_paths(command);
 			exit_safe_memory_context();
@@ -104,21 +100,4 @@ void	exec_command(t_minishell *data, t_list *cmds_lst, t_command *command)
 		safe_close(command->in_pipe.read);
 	if (command->out_pipe.write)
 		safe_close(command->out_pipe.write);
-}
-
-void	execute_commands_list(t_minishell *data, t_list *lst)
-{
-	t_list		*current;
-	t_command	*command;
-
-	current = lst;
-	// print_execution_tree(data);
-	(void)current;
-	(void)data;
-	while (current)
-	{
-		command = (t_command *)current->content;
-		exec_command(data, lst, command);
-		current = current->next;
-	}
 }
