@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 10:56:47 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 12:55:49 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*get_home(t_minishell *data)
 	if (!home_path)
 	{
 		ft_fprintf(STDERR_FILENO, CD_HOME_NOT_SET);
-		safe_exit(EXIT_FAILURE);
+		return (NULL);
 	}
 	return (home_path);
 }
@@ -50,17 +50,23 @@ int	cd_command(t_minishell *data, t_command *command)
 {
 	char	*target_path;
 
-	if (!command->argv || !command->argv[0])
-		return (EXIT_FAILURE);
+	if (command->part_of_pipe)
+		return (EXIT_SUCCESS);
 	if (char_array_len(command->argv) == 1)
 		target_path = get_home(data);
 	else
 	{
 		if (command->argv[1][0] == '~')
-			target_path = ft_strjoin(get_home(data), command->argv[1] + 1);
+		{
+			target_path = get_home(data);
+			if (target_path)
+				target_path = ft_strjoin(target_path, command->argv[1] + 1);
+		}
 		else
 			target_path = command->argv[1];
 	}
+	if (!target_path)
+		return (EXIT_FAILURE);
 	if (!update_env(data, "OLDPWD"))
 		return (EXIT_FAILURE);
 	if (chdir(target_path) == -1)

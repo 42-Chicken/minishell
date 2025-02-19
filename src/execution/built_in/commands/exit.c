@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 10:25:56 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 12:56:23 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	exit_command(t_minishell *data, t_command *command)
 		}
 		data->exit_code = (unsigned char)ft_atoi(command->argv[1]);
 	}
-	safe_exit(data->exit_code);
-	return (EXIT_SUCCESS);
+	if (!command->part_of_pipe)
+		safe_exit(data->exit_code);
+	return (data->exit_code);
 }

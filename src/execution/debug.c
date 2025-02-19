@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:38:44 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 15:35:25 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 12:59:01 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@ static void	print_commands(void *content)
 
 	command = (t_command *)content;
 	ft_fprintf(STDOUT_FILENO,
-				"(name : %s | inr : %d inw : %d | outr : %d outw : %d) ",
+				"(name : %s pipe : %d | inr : %d inw : %d | outr : %d outw : %d) ",
 				command->argv[0],
+				command->part_of_pipe,
 				command->in_pipe.read,
 				command->in_pipe.write,
 				command->out_pipe.read,
