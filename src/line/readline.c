@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: efranco <efranco@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/02/19 15:26:49 by efranco          ###   ########.fr       */
-=======
-/*   Updated: 2025/02/19 14:13:05 by rguigneb         ###   ########.fr       */
->>>>>>> romain
+/*   Updated: 2025/02/19 15:30:16 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +39,6 @@ void	handle_readline(t_minishell *data)
 	(void)command;
 	(void)node;
 	if (line && ft_strlen(line) > 0)
-<<<<<<< HEAD
-		data->exit_code = 0;
-	else
-=======
 	{
 		d = 0;
 		pipes = ft_split(line, '|');
@@ -70,7 +62,6 @@ void	handle_readline(t_minishell *data)
 		execution_pipeline(data);
 	}
 	else if ((!line || ft_strlen(line) <= 0) && data->exit_code == 0)
->>>>>>> romain
 		data->exit_code = 1;
 	if (line)
 	{
