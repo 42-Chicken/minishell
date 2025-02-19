@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:31:09 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 08:32:51 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 09:27:07 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,29 +18,33 @@ static bool	is_same_str(char *str1, char *str2)
 	return (ft_strncmp(str1, str2, ft_strlen(str1)) == 0);
 }
 
-void	execute_built_in_command(t_minishell *data, t_command *command)
+static void	handle_execution(t_minishell *data, t_command *command,
+		int (*func)(t_minishell *, t_command *))
 {
-	int	exit_code;
+	create_safe_memory_context();
+	data->exit_code = func(data, command);
+	exit_safe_memory_context();
+}
 
+bool	execute_built_in_command(t_minishell *data, t_command *command)
+{
 	if (!data || !command || !command->argv || !command->argv[0])
-		return ;
+		return (true);
 	if (is_same_str(command->argv[0], "cd"))
-		exit_code = cd_command(data, command);
+		handle_execution(data, command, cd_command);
 	else if (is_same_str(command->argv[0], "echo"))
-		exit_code = echo_command(data, command);
+		handle_execution(data, command, echo_command);
 	else if (is_same_str(command->argv[0], "pwd"))
-		exit_code = pwd_command(data, command);
+		handle_execution(data, command, pwd_command);
 	else if (is_same_str(command->argv[0], "unset"))
-		exit_code = unset_command(data, command);
+		handle_execution(data, command, unset_command);
 	else if (is_same_str(command->argv[0], "export"))
-		exit_code = export_command(data, command);
+		handle_execution(data, command, export_command);
 	else if (is_same_str(command->argv[0], "env"))
-		exit_code = env_command(data, command);
+		handle_execution(data, command, env_command);
 	else if (is_same_str(command->argv[0], "exit"))
-		exit_code = exit_command(data, command);
+		handle_execution(data, command, exit_command);
 	else
-		return ;
-	data->exit_code = exit_code;
-	
-	safe_exit(data->exit_code);
+		return (false);
+	return (true);
 }

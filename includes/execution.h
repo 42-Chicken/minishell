@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 15:35:08 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 09:24:12 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ typedef struct s_btree_command_node
 // BUILT_IN
 //
 // ---------------------------------
-void						execute_built_in_command(t_minishell *data,
+
+bool						execute_built_in_command(t_minishell *data,
 								t_command *command);
 int							cd_command(t_minishell *data, t_command *command);
 int							echo_command(t_minishell *data, t_command *command);
@@ -115,6 +116,7 @@ void						safe_pipe_close(t_pipe pipe);
 void						link_commands_pipes(t_list *lst,
 								t_pipe default_in_pipe,
 								t_pipe default_out_pipe);
+void						close_and_dup(t_command *command);
 
 // ---------------------------------
 //

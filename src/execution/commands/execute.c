@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 14:24:39 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 15:35:35 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 09:21:11 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,30 +81,29 @@ void	exec_command(t_minishell *data, t_list *cmds_lst, t_command *command)
 	pid_t	fork_id;
 
 	(void)data;
-	fork_id = fork();
-	if (fork_id == -1)
-		safe_exit(EXIT_FAILURE);
-	if (fork_id == 0)
+	if (!execute_built_in_command(data, command))
 	{
-		(void)cmds_lst;
-		create_safe_memory_context();
-		close_and_dup(command);
-		close_pipes_until_end(cmds_lst, command);
-		execute_built_in_command(data, command);
-		if (command->error == COMMAND_NO_ERROR)
-			execute_for_every_paths(command);
-		exit_safe_memory_context();
-		safe_exit(EXIT_FAILURE);
+		fork_id = fork();
+		if (fork_id == -1)
+			safe_exit(EXIT_FAILURE);
+		if (fork_id == 0)
+		{
+			(void)cmds_lst;
+			create_safe_memory_context();
+			close_and_dup(command);
+			close_pipes_until_end(cmds_lst, command);
+			if (command->error == COMMAND_NO_ERROR)
+				execute_for_every_paths(command);
+			exit_safe_memory_context();
+			safe_exit(EXIT_FAILURE);
+		}
 	}
-	else
-	{
-		if (command->in_pipe.write)
-			safe_close(command->in_pipe.write);
-		if (command->in_pipe.read)
-			safe_close(command->in_pipe.read);
-		if (command->out_pipe.write)
-			safe_close(command->out_pipe.write);
-	}
+	if (command->in_pipe.write)
+		safe_close(command->in_pipe.write);
+	if (command->in_pipe.read)
+		safe_close(command->in_pipe.read);
+	if (command->out_pipe.write)
+		safe_close(command->out_pipe.write);
 }
 
 void	execute_commands_list(t_minishell *data, t_list *lst)

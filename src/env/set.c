@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 08:54:01 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 10:51:28 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 09:37:51 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ void	set_env(const char ***envp, const char *variable, char *value)
 		return ;
 	index = get_env_index(*envp, variable);
 	new_line = ft_strjoin(variable, "=");
-	send_pointer_to_main_context(new_line);
 	if (!value && index != -1)
 	{
 		remove_from_env(envp, new_line);
 		return ;
 	}
 	new_line = ft_strjoin(new_line, value);
+	send_pointer_to_main_context(new_line);
 	if (index == -1)
 		add_to_env(envp, new_line);
 	else
