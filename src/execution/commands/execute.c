@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 14:24:39 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 09:21:11 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 10:23:01 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	exec_command(t_minishell *data, t_list *cmds_lst, t_command *command)
 	pid_t	fork_id;
 
 	(void)data;
-	if (!execute_built_in_command(data, command))
+	if (!execute_built_in_command(data, cmds_lst, command))
 	{
 		fork_id = fork();
 		if (fork_id == -1)

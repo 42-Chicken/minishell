@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 15:23:31 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 10:03:26 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # include <unistd.h>
 
 # define MAX_PATH_LENGTH 4095
+# define SPACES " \t\n\v\f\r"
 
 typedef struct s_command	t_command;
 
