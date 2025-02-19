@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:23:29 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 15:55:18 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 15:05:58 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ static void	execute_commands_and_wait(t_minishell *data, t_btree *node)
 	t_list	*cmds_list;
 
 	cmds_list = (t_list *)node->content;
-	link_commands_pipes(cmds_list, (t_pipe){PIPE_NO_VALUE, PIPE_NO_VALUE},
-		(t_pipe){PIPE_NO_VALUE, STDOUT_FILENO});
 	execute_commands_list(data, cmds_list);
 	wait_all_commands_executions(data);
 }
@@ -58,8 +56,10 @@ void	recusrive_execute_binary_tree(t_minishell *data, t_btree *node,
 	{
 		recusrive_execute_binary_tree(data, node->left, BTREE_OR_TYPE);
 	}
-	else if (node->type == BTREE_COMMANDS_TYPE)
+	else if (node->type == BTREE_COMMAND_TYPE)
 	{
+		link_commands_pipes(node, (t_pipe){PIPE_NO_VALUE, PIPE_NO_VALUE},
+			(t_pipe){PIPE_NO_VALUE, STDOUT_FILENO});
 		if (handle_commands(data, node, type) && node->prev)
 			recusrive_execute_binary_tree(data, node->prev->right,
 				BTREE_NONE_TYPE);

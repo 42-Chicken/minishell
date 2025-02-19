@@ -6,33 +6,72 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:29:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 09:46:25 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 15:22:27 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "binary_tree.h"
 #include "execution.h"
 
-void	link_commands_pipes(t_list *lst, t_pipe default_in_pipe,
-		t_pipe default_out_pipe)
+static t_pipe	init_prev_command_pipe(t_btree *cmd_node)
 {
-	t_list		*node;
-	t_command	*current;
-	t_pipe		prev_out_pipe;
+	t_btree		*node;
+	t_command	*cmd;
 
-	node = lst;
-	prev_out_pipe = default_in_pipe;
+	if (!cmd_node)
+		return ;
+	node = cmd_node->prev;
+	if (!node || !node->content || node->type != BTREE_COMMAND_TYPE)
+		return (DEFAULT_PIPE);
+	cmd = (t_command *)node->content;
+	cmd->out_pipe = get_pipe();
+	return (cmd->out_pipe);
+}
+
+void	link_commands_redirections(t_btree *cmd_node)
+{
+	t_pipe						pipe;
+	t_btree						*node;
+	t_command					*current;
+	t_btree_redirection_node	*redir_node;
+
+	pipe = DEFAULT_PIPE;
+	node = cmd_node;
+	if (!cmd_node || !cmd_node->content || cmd_node->type != BTREE_COMMAND_TYPE)
+		return ;
 	while (node)
 	{
-		current = (t_command *)node->content;
-		current->in_pipe = prev_out_pipe;
-		if (node->next)
+		if (node->type == BTREE_REDIRECTION_TYPE)
 		{
-			prev_out_pipe = get_pipe();
-			current->out_pipe = prev_out_pipe;
+			redir_node = (t_btree_redirection_node	*_node->content
+			if ()
+				pipe = init_prev_command_pipe(node->prev);
+			current = (t_command *)node->left->content;
+			current->in_pipe = pipe;
 		}
-		else
-			current->out_pipe = default_out_pipe;
-		node = node->next;
+		node = node->left;
+	}
+}
+
+void	link_commands_pipes(t_btree *cmd_node)
+{
+	t_pipe		pipe;
+	t_btree		*node;
+	t_command	*current;
+
+	pipe = DEFAULT_PIPE;
+	node = cmd_node;
+	if (!cmd_node || !cmd_node->content || cmd_node->type != BTREE_COMMAND_TYPE)
+		return ;
+	while (node)
+	{
+		if (node->type == BTREE_PIPE_TYPE && node->prev && node->content
+			&& node->left && node->left->content)
+		{
+			pipe = init_prev_command_pipe(node->prev);
+			current = (t_command *)node->left->content;
+			current->in_pipe = pipe;
+		}
+		node = node->left;
 	}
 }

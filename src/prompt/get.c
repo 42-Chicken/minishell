@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 16:27:31 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 08:48:38 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 13:05:51 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 static const char	*get_base_prompt(void)
 {
-// OMZ prompt :
-//	return ("➜  " BCYN "$PWD " BBLU "git:(" BRED "testing" BBLU ") 🧪 " RESET);
+	// OMZ prompt :
+	//	return ("➜  " BCYN "$PWD " BBLU "git:(" BRED "testing" BBLU ") 🧪 " RESET);
 	return ("⦿︎  " BCYN "$PWD " BBLU "git:(" BRED "testing" BBLU ") 🧪 " RESET);
 }
 

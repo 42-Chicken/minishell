@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 10:00:21 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/19 12:34:00 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ int	echo_command(t_minishell *data, t_command *command)
 		}
 		while (i < len && command->argv[++i])
 		{
-			ft_fprintf(STDOUT_FILENO, command->argv[i]);
+			ft_fprintf(command->out_pipe.write, command->argv[i]);
 			if (i + 1 < len)
-				ft_fprintf(STDOUT_FILENO, " ");
+				ft_fprintf(command->out_pipe.write, " ");
 		}
 	}
 	if (new_line)
-		ft_fprintf(STDOUT_FILENO, "\n");
+		ft_fprintf(command->out_pipe.write, "\n");
 	return (EXIT_SUCCESS);
 }
