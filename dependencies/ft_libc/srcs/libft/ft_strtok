@@ -1,0 +1,53 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strtok                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: efranco <efranco@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/14 17:54:55 by efranco           #+#    #+#             */
+/*   Updated: 2025/02/14 17:55:22 by efranco          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_delimiters(char c, const char *delimiters)
+{
+	int	i;
+
+	i = 0;
+	while (delimiters[i])
+	{
+		if (c == delimiters[i])
+			return (1);
+		i++;
+	}
+	return (0);
+}
+char	*ft_strtok(char *str, char const *delimiters)
+{
+	static char	*s;
+	size_t		start;
+	size_t		size;
+	size_t		i;
+	char		*the_String;
+
+	if (str != NULL)
+		s = str;
+	start = 0;
+	while (ft_delimiters(s[start], delimiters))
+		start++;
+	if (!s[start])
+		return (NULL);
+	size = ft_strcspn(s + start, delimiters);
+	the_String = malloc(sizeof(char) * (size + 1));
+	if (!the_String)
+		return (NULL);
+	i = -1;
+	while (++i < size)
+		the_String[i] = s[i + start];
+	the_String[i] = '\0';
+	s = s + start + size;
+	return (the_String);
+}
