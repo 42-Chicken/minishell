@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 14:24:39 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 15:03:07 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:11:31 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ static void	exit_with_code(t_command *command)
 		code = 126;
 	if (command->error == COMMAND_PERMISSION_DENIED)
 		code = 126;
+	if (command->error == COMMAND_ARGUMENT_REQUIRED)
+		code = 2;
 	safe_exit(code);
 }
 
