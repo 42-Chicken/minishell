@@ -6,24 +6,23 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:29:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 16:35:25 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 08:39:35 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "binary_tree.h"
 #include "execution.h"
+#include "minishell.h"
 
 static t_pipe	init_prev_command_pipe(t_btree *cmd_node)
 {
-	t_btree		*node;
 	t_command	*cmd;
 
 	if (!cmd_node)
 		return (DEFAULT_PIPE);
-	node = cmd_node->prev;
-	if (!node || !node->content || node->type != BTREE_COMMAND_TYPE)
+	if (!cmd_node || !cmd_node->content || cmd_node->type != BTREE_COMMAND_TYPE)
 		return (DEFAULT_PIPE);
-	cmd = (t_command *)node->content;
+	cmd = (t_command *)cmd_node->content;
 	cmd->out_pipe = get_pipe();
 	return (cmd->out_pipe);
 }
@@ -76,19 +75,22 @@ void	link_commands_pipes(t_btree *cmd_node)
 {
 	t_pipe		pipe;
 	t_btree		*node;
+	t_btree		*next;
 	t_command	*current;
 
 	pipe = DEFAULT_PIPE;
 	node = cmd_node;
 	while (node)
 	{
-		// todo : check for redirections
-		if (node->type == BTREE_PIPE_TYPE && node->prev && node->content
-			&& node->left && node->left->content)
+		if (node->type == BTREE_PIPE_TYPE && node->prev && node->left)
 		{
-			pipe = init_prev_command_pipe(node->prev);
-			current = (t_command *)node->left->content;
-			current->in_pipe = pipe;
+			pipe = init_prev_command_pipe(get_first_previous(node, BTREE_COMMAND_TYPE));
+			next = recusrive_left_get(node, BTREE_COMMAND_TYPE);
+			if (next)
+			{
+				current = (t_command *)next->content;
+				current->in_pipe = pipe;
+			}
 		}
 		node = node->left;
 	}
