@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 16:27:31 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 13:05:51 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 09:17:50 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static const char	*get_base_prompt(void)
 {
 	// OMZ prompt :
 	//	return ("➜  " BCYN "$PWD " BBLU "git:(" BRED "testing" BBLU ") 🧪 " RESET);
-	return ("⦿︎  " BCYN "$PWD " BBLU "git:(" BRED "testing" BBLU ") 🧪 " RESET);
+	return ("⦿︎  " BCYN "$PWD " BBLU "$GIT" "🧪 " RESET);
 }
 
 const char	*get_prompt(t_minishell *data)
@@ -30,7 +30,14 @@ const char	*get_prompt(t_minishell *data)
 		ft_fprintf(STDOUT_FILENO, RED);
 	else
 		ft_fprintf(STDOUT_FILENO, GRN);
-	prompt = ft_strreplace(prompt, "$PWD", get_current_folder_name());
+	if (ft_strncmp(get_current_path(data), get_home_path(data), MAX_PATH_LENGTH) != 0)
+		prompt = ft_strreplace(prompt, "$PWD", get_current_folder_name());
+	else
+		prompt = ft_strreplace(prompt, "$PWD", "~");
+	if (access(".git", F_OK) != -1)
+		prompt = ft_strreplace(prompt, "$GIT", "git:(" BRED "testing" BBLU ") ");
+	else
+		prompt = ft_strreplace(prompt, "$GIT", "");
 	send_pointer_to_upper_context(prompt);
 	exit_safe_memory_context();
 	return ((const char *)prompt);
