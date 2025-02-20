@@ -44,8 +44,11 @@ SRCS				=	src/main.c\
 						src/signals/signals.c\
 						src/signals/exit_codes.c\
 						src/execution/pipeline.c\
+						src/execution/errors.c\
 						src/execution/commands/execute.c\
+						src/execution/commands/bind.c\
 						src/execution/commands/wait.c\
+						src/execution/checks/redirections.c\
 						src/execution/built_in/built_in.c\
 						src/execution/built_in/shlvl.c\
 						src/execution/built_in/commands/cd.c\

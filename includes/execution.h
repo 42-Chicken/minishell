@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 11:48:39 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:31:51 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,18 @@ typedef enum e_command_errors
 {
 	COMMAND_NO_ERROR = -1,
 	COMMAND_PERMISSION_DENIED,
-	COMMAND_NO_SUCH_FILE_OR_DIRECTORY,
-	COMMAND_ERROR_OPENING_FILE,
+	COMMAND_IS_SUCH_FILE_OR_DIRECTORY = 126,
+	COMMAND_NO_SUCH_FILE_OR_DIRECTORY = 127,
 	COMMAND_NOT_FOUND,
 }							t_command_errors;
+
+typedef enum e_redirection_errors
+{
+	REDIRECTION_NO_ERROR = -1,
+	REDIRECTION_NO_SUCH_FILE_OR_DIRECTORY,
+	REDIRECTION_ERROR_OPENING_FILE,
+	REDIRECTION_PERMISSION_DENIED,
+}							t_redirection_errors;
 
 typedef enum e_redirection_types
 {
@@ -58,7 +66,6 @@ typedef struct s_command
 	t_pipe					in_pipe;
 	t_pipe					out_pipe;
 	t_command_errors		error;
-	char					*error_allias;
 }							t_command;
 
 typedef struct s_btree_command_node
@@ -72,15 +79,24 @@ typedef struct s_btree_redirection_node
 {
 	int						fd;
 	char					*file;
+	t_redirection_errors	error;
 	t_redirection_types		type;
 }							t_btree_redirection_node;
+
+// ---------------------------------
+//
+// ERRORS
+//
+// ---------------------------------
+void						checks_redirections_errors(t_minishell *data);
+void						print_tree_errors(t_btree *node);
 
 // ---------------------------------
 //
 // BUILT_IN
 //
 // ---------------------------------
-
+bool						is_built_in_command(t_command *command);
 bool						execute_built_in_command(t_minishell *data,
 								t_command *command);
 int							cd_command(t_minishell *data, t_command *command);
@@ -98,6 +114,7 @@ int							exit_command(t_minishell *data, t_command *command);
 // EXECUTION
 //
 // ---------------------------------
+void						bind_commands_to_executable(t_minishell *data);
 void						execution_pipeline(t_minishell *data);
 void						execute_binary_tree(t_minishell *data);
 void						wait_all_commands_executions(t_minishell *data);

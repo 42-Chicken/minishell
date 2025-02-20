@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 16:27:31 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 11:48:59 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:09:47 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 //	return ("➜  " BCYN "$PWD " BBLU "git:(" BRED "testing" BBLU ") 🧪 " RESET);
 static const char	*get_base_prompt(void)
 {
-	return ("⦿︎  $SHLVL " BCYN "$PWD " BBLU "$GIT"
+	return ("⦿︎  $SHLVL $CODE " BCYN "$PWD " BBLU "$GIT"
 		"🧪 " RESET);
 }
 
@@ -44,6 +44,7 @@ const char	*get_prompt(t_minishell *data)
 		prompt = ft_strreplace(prompt, "$GIT", "");
 	prompt = ft_strreplace(prompt, "$SHLVL", (char *)get_env(data->envp,
 				"SHLVL"));
+	prompt = ft_strreplace(prompt, "$CODE", ft_itoa(data->exit_code));
 	send_pointer_to_upper_context(prompt);
 	exit_safe_memory_context();
 	return ((const char *)prompt);

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 10:54:00 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 11:46:38 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:24:04 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,24 @@ char	*get_current_path(t_minishell *data)
 	if (!path)
 		path = (char *)data->started_path;
 	return (path);
+}
+
+bool	is_path(char *str)
+{
+	return (ft_strncmp(str, "../", 3) == 0 || ft_strncmp(str, "/", 1) == 0
+		|| ft_strncmp(str, "./", 2) == 0);
+}
+
+bool is_regular_file(const char *path)
+{
+    struct stat path_stat;
+    stat(path, &path_stat);
+    return S_ISREG(path_stat.st_mode);
+}
+
+bool is_directory_file(const char *path)
+{
+    struct stat path_stat;
+    stat(path, &path_stat);
+    return S_ISDIR(path_stat.st_mode);
 }

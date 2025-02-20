@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 14:28:29 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/17 14:29:20 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:41:27 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	wait_all_commands_executions(t_minishell *data)
 	while (wpid > 0)
 	{
 		wpid = wait(&status);
-		if (wpid > 0 && WIFEXITED(status) && data->exit_code != 127)
+		if (wpid > 0 && WIFEXITED(status))
 			data->exit_code = WEXITSTATUS(status);
 	}
 }

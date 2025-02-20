@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:31:09 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 16:24:44 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 13:18:21 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,25 @@ static void	handle_execution(t_minishell *data, t_command *command,
 	exit_safe_memory_context();
 }
 
-// static bool	is_not_in_pipe(t_list *cmds_list)
-// {
-// 	return (ft_lstsize(cmds_list) == 1); // to test
-// }
+bool	is_built_in_command(t_command *command)
+{
+	if (is_same_str(command->argv[0], "cd"))
+		return (true);
+	else if (is_same_str(command->argv[0], "echo"))
+		return (true);
+	else if (is_same_str(command->argv[0], "pwd"))
+		return (true);
+	else if (is_same_str(command->argv[0], "unset"))
+		return (true);
+	else if (is_same_str(command->argv[0], "export"))
+		return (true);
+	else if (is_same_str(command->argv[0], "env"))
+		return (true);
+	else if (is_same_str(command->argv[0], "exit"))
+		return (true);
+	else
+		return (false);
+}
 
 bool	execute_built_in_command(t_minishell *data, t_command *command)
 {
