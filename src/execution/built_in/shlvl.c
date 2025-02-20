@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 09:24:06 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 09:44:28 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 10:39:14 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	update_shlvl(t_minishell *data, char *str, int d)
 	int value;
 
 	value = 0;
-	if (is_number(str))
+	if (str && is_number(str))
 		value = ft_atoi(str) + d;
 	if (value < 0)
 		value = 0;

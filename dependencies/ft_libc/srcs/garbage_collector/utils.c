@@ -6,11 +6,12 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 08:32:16 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 10:08:13 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 10:11:41 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "garbage.h"
+#include "ft_fprintf.h"
 
 void	add_to_garbage(void *pointer, int context)
 {

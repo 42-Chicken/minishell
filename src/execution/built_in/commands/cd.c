@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 13:06:02 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 11:00:29 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@
  working directory\n"
 #define CD_COULD_NOT_FIND_DIRECTORY "bash: cd: %s: No such file or directory\n"
 
-static bool	update_env(t_minishell *data, char *key)
+static bool	update_env(t_minishell *data, t_command *command, char *key)
 {
 	char	*path;
 
+	if (command->part_of_pipe)
+		return (true);
 	path = get_current_path(data);
 	if (!path)
 	{
@@ -51,8 +53,6 @@ int	cd_command(t_minishell *data, t_command *command)
 	char	*target_path;
 
 	target_path = NULL;
-	if (command->part_of_pipe)
-		return (EXIT_SUCCESS);
 	if (char_array_len(command->argv) == 1)
 		target_path = get_home(data);
 	else
@@ -64,12 +64,13 @@ int	cd_command(t_minishell *data, t_command *command)
 	}
 	if (!target_path)
 		return (EXIT_FAILURE);
-	if (!update_env(data, "OLDPWD"))
+	if (!update_env(data, command, "OLDPWD"))
 		return (EXIT_FAILURE);
-	if (chdir(target_path) == -1)
+	if ((command->part_of_pipe && access(target_path, F_OK) == -1)
+		|| (!command->part_of_pipe && chdir(target_path) == -1))
 		return (ft_fprintf(STDERR_FILENO, CD_COULD_NOT_FIND_DIRECTORY,
 				target_path), EXIT_FAILURE);
-	if (!update_env(data, "PWD"))
+	if (!update_env(data, command, "PWD"))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

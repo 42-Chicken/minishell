@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 08:54:01 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 09:37:51 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 10:29:24 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	remove_from_env(const char ***envp, const char *variable)
 	*envp = (const char **)new_env;
 }
 
-static void	add_to_env(const char ***envp, char *line)
+void	add_to_env(const char ***envp, char *line)
 {
 	int		i;
 	size_t	new_len;

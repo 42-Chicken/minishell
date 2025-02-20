@@ -6,11 +6,12 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 08:31:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 10:07:50 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 10:11:11 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "garbage.h"
+#include "ft_fprintf.h"
 
 void	*safe_malloc(size_t size)
 {

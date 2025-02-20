@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 14:24:39 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 09:45:22 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 10:44:10 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,16 @@ static void	execute_for_every_paths(t_command *command)
 {
 	char	*command_name;
 	int		i;
+	char	*path;
 	char	**path_env;
 
 	i = 0;
 	execve(command->argv[0], (char *const *)command->argv,
 		(char *const *)command->envp);
-	path_env = ft_split(get_env((const char **)command->envp, "PATH"), ':');
+	path = (char *)get_env((char const **)command->envp, "PATH");
+	if (!path)
+		return ;
+	path_env = ft_split(path, ':');
 	while (path_env && path_env[i])
 	{
 		command_name = ft_strjoin(get_full_path(path_env[i++]),

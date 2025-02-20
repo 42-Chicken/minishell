@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 09:26:29 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 11:02:59 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 
 int	exit_command(t_minishell *data, t_command *command)
 {
-	ft_fprintf(STDOUT_FILENO, "exit\n");
+	if (!command->part_of_pipe)
+		ft_fprintf(STDOUT_FILENO, "exit\n");
 	if (command->argv[1])
 	{
 		if (!is_number(command->argv[1]))
