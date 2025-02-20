@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   is_number.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/14 10:55:13 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 09:44:31 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/02/20 09:26:12 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/20 09:26:19 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "paths.h"
-#include "signals.h"
 
-void	init_minishell(t_minishell *data)
+bool	is_number(char *str)
 {
-	init_signals(data);
-	if (getcwd((char *)&data->started_path, MAX_PATH_LENGTH) == NULL)
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (str[i])
 	{
-		data->stop = true;
-		ft_fprintf(STDERR_FILENO,
-			"Cannot access current working directory !\n");
+		if (!ft_isdigit(str[i]))
+			return (false);
+		i++;
 	}
-	set_current_path(data, (char *)data->started_path);
-	set_env(&data->envp, "minishell", "true");
-	update_shlvl(data, (char *)get_env(data->envp, "SHLVL"), 0);
+	return (true);
 }

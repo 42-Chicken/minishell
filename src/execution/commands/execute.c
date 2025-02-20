@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 14:24:39 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 16:27:39 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 09:45:22 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void	exec_command(t_minishell *data, t_btree *cmd_node, t_command *command)
 {
 	pid_t	fork_id;
 
-	(void)data;
 	if (!execute_built_in_command(data, command))
 	{
 		fork_id = fork();
@@ -88,6 +87,7 @@ void	exec_command(t_minishell *data, t_btree *cmd_node, t_command *command)
 			create_safe_memory_context();
 			close_and_dup(command);
 			close_pipes_until_end(cmd_node);
+			update_shlvl(data, (char *)get_env(data->envp, "SHLVL"), 1);
 			if (command->error == COMMAND_NO_ERROR)
 				execute_for_every_paths(command);
 			exit_safe_memory_context();

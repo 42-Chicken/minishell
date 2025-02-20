@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 12:56:23 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 09:26:29 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,6 @@
 
 #define EXIT_NOT_A_NUMERIC_ARG "bash: exit: %s: numeric argument required\n"
 #define EXIT_NOT_A_NUMERIC_ARG_CODE 2
-
-static bool	is_number(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	if (str[i] == '-' || str[i] == '+')
-		i++;
-	while (str[i])
-	{
-		if (!ft_isdigit(str[i]))
-			return (false);
-		i++;
-	}
-	return (true);
-}
 
 int	exit_command(t_minishell *data, t_command *command)
 {

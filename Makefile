@@ -32,6 +32,7 @@ SRCS				=	src/main.c\
 						src/utils/btree/create.c\
 						src/utils/btree/foreach.c\
 						src/utils/btree/get.c\
+						src/utils/numbers/is_number.c\
 						src/paths/get.c\
 						src/paths/set.c\
 						src/paths/combine.c\
@@ -44,6 +45,7 @@ SRCS				=	src/main.c\
 						src/execution/commands/execute.c\
 						src/execution/commands/wait.c\
 						src/execution/built_in/built_in.c\
+						src/execution/built_in/shlvl.c\
 						src/execution/built_in/commands/cd.c\
 						src/execution/built_in/commands/export.c\
 						src/execution/built_in/commands/unset.c\
