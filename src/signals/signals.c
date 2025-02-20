@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:07:07 by romain            #+#    #+#             */
-/*   Updated: 2025/02/14 13:47:26 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:12:44 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	new_line(int sig)
 
 void	cancel(int sig)
 {
+	ft_fprintf(STDOUT_FILENO, YEL);
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
@@ -45,5 +46,6 @@ void	init_signals(t_minishell *data)
 {
 	signal(SIGINT, new_line);
 	signal(SIGTSTP, cancel);
+	signal(SIGQUIT, cancel);
 	(void)data;
 }
