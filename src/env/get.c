@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 08:54:01 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 12:01:22 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:51:28 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	get_env_index(const char **envp, const char *variable)
 	if (!envp || !*envp || !variable)
 		return (-1);
 	target = get_target_string(variable);
+	if (!target)
+		return (-1);
 	while (envp[++i])
 		if (ft_strncmp(envp[i], target, ft_strlen(target)) == 0)
 			return (free(target), i);
@@ -70,6 +72,7 @@ const char	*get_env(const char **envp, const char *variable)
 {
 	int	index;
 
+	(void)envp;
 	if (!envp || !*envp || !variable)
 		return (NULL);
 	index = get_env_index(envp, variable);
