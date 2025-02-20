@@ -49,6 +49,7 @@ SRCS				=	src/main.c\
 						src/execution/commands/execute.c\
 						src/execution/commands/bind.c\
 						src/execution/commands/wait.c\
+						src/execution/redirections/bind.c\
 						src/execution/checks/redirections.c\
 						src/execution/built_in/built_in.c\
 						src/execution/built_in/shlvl.c\

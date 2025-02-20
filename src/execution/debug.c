@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:38:44 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 11:46:30 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:03:56 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ static void	print_commands(void *content)
 
 	command = (t_command *)content;
 	ft_fprintf(STDOUT_FILENO,
-				"(name : %s pipe : %d | inr : %d inw : %d | outr : %d outw : %d) ",
+				"(name : %s pipe : %d | inr : %d inw : %d | outr :\
+		%d outw : %d) ",
 				command->argv[0],
 				command->part_of_pipe,
 				command->in_pipe.read,
 				command->in_pipe.write,
 				command->out_pipe.read,
-				command->out_pipe.write
-	);
+				command->out_pipe.write);
 }
 
 static void	print_recustive(t_minishell *data, t_btree *node, int offset)
@@ -53,7 +53,9 @@ static void	print_recustive(t_minishell *data, t_btree *node, int offset)
 	}
 	if (node->type == BTREE_REDIRECTION_TYPE)
 	{
-		ft_fprintf(STDOUT_FILENO, "REDIR to %d\n", ((t_btree_redirection_node *)node->content)->fd);
+		ft_fprintf(STDOUT_FILENO, "REDIR to %d | error : %d\n",
+			((t_btree_redirection_node *)node->content)->fd,
+			((t_btree_redirection_node *)node->content)->error);
 		print_recustive(data, node->left, offset + 1);
 	}
 	else if (node->type == BTREE_OR_TYPE)

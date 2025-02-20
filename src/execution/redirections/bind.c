@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:51:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 16:01:57 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:24:34 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 
 static void	open_in_redir_fd(t_btree_redirection_node *redir)
 {
-	if (access(redir->file, R_OK) == -1)
+	if (access(redir->file, F_OK) == -1)
+		redir->error = REDIRECTION_NO_SUCH_FILE_OR_DIRECTORY;
+	else if (access(redir->file, R_OK) == -1)
 		redir->error = REDIRECTION_PERMISSION_DENIED;
 	else
 		redir->fd = open(redir->file, O_RDONLY, 0644);
@@ -24,28 +26,20 @@ static void	open_in_redir_fd(t_btree_redirection_node *redir)
 
 static void	open_out_redir_fd(t_btree_redirection_node *redir)
 {
-	if (access(redir->file, W_OK) == -1)
-		redir->error = REDIRECTION_PERMISSION_DENIED;
+	if (redir->doubled)
+		redir->fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else
-	{
-		if (redir->doubled)
-			redir->fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		else
-			redir->fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	}
+		redir->fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 }
 
 static void	bind_redirections(t_btree **head, t_btree *node)
 {
 	t_btree_redirection_node	*redir;
-	char						*path;
 
 	(void)head;
 	redir = (t_btree_redirection_node *)node->content;
 	if (!redir)
 		return ;
-	if (access(redir->file, F_OK) == -1)
-		redir->error = REDIRECTION_NO_SUCH_FILE_OR_DIRECTORY;
 	if (redir->type == REDIRECTION_IN_TYPE)
 		open_in_redir_fd(redir);
 	else if (redir->type == REDIRECTION_OUT_TYPE)

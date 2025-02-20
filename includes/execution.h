@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 15:58:04 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 16:59:25 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ int							exit_command(t_minishell *data, t_command *command);
 // EXECUTION
 //
 // ---------------------------------
+void						bind_redirections_to_fds(t_minishell *data);
 void						bind_commands_to_executable(t_minishell *data);
 void						execution_pipeline(t_minishell *data);
 void						execute_binary_tree(t_minishell *data);

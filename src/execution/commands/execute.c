@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 14:24:39 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 16:19:27 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:20:20 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,15 @@ static bool	can_execute(t_btree *cmd_node, t_command *command)
 	if (node && node->content && node->type == BTREE_REDIRECTION_TYPE)
 	{
 		if (((t_btree_redirection_node *)node->content)->error != REDIRECTION_NO_ERROR
-			&& ((t_btree_redirection_node *)node->content)->type == REDIRECTION_IN_TYPE)
-			return (false);
+		&& ((t_btree_redirection_node *)node->content)->type == REDIRECTION_IN_TYPE)
+		return (false);
 	}
-	node = node->left;
+	node = cmd_node->left;
 	if (node && node->content && node->type == BTREE_REDIRECTION_TYPE)
 	{
 		if (((t_btree_redirection_node *)node->content)->error != REDIRECTION_NO_ERROR
-			&& ((t_btree_redirection_node *)node->content)->type == REDIRECTION_OUT_TYPE)
-			return (false);
+		&& ((t_btree_redirection_node *)node->content)->type == REDIRECTION_OUT_TYPE)
+		return (false);
 	}
 	if (command->error != COMMAND_NO_ERROR)
 		return (false);
