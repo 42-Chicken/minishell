@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/02/20 17:27:00 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:31:13 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@
 
 void	handle_readline(t_minishell *data)
 {
-	char						*line;
-	t_command					*command;
-	t_btree						*node;
-	t_btree						*prev;
-	int							d;
-	char						**pipes;
-	t_btree_redirection_node	*redir;
+	char				*line;
+	t_command			*command;
+	t_btree				*node;
+	t_btree				*prev;
+	int					d;
+	char				**pipes;
+	t_btree_redir_node	*redir;
 
 	// t_btree_redirection_node *redir;
 	// t_btree_redirection_node	*redir;
@@ -88,7 +88,7 @@ void	handle_readline(t_minishell *data)
 			d++;
 		}
 		node = btree_create_node(BTREE_REDIRECTION_TYPE);
-		redir = safe_malloc(sizeof(t_btree_redirection_node));
+		redir = safe_malloc(sizeof(t_btree_redir_node));
 		redir->type = REDIRECTION_OUT_TYPE;
 		redir->file = (char *)"/dev/stdout";
 		redir->error = REDIRECTION_NO_ERROR;

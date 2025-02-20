@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 10:54:00 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 14:24:04 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:31:10 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,16 +82,18 @@ bool	is_path(char *str)
 		|| ft_strncmp(str, "./", 2) == 0);
 }
 
-bool is_regular_file(const char *path)
-{
-    struct stat path_stat;
-    stat(path, &path_stat);
-    return S_ISREG(path_stat.st_mode);
-}
+// bool	is_regular_file(const char *path)
+// {
+// 	struct stat	path_stat;
 
-bool is_directory_file(const char *path)
+// 	stat(path, &path_stat);
+// 	return (S_ISREG(path_stat.st_mode));
+// }
+
+bool	is_directory_file(const char *path)
 {
-    struct stat path_stat;
-    stat(path, &path_stat);
-    return S_ISDIR(path_stat.st_mode);
+	struct stat	path_stat;
+
+	stat(path, &path_stat);
+	return (S_ISDIR(path_stat.st_mode));
 }

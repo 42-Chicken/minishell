@@ -6,14 +6,14 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:27:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 15:27:25 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:28:29 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "minishell.h"
 
-static void	link_redirection_to_cmd_node(t_btree_redirection_node *redir_node,
+static void	link_redirection_to_cmd_node(t_btree_redir_node *redir_node,
 		t_btree *cmd_node)
 {
 	t_btree		*node;
@@ -37,15 +37,15 @@ static void	link_redirection_to_cmd_node(t_btree_redirection_node *redir_node,
 
 void	link_commands_redirections(t_btree *tree)
 {
-	t_btree						*node;
-	t_btree_redirection_node	*redir;
+	t_btree				*node;
+	t_btree_redir_node	*redir;
 
 	node = tree;
 	while (node)
 	{
 		if (node->type == BTREE_REDIRECTION_TYPE)
 		{
-			redir = (t_btree_redirection_node *)node->content;
+			redir = (t_btree_redir_node *)node->content;
 			if (redir && redir->type == REDIRECTION_IN_TYPE && node->left)
 				link_redirection_to_cmd_node(redir, node->left);
 			else if (redir && redir->type == REDIRECTION_OUT_TYPE && node->prev)

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:26:59 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 15:33:02 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:27:52 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static char	*get_full_path(const char *path)
 {
 	return (ft_strjoin(path, "/"));
 }
+
 static bool	set_errors(t_command *command, char *name, bool first)
 {
 	if (access(name, F_OK) == -1)

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:38:44 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 17:03:56 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:30:51 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ static void	print_recustive(t_minishell *data, t_btree *node, int offset)
 	if (node->type == BTREE_REDIRECTION_TYPE)
 	{
 		ft_fprintf(STDOUT_FILENO, "REDIR to %d | error : %d\n",
-			((t_btree_redirection_node *)node->content)->fd,
-			((t_btree_redirection_node *)node->content)->error);
+			((t_btree_redir_node *)node->content)->fd,
+			((t_btree_redir_node *)node->content)->error);
 		print_recustive(data, node->left, offset + 1);
 	}
 	else if (node->type == BTREE_OR_TYPE)

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 16:59:25 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:28:43 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ typedef struct s_btree_redirection_node
 	bool					doubled;
 	t_redirection_errors	error;
 	t_redirection_types		type;
-}							t_btree_redirection_node;
+}							t_btree_redir_node;
 
 // ---------------------------------
 //

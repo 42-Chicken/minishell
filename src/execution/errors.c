@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:07:17 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 15:56:53 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:30:42 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 
 static void	print_redirections_errors(t_btree *node)
 {
-	const char					*error;
-	t_btree_redirection_node	*redir;
+	const char			*error;
+	t_btree_redir_node	*redir;
 
-	redir = (t_btree_redirection_node *)node->content;
+	redir = (t_btree_redir_node *)node->content;
 	if (redir->error == REDIRECTION_NO_ERROR)
 		return ;
 	if (redir->error == REDIRECTION_NO_SUCH_FILE_OR_DIRECTORY)
@@ -48,7 +48,8 @@ static void	print_commands_errors(t_btree *node)
 	if (command->error == COMMAND_PERMISSION_DENIED)
 		error = "minishell: %s: Permission denied\n";
 	if (command->error == COMMAND_ARGUMENT_REQUIRED)
-		error = "bash: .: filename argument required\n.: usage: . filename [arguments]\n";
+		error = "bash: .: filename argument required\n.: usage: . \
+		filename [arguments]\n";
 	if (error)
 		ft_fprintf(STDERR_FILENO, error, command->argv[0]);
 }

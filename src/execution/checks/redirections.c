@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 12:50:51 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 15:48:37 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:28:10 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 
 static void	check_redirection(t_btree **head, t_btree *node)
 {
-	t_btree_redirection_node	*redirection;
+	t_btree_redir_node	*redirection;
 
 	(void)head;
-	redirection = (t_btree_redirection_node *)node->content;
+	redirection = (t_btree_redir_node *)node->content;
 	if (access(redirection->file, F_OK) == -1)
 		redirection->error = REDIRECTION_NO_SUCH_FILE_OR_DIRECTORY;
 	else if (redirection->type == REDIRECTION_IN_TYPE
