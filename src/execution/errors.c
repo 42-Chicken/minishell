@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:07:17 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 15:09:13 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:56:53 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static void	print_redirections_errors(t_btree *node)
 		error = "minishell: %s: No such file or directory\n";
 	if (redir->error == REDIRECTION_PERMISSION_DENIED)
 		error = "minishell: %s: Permission denied\n";
+	if (redir->error == REDIRECTION_ERROR_OPENING_FILE)
+		error = "minishell: %s: cannot open file\n";
 	if (error)
 		ft_fprintf(STDERR_FILENO, error, redir->file);
 }

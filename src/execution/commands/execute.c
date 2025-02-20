@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 14:24:39 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 15:11:31 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 16:19:27 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,29 @@ static void	exit_with_code(t_command *command)
 	safe_exit(code);
 }
 
+static bool	can_execute(t_btree *cmd_node, t_command *command)
+{
+	t_btree	*node;
+
+	node = cmd_node->prev;
+	if (node && node->content && node->type == BTREE_REDIRECTION_TYPE)
+	{
+		if (((t_btree_redirection_node *)node->content)->error != REDIRECTION_NO_ERROR
+			&& ((t_btree_redirection_node *)node->content)->type == REDIRECTION_IN_TYPE)
+			return (false);
+	}
+	node = node->left;
+	if (node && node->content && node->type == BTREE_REDIRECTION_TYPE)
+	{
+		if (((t_btree_redirection_node *)node->content)->error != REDIRECTION_NO_ERROR
+			&& ((t_btree_redirection_node *)node->content)->type == REDIRECTION_OUT_TYPE)
+			return (false);
+	}
+	if (command->error != COMMAND_NO_ERROR)
+		return (false);
+	return (true);
+}
+
 void	exec_command(t_minishell *data, t_btree *cmd_node, t_command *command)
 {
 	pid_t	fork_id;
@@ -79,7 +102,7 @@ void	exec_command(t_minishell *data, t_btree *cmd_node, t_command *command)
 			create_safe_memory_context();
 			close_and_dup(data, command);
 			close_pipes_until_end(cmd_node);
-			if (command->error == COMMAND_NO_ERROR)
+			if (can_execute(cmd_node, command))
 				execve(command->argv[0], (char *const *)command->argv,
 					(char *const *)data->envp);
 			exit_safe_memory_context();

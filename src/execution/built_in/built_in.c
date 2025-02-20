@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:31:09 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 13:18:21 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:41:54 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static void	handle_execution(t_minishell *data, t_command *command,
 
 bool	is_built_in_command(t_command *command)
 {
+	if (!command || !command->argv)
+		return (false);
 	if (is_same_str(command->argv[0], "cd"))
 		return (true);
 	else if (is_same_str(command->argv[0], "echo"))

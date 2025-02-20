@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/02/20 14:47:08 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 16:15:27 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	handle_readline(t_minishell *data)
 	t_btree		*prev;
 	int			d;
 	char		**pipes;
+	t_btree_redirection_node *redir;
 
 	// t_btree_redirection_node	*redir;
 	line = readline(get_prompt(data));
@@ -44,12 +45,15 @@ void	handle_readline(t_minishell *data)
 	{
 		d = 0;
 		pipes = ft_split(line, '|');
-		// data->execution_tree = btree_create_node(BTREE_REDIRECTION_TYPE);
-		// redir = safe_malloc(sizeof(t_btree_redirection_node));
-		// redir->type = REDIRECTION_IN_TYPE;
-		// redir->fd = open("test", O_RDONLY);
-		// data->execution_tree->content = redir;
-		// prev = data->execution_tree;
+		data->execution_tree = btree_create_node(BTREE_REDIRECTION_TYPE);
+		redir = safe_malloc(sizeof(t_btree_redirection_node));
+		redir->type = REDIRECTION_IN_TYPE;
+		redir->fd = 0;
+		redir->file = (char *)"test";
+		redir->error = REDIRECTION_NO_ERROR;
+		redir->doubled = false;
+		data->execution_tree->content = redir;
+		prev = data->execution_tree;
 		// data->execution_tree->prev = node;
 		while (pipes[d])
 		{
@@ -62,6 +66,7 @@ void	handle_readline(t_minishell *data)
 			else
 			{
 				prev->left = node;
+				node->prev = prev;
 				prev = node;
 			}
 			command = safe_malloc(sizeof(t_command));

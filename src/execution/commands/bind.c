@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:26:59 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 15:09:41 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:33:02 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,12 @@ static void	try_access(t_command *command, char *path)
 	set_errors(command, command->argv[0], true);
 }
 
-static void	bind_command(t_btree *node)
+static void	bind_command(t_btree **head, t_btree *node)
 {
 	t_command	*command;
 	char		*path;
 
+	(void)head;
 	command = (t_command *)node->content;
 	if (is_built_in_command(command))
 		return ;
@@ -78,18 +79,7 @@ static void	bind_command(t_btree *node)
 		try_access(command, path);
 }
 
-static void	recustive_bind_commands_to_executable(t_btree *node)
-{
-	if (!node)
-		// create a custom function for recustive like this like btreac for each type
-		return ;
-	if (node->type == BTREE_COMMAND_TYPE)
-		bind_command(node);
-	recustive_bind_commands_to_executable(node->left);
-	recustive_bind_commands_to_executable(node->right);
-}
-
 void	bind_commands_to_executable(t_minishell *data)
 {
-	recustive_bind_commands_to_executable(data->execution_tree);
+	btree_type_foreach(&data->execution_tree, BTREE_COMMAND_TYPE, bind_command);
 }
