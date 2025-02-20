@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:25:23 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 11:48:45 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:55:14 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int	main(int argc, char const **argv, const char **envp)
 	while (!data.stop)
 	{
 		create_safe_memory_context();
-		handle_signals_exit_codes(&data);
 		handle_readline(&data);
+		handle_signals_exit_codes(&data);
 		exit_safe_memory_context();
 	}
 	free_all_contexts_garbage();

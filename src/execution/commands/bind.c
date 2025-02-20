@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:26:59 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 14:44:33 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:09:41 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,12 @@ static void	bind_command(t_btree *node)
 	path = (char *)get_env((char const **)command->envp, "PATH");
 	if (!path)
 		return ;
-	if (is_path(command->argv[0]) && is_directory_file(command->argv[0])
+	if (command->argv[0][0] == '.' && command->argv[0][1] == '.'
+		&& command->argv[0][2] == 0)
+		command->error = COMMAND_NOT_FOUND;
+	else if (command->argv[0][0] == '.' && command->argv[0][1] == 0)
+		command->error = COMMAND_ARGUMENT_REQUIRED;
+	else if (is_path(command->argv[0]) && is_directory_file(command->argv[0])
 		&& access(command->argv[0], F_OK) != -1)
 		command->error = COMMAND_IS_SUCH_FILE_OR_DIRECTORY;
 	else

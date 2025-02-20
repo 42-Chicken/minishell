@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 14:24:39 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 14:47:01 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:03:07 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,23 @@ void	close_and_dup(t_minishell *data, t_command *command)
 	safe_close(command->out_pipe.write);
 }
 
+static void	exit_with_code(t_command *command)
+{
+	int	code;
+
+	if (command->error == COMMAND_NO_ERROR)
+		code = EXIT_SUCCESS;
+	if (command->error == COMMAND_NOT_FOUND)
+		code = 127;
+	if (command->error == COMMAND_NO_SUCH_FILE_OR_DIRECTORY)
+		code = 127;
+	if (command->error == COMMAND_IS_SUCH_FILE_OR_DIRECTORY)
+		code = 126;
+	if (command->error == COMMAND_PERMISSION_DENIED)
+		code = 126;
+	safe_exit(code);
+}
+
 void	exec_command(t_minishell *data, t_btree *cmd_node, t_command *command)
 {
 	pid_t	fork_id;
@@ -64,7 +81,7 @@ void	exec_command(t_minishell *data, t_btree *cmd_node, t_command *command)
 				execve(command->argv[0], (char *const *)command->argv,
 					(char *const *)data->envp);
 			exit_safe_memory_context();
-			safe_exit((int)command->error);
+			exit_with_code(command);
 		}
 	}
 	if (command->in_pipe.write)

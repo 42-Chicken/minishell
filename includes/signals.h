@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/14 12:08:16 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:51:26 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # define SIGNALS_H
 
 # include "minishell.h"
+# include <signal.h>
 
 extern int	g_sig;
 

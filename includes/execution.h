@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 14:31:51 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:08:26 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef enum e_command_errors
 	COMMAND_IS_SUCH_FILE_OR_DIRECTORY = 126,
 	COMMAND_NO_SUCH_FILE_OR_DIRECTORY = 127,
 	COMMAND_NOT_FOUND,
+	COMMAND_ARGUMENT_REQUIRED,
 }							t_command_errors;
 
 typedef enum e_redirection_errors

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:07:17 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 14:30:54 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:09:13 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ static void	print_commands_errors(t_btree *node)
 		error = "minishell: %s: Is a directory\n";
 	if (command->error == COMMAND_PERMISSION_DENIED)
 		error = "minishell: %s: Permission denied\n";
+	if (command->error == COMMAND_ARGUMENT_REQUIRED)
+		error = "bash: .: filename argument required\n.: usage: . filename [arguments]\n";
 	if (error)
 		ft_fprintf(STDERR_FILENO, error, command->argv[0]);
 }
