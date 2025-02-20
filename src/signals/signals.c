@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:07:07 by romain            #+#    #+#             */
-/*   Updated: 2025/02/20 15:12:44 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 18:06:03 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	cancel(int sig)
 
 void	init_signals(t_minishell *data)
 {
+	// use sigaction
 	signal(SIGINT, new_line);
 	signal(SIGTSTP, cancel);
 	signal(SIGQUIT, cancel);
