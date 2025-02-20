@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/02/19 16:33:11 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 09:04:09 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,13 @@
 
 void	handle_readline(t_minishell *data)
 {
-	char		*line;
-	t_command	*command;
-	t_btree		*node;
-	t_btree		*prev;
-	int			d;
-	char		**pipes;
+	char						*line;
+	t_command					*command;
+	t_btree						*node;
+	t_btree						*prev;
+	int							d;
+	char						**pipes;
+	t_btree_redirection_node	*redir;
 
 	line = readline(get_prompt(data));
 	// if (line && ft_strncmp(line, "exit", ft_strlen("exit")) == 0)
@@ -43,6 +44,13 @@ void	handle_readline(t_minishell *data)
 	{
 		d = 0;
 		pipes = ft_split(line, '|');
+		data->execution_tree = btree_create_node(BTREE_REDIRECTION_TYPE);
+		redir = safe_malloc(sizeof(t_btree_redirection_node));
+		redir->type = REDIRECTION_IN_TYPE;
+		redir->fd = open("test", O_RDONLY);
+		data->execution_tree->content = redir;
+		prev = data->execution_tree;
+		// data->execution_tree->prev = node;
 		while (pipes[d])
 		{
 			node = btree_create_node(BTREE_COMMAND_TYPE);

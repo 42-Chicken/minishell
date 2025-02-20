@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:23:29 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 16:28:05 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 09:01:44 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,11 @@ void	recusrive_execute_binary_tree(t_minishell *data, t_btree *node)
 		}
 		else
 			recusrive_execute_binary_tree(data, node->left);
+	}
+	else if (node->type == BTREE_PIPE_TYPE
+		|| node->type == BTREE_REDIRECTION_TYPE)
+	{
+		handle_commands(data, node);
 	}
 	else if (node->type == BTREE_OR_TYPE)
 	{
