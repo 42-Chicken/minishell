@@ -6,17 +6,12 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 08:54:01 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/14 18:46:29 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 11:09:08 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 #include "minishell.h"
-
-static char	*serialized_variable(const char *variable, const char *line)
-{
-	return ((char *)line + ft_strlen(variable) + 1);
-}
 
 static char	*get_target_string(const char *variable)
 {
@@ -31,6 +26,19 @@ static char	*get_target_string(const char *variable)
 	target[len] = '=';
 	target[len + 1] = '\0';
 	return (target);
+}
+
+int	get_raw_env_index(const char **envp, const char *variable)
+{
+	int		i;
+
+	i = -1;
+	if (!envp || !*envp || !variable)
+		return (-1);
+	while (envp[++i])
+		if (ft_strncmp(envp[i], variable, ft_strlen(variable)) == 0)
+			return (i);
+	return (-1);
 }
 
 int	get_env_index(const char **envp, const char *variable)
@@ -66,6 +74,6 @@ const char	*get_env(const char **envp, const char *variable)
 		return (NULL);
 	index = get_env_index(envp, variable);
 	if (index != -1)
-		return (serialized_variable(variable, envp[index]));
+		return ((char *)((char *)envp[index] + ft_strlen(variable) + 1));
 	return (NULL);
 }

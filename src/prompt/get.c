@@ -6,19 +6,19 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 16:27:31 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 10:45:10 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 11:48:59 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "paths.h"
 
+// OMZ prompt :
+//	return ("➜  " BCYN "$PWD " BBLU "git:(" BRED "testing" BBLU ") 🧪 " RESET);
 static const char	*get_base_prompt(void)
 {
-	// OMZ prompt :
-	//	return ("➜  " BCYN "$PWD " BBLU "git:(" BRED "testing" BBLU ") 🧪 " RESET);
 	return ("⦿︎  $SHLVL " BCYN "$PWD " BBLU "$GIT"
-			"🧪 " RESET);
+		"🧪 " RESET);
 }
 
 const char	*get_prompt(t_minishell *data)

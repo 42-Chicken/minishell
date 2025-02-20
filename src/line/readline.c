@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/02/20 09:43:35 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 11:46:55 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@
 
 void	handle_readline(t_minishell *data)
 {
-	char						*line;
-	t_command					*command;
-	t_btree						*node;
-	t_btree						*prev;
-	int							d;
-	char						**pipes;
-	// t_btree_redirection_node	*redir;
+	char		*line;
+	t_command	*command;
+	t_btree		*node;
+	t_btree		*prev;
+	int			d;
+	char		**pipes;
 
+	// t_btree_redirection_node	*redir;
 	line = readline(get_prompt(data));
 	// if (line && ft_strncmp(line, "exit", ft_strlen("exit")) == 0)
 	// {

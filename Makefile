@@ -28,7 +28,9 @@ FT_LIBC 			= ./dependencies/ft_libc/ft_libc.a
 
 SRCS				=	src/main.c\
 						src/prompt/get.c\
+						src/utils/str/ft_str_only_contain.c\
 						src/utils/array/len.c\
+						src/utils/array/sort.c\
 						src/utils/btree/create.c\
 						src/utils/btree/foreach.c\
 						src/utils/btree/get.c\

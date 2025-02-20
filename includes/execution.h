@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 16:27:43 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 11:48:39 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@
 # define EXECUTION_H
 
 # define PIPE_NO_VALUE -1
-# define DEFAULT_PIPE                 \
-	(t_pipe)                         \
-	{                                \
-		PIPE_NO_VALUE, PIPE_NO_VALUE \
-	}
 
 # include "garbage.h"
 # include "libft.h"
@@ -50,7 +45,6 @@ typedef enum e_command_errors
 }							t_command_errors;
 
 typedef enum e_redirection_types
-
 {
 	REDIRECTION_IN_TYPE,
 	REDIRECTION_OUT_TYPE
@@ -121,7 +115,6 @@ void						safe_close(int fd);
 void						safe_pipe_close(t_pipe pipe);
 void						link_commands_pipes(t_btree *lst);
 void						link_commands_redirections(t_btree *redir_node);
-void						close_and_dup(t_command *command);
 
 // ---------------------------------
 //

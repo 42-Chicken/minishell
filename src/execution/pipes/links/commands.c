@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:29:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 11:02:21 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 11:48:23 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ static t_pipe	init_prev_command_pipe(t_btree *cmd_node)
 	t_command	*cmd;
 
 	if (!cmd_node)
-		return (DEFAULT_PIPE);
+		return ((t_pipe){PIPE_NO_VALUE, PIPE_NO_VALUE});
 	if (!cmd_node || !cmd_node->content || cmd_node->type != BTREE_COMMAND_TYPE)
-		return (DEFAULT_PIPE);
+		return ((t_pipe){PIPE_NO_VALUE, PIPE_NO_VALUE});
 	cmd = (t_command *)cmd_node->content;
 	cmd->part_of_pipe = true;
 	cmd->out_pipe = get_pipe();
@@ -77,7 +77,7 @@ void	link_commands_pipes(t_btree *cmd_node)
 	t_btree		*next;
 	t_command	*current;
 
-	pipe = DEFAULT_PIPE;
+	pipe = (t_pipe){PIPE_NO_VALUE, PIPE_NO_VALUE};
 	node = cmd_node;
 	while (node)
 	{

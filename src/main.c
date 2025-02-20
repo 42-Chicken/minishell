@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:25:23 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 09:56:38 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 11:48:45 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	main(int argc, char const **argv, const char **envp)
 		exit_safe_memory_context();
 	}
 	free_all_contexts_garbage();
-	// ft_fprintf(STDOUT_FILENO,
-		// "[1]    3586310 segmentation fault (core dumped)  ./minishell\n");
 	return (data.exit_code);
 }
+// ft_fprintf(STDOUT_FILENO,
+// "[1]    3586310 segmentation fault (core dumped)  ./minishell\n");

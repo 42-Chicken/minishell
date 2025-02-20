@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 14:24:39 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 10:44:10 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 11:45:35 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,6 @@ void	close_pipes_until_end(t_btree *cmd_node)
 		}
 		current = current->left;
 	}
-	// if (data->in_file_fd != -1)
-	// 	safe_close(data->in_file_fd);
-	// if (data->out_file_fd != -1)
-	// 	safe_close(data->out_file_fd);
 }
 
 static char	*get_full_path(const char *path)
@@ -65,7 +61,7 @@ static void	execute_for_every_paths(t_command *command)
 	}
 }
 
-void	close_and_dup(t_command *command)
+void	close_and_dup(t_minishell *data, t_command *command)
 {
 	if (command->in_pipe.write)
 		safe_close(command->in_pipe.write);
@@ -73,6 +69,8 @@ void	close_and_dup(t_command *command)
 		safe_close(command->out_pipe.read);
 	dup2(command->in_pipe.read, STDIN_FILENO);
 	dup2(command->out_pipe.write, STDOUT_FILENO);
+	update_shlvl(data, (char *)get_env(data->envp, "SHLVL"), 1);
+	command->envp = (char **)data->envp;
 	safe_close(command->in_pipe.read);
 	safe_close(command->out_pipe.write);
 }
@@ -89,9 +87,8 @@ void	exec_command(t_minishell *data, t_btree *cmd_node, t_command *command)
 		if (fork_id == 0)
 		{
 			create_safe_memory_context();
-			close_and_dup(command);
+			close_and_dup(data, command);
 			close_pipes_until_end(cmd_node);
-			update_shlvl(data, (char *)get_env(data->envp, "SHLVL"), 1);
 			if (command->error == COMMAND_NO_ERROR)
 				execute_for_every_paths(command);
 			exit_safe_memory_context();

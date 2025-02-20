@@ -6,67 +6,49 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 10:48:15 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 11:44:42 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*get_formatted_env_line(char *line)
+#define EXPORT_INVALID_ID "bash: export: `%s': not a valid identifier\n"
+
+static char	*get_var_value(char *str)
 {
 	char	*start;
-	char	*result;
 
-	start = ft_strchr(line, '=');
+	start = ft_strchr(str, '=');
 	if (!start)
-		return (line);
-	result = ft_substr(line, 0, start - line);
-	result = ft_strjoin(result, ft_strdup("=\""));
-	start = ft_substr(line, start - line + 1, ft_strlen(line));
-	if (!start)
-		return (line);
-	result = ft_strjoin(result, start);
-	result = ft_strjoin(result, ft_strdup("\""));
-	return (result);
+		return (NULL);
+	start = ft_substr(str, start - str + 1, ft_strlen(str));
+	return (start);
 }
 
 static char	*get_var_name(char *str)
 {
 	char	*start;
-	char	*result;
 
 	start = ft_strchr(str, '=');
 	if (!start)
 		return (str);
-	result = ft_substr(str, 0, start - str);
-	return (result);
+	str = ft_substr(str, 0, start - str);
+	return (str);
 }
 
-static char	**get_sorted_tab(char **tab)
+static char	*get_formatted_env_line(char *line)
 {
-	int		i;
-	int		y;
-	int		len;
-	char	*temp;
+	char	*result;
+	char	*value;
 
-	if (!tab)
-		return (NULL);
-	i = -1;
-	len = char_array_len(tab);
-	while (++i < len && tab[i])
-	{
-		y = -1;
-		while (++y < len && tab[y])
-		{
-			if (ft_strncmp(tab[i], tab[y], ft_strlen(tab[i])) < 0)
-			{
-				temp = tab[i];
-				tab[i] = tab[y];
-				tab[y] = temp;
-			}
-		}
-	}
-	return (tab);
+	result = get_var_name(line);
+	value = get_var_value(line);
+	if (!value)
+		return (result);
+	result = ft_strjoin(result, ft_strdup("=\""));
+	result = ft_strjoin(result, value);
+	result = ft_strjoin(result, ft_strdup("\""));
+	return (result);
 }
 
 void	handle_env_update(t_minishell *data, char *str)
@@ -77,28 +59,34 @@ void	handle_env_update(t_minishell *data, char *str)
 	name = get_var_name(str);
 	if (!name)
 		return ;
-	index = get_env_index(data->envp, name);
-	printf("current : %d\n", index);
+	if (!ft_str_only_contain(name, "_"))
+	{
+		ft_fprintf(STDERR_FILENO, EXPORT_INVALID_ID, name);
+		return ;
+	}
+	str = ft_strdup(str);
+	if (ft_strncmp(name, "SHLVL", ft_strlen(name)) == 0)
+	{
+		update_shlvl(data, get_var_value(str), 0);
+		return ;
+	}
+	send_pointer_to_main_context(str);
+	index = get_raw_env_index(data->envp, name);
 	if (index != -1)
 		data->envp[index] = str;
 	else
-	{
-		ft_strdup(str);
-		// send_pointer_to_upper_context(str);
 		add_to_env(&data->envp, str);
-	}
 }
 
 int	export_command(t_minishell *data, t_command *command)
 {
-	int		i;
-	char	**sorted_env;
+	int	i;
 
 	i = -1;
-	sorted_env = get_sorted_tab((char **)data->envp);
+	char_sort_array((char **)data->envp);
 	if (char_array_len(command->argv) <= 1)
 	{
-		while (sorted_env && sorted_env[++i])
+		while (data->envp && data->envp[++i])
 			ft_fprintf(command->out_pipe.write, "declare -x %s\n",
 				get_formatted_env_line((char *)data->envp[i]));
 	}
