@@ -6,14 +6,14 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 08:54:01 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 10:29:24 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 11:59:13 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 #include "minishell.h"
 
-static void	remove_from_env(const char ***envp, const char *variable)
+void	remove_from_env(const char ***envp, const char *variable)
 {
 	int		i;
 	int		k;
