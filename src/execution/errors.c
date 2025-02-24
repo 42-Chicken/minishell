@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:07:17 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 17:30:42 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/24 11:16:30 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,18 @@ static void	print_commands_errors(t_btree *node)
 		ft_fprintf(STDERR_FILENO, error, command->argv[0]);
 }
 
-void	print_tree_errors(t_btree *node)
+static void	print_tree_errors_recusive(t_btree **head, t_btree *node,
+		void *data)
 {
-	if (!node)
-		return ;
+	(void)data;
+	(void)head;
 	if (node->type == BTREE_COMMAND_TYPE)
 		print_commands_errors(node);
 	if (node->type == BTREE_REDIRECTION_TYPE)
 		print_redirections_errors(node);
+}
+
+void	print_tree_errors(t_minishell *data)
+{
+	btree_foreach(&data->execution_tree, print_tree_errors_recusive, data);
 }

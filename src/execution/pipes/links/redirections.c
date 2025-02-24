@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:27:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 17:28:29 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/24 09:38:31 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static void	link_redirection_to_cmd_node(t_btree_redir_node *redir_node,
 		safe_close(cmd->out_pipe.write);
 		cmd->out_pipe.write = redir_node->fd;
 	}
-	else if (redir_node->type == REDIRECTION_IN_TYPE)
+	else if (redir_node->type == REDIRECTION_IN_TYPE
+		|| redir_node->type == REDIRECTION_HERE_DOC_TYPE)
 	{
 		safe_close(cmd->in_pipe.read);
 		cmd->in_pipe.read = redir_node->fd;
@@ -46,7 +47,8 @@ void	link_commands_redirections(t_btree *tree)
 		if (node->type == BTREE_REDIRECTION_TYPE)
 		{
 			redir = (t_btree_redir_node *)node->content;
-			if (redir && redir->type == REDIRECTION_IN_TYPE && node->left)
+			if (redir && (redir->type == REDIRECTION_IN_TYPE
+					|| redir->type == REDIRECTION_HERE_DOC_TYPE) && node->left)
 				link_redirection_to_cmd_node(redir, node->left);
 			else if (redir && redir->type == REDIRECTION_OUT_TYPE && node->prev)
 				link_redirection_to_cmd_node(redir, node->prev);

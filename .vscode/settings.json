@@ -23,6 +23,15 @@
 		"stdlib.h": "c",
 		"libft.h": "c",
 		"signals.h": "c",
-		"typeinfo": "c"
+		"typeinfo": "c",
+		"deque": "c",
+		"string": "c",
+		"unordered_map": "c",
+		"vector": "c",
+		"initializer_list": "c",
+		"ranges": "c",
+		"span": "c",
+		"wait.h": "c",
+		"random": "c"
 	}
 }

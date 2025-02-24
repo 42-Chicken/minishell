@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:51:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 17:28:10 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/24 09:34:48 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	open_in_redir_fd(t_btree_redir_node *redir)
 	else if (access(redir->file, R_OK) == -1)
 		redir->error = REDIRECTION_PERMISSION_DENIED;
 	else
-		redir->fd = open(redir->file, O_RDONLY, 0644);
+		redir->fd = open(redir->file, O_RDONLY);
 }
 
 static void	open_out_redir_fd(t_btree_redir_node *redir)
@@ -41,6 +41,8 @@ static void	bind_redirections(t_btree **head, t_btree *node)
 	if (!redir)
 		return ;
 	if (redir->type == REDIRECTION_IN_TYPE)
+		open_in_redir_fd(redir);
+	else if (redir->type == REDIRECTION_HERE_DOC_TYPE)
 		open_in_redir_fd(redir);
 	else if (redir->type == REDIRECTION_OUT_TYPE)
 		open_out_redir_fd(redir);

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 17:28:43 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/24 11:16:51 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef enum e_redirection_errors
 typedef enum e_redirection_types
 {
 	REDIRECTION_IN_TYPE,
+	REDIRECTION_HERE_DOC_TYPE,
 	REDIRECTION_OUT_TYPE
 }							t_redirection_types;
 
@@ -80,6 +81,7 @@ typedef struct s_btree_redirection_node
 {
 	int						fd;
 	char					*file;
+	char					*limiter;
 	bool					doubled;
 	t_redirection_errors	error;
 	t_redirection_types		type;
@@ -91,7 +93,7 @@ typedef struct s_btree_redirection_node
 //
 // ---------------------------------
 void						checks_redirections_errors(t_minishell *data);
-void						print_tree_errors(t_btree *node);
+void						print_tree_errors(t_minishell *data);
 
 // ---------------------------------
 //
@@ -116,6 +118,8 @@ int							exit_command(t_minishell *data, t_command *command);
 // EXECUTION
 //
 // ---------------------------------
+void						save_heredocs_tmp_files(t_minishell *data);
+void						delete_heredocs_tmp_files(t_minishell *data);
 void						bind_redirections_to_fds(t_minishell *data);
 void						bind_commands_to_executable(t_minishell *data);
 void						execution_pipeline(t_minishell *data);
