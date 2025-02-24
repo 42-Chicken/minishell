@@ -6,12 +6,13 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 08:22:24 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/24 11:16:43 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/24 14:15:10 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "minishell.h"
+#include "signals.h"
 
 void	execution_pipeline(t_minishell *data)
 {

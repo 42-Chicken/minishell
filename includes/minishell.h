@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/24 11:40:56 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/24 14:45:27 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_minishell
 	char const				**argv;
 	char const				**envp;
 	int						line_count;
+	char					*current_line;
 	char const				started_path[MAX_PATH_LENGTH];
 	t_btree					*execution_tree;
 	unsigned char			exit_code;

@@ -6,12 +6,13 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:23:29 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 17:30:48 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/24 15:10:01 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "minishell.h"
+#include "signals.h"
 
 static void	execute_commands_and_wait(t_minishell *data, t_btree *node)
 {
@@ -19,6 +20,7 @@ static void	execute_commands_and_wait(t_minishell *data, t_btree *node)
 	t_command	*command;
 
 	current = node;
+	switch_to_child_mode();
 	while (current)
 	{
 		if (current->type == BTREE_COMMAND_TYPE && current->content)
@@ -28,7 +30,9 @@ static void	execute_commands_and_wait(t_minishell *data, t_btree *node)
 		}
 		current = current->left;
 	}
+	reset_signals(false);
 	wait_all_commands_executions(data);
+	reset_signals(true);
 }
 
 static void	handle_commands(t_minishell *data, t_btree *node)

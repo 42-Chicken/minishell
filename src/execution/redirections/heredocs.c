@@ -6,40 +6,43 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:00:26 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/24 11:46:17 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/24 15:09:51 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "signals.h"
 
-#define ERROR "\nminishell: warning: here-document at %d delimited by \
+#define HEREDOC_WARNING "\nminishell: warning: here-document at %d delimited by \
 end-of-file (wanted `EOF')\n"
 
 static void	fill_file(t_minishell *data, int fd, char *limiter)
 {
 	char	*line;
-	size_t	line_len;
 	int		line_count;
+	int		new;
 
 	line_count = 1;
-	create_safe_memory_context();
-	while (true)
+	new = dup(STDIN_FILENO);
+	while (g_sig == 0)
 	{
 		ft_fprintf(STDOUT_FILENO, "> ");
-		line = get_next_line(1);
+		line = get_next_line(new);
+		if (g_sig != 0)
+			break ;
 		if (!line)
 		{
-			ft_fprintf(STDERR_FILENO, ERROR, data->line_count);
+			ft_fprintf(STDERR_FILENO, HEREDOC_WARNING, data->line_count);
 			break ;
 		}
-		line_len = ft_strlen(line);
-		if (line_len > 1 && ft_strncmp(line, limiter, line_len - 1) == 0)
+		if (ft_strlen(line) > 1 && ft_strncmp(line, limiter, ft_strlen(line)
+				- 1) == 0)
 			break ;
-		write(fd, line, line_len);
+		write(fd, line, ft_strlen(line));
 		line_count++;
 	}
 	data->line_count += line_count;
-	exit_safe_memory_context();
+	close(new);
 }
 
 static void	handle_heredocs_save(t_btree **head, t_btree *node, void *other)
@@ -48,6 +51,7 @@ static void	handle_heredocs_save(t_btree **head, t_btree *node, void *other)
 	int					fd;
 	t_btree_redir_node	*redir;
 	t_minishell			*data;
+	int					d;
 
 	(void)head;
 	data = (t_minishell *)other;
@@ -61,7 +65,11 @@ static void	handle_heredocs_save(t_btree **head, t_btree *node, void *other)
 		ft_fprintf(STDERR_FILENO, "ERROR at creating heredoc in file");
 		return ;
 	}
+	create_safe_memory_context();
+	switch_to_heredoc_mode();
 	fill_file(data, fd, redir->limiter);
+	reset_signals(true);
+	exit_safe_memory_context();
 	close(fd);
 }
 
