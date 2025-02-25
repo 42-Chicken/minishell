@@ -6,13 +6,13 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 14:24:39 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 09:32:40 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 10:03:19 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "define.h"
 #include "execution.h"
 #include "minishell.h"
-#include "define.h"
 
 void	close_pipes_until_end(t_btree *cmd_node)
 {
@@ -54,34 +54,37 @@ static void	exit_with_code(t_command *command)
 	if (command->error == COMMAND_NO_ERROR)
 		code = EXIT_SUCCESS;
 	if (command->error == COMMAND_NOT_FOUND_ERROR)
-		code = 127;
+		code = COMMAND_NOT_FOUND_EXIT_CODE;
 	if (command->error == COMMAND_NO_SUCH_FILE_OR_DIRECTORY_ERROR)
-		code = 127;
+		code = ERROR_NO_SUCH_FILE_OR_DIRECTORY_EXIT_CODE;
 	if (command->error == COMMAND_IS_SUCH_FILE_OR_DIRECTORY_ERROR)
-		code = 126;
+		code = IS_DIRECTORY_PATH_EXIT_CODE;
 	if (command->error == COMMAND_PERMISSION_DENIED_ERROR)
-		code = 126;
+		code = ERROR_PERMISSION_DENIED_EXIT_CODE;
 	if (command->error == COMMAND_ARGUMENT_REQUIRED_ERROR)
-		code = 2;
+		code = ERROR_COMMAND_ARGUMENT_REQUIRED_EXIT_CODE;
 	safe_exit(code);
 }
 
 static bool	can_execute(t_btree *cmd_node, t_command *command)
 {
-	t_btree	*node;
+	t_btree				*node;
+	t_btree_redir_node	*redir;
 
 	node = cmd_node->prev;
+	redir = (t_btree_redir_node *)node->content;
 	if (node && node->content && node->type == BTREE_REDIRECTION_TYPE)
 	{
-		if (((t_btree_redir_node *)node->content)->error != REDIRECTION_NO_ERROR
-			&& ((t_btree_redir_node *)node->content)->type == REDIRECTION_IN_TYPE)
+		if (redir->error != REDIRECTION_NO_ERROR
+			&& redir->type == REDIRECTION_IN_TYPE)
 			return (false);
 	}
 	node = cmd_node->left;
+	redir = (t_btree_redir_node *)node->content;
 	if (node && node->content && node->type == BTREE_REDIRECTION_TYPE)
 	{
-		if (((t_btree_redir_node *)node->content)->error != REDIRECTION_NO_ERROR
-			&& ((t_btree_redir_node *)node->content)->type == REDIRECTION_OUT_TYPE)
+		if (redir->error != REDIRECTION_NO_ERROR
+			&& redir->type == REDIRECTION_OUT_TYPE)
 			return (false);
 	}
 	if (command->error != COMMAND_NO_ERROR)

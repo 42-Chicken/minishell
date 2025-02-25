@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 08:36:57 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 09:47:11 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 10:00:42 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,14 @@ current working directory !\n"
 
 # define ERROR_NO_SUCH_FILE_OR_DIRECTORY "minishell\
 : %s: No such file or directory\n"
+# define ERROR_NO_SUCH_FILE_OR_DIRECTORY_EXIT_CODE 127
 # define ERROR_HEREDOC_FILE_DELETED "minishell\
 : %s: Heredoc file has been deleted\n"
 # define ERROR_HEREDOC_FILE_PERMISSION_DENIED "minishell\
 : %s: Heredoc file doesn't have the right permissions\n"
 # define ERROR_PERMISSION_DENIED "minishell\
 : %s: Permission denied\n"
+# define ERROR_PERMISSION_DENIED_EXIT_CODE 126
 # define ERROR_CANNOT_OPEN_FILE "minishell\
 : %s: cannot open file\n"
 
@@ -95,9 +97,12 @@ current working directory !\n"
 
 # define IS_DIRECTORY_PATH "minishell\
 : %s: Is a directory\n"
+# define IS_DIRECTORY_PATH_EXIT_CODE 126
 # define COMMAND_NOT_FOUND "%s: command not found\n"
-# define COMMAND_ARGUMENTS "minishell\
+# define COMMAND_NOT_FOUND_EXIT_CODE 127
+# define ERROR_COMMAND_ARGUMENTS "minishell\
 : .: filename argument required\n.: usage: . filename [arguments]\n"
+# define ERROR_COMMAND_ARGUMENT_REQUIRED_EXIT_CODE 2
 
 // ---------------------------------
 //

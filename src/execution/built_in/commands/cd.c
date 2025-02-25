@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 09:46:52 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 10:02:05 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ int	cd_command(t_minishell *data, t_command *command)
 		target_path = get_home(data);
 	else
 	{
-		if (command->argv[1][0] == HOME_DIRECTORY_REPRESENTATION[0] && get_home(data))
+		if (command->argv[1][0] == HOME_DIRECTORY_REPRESENTATION[0]
+			&& get_home(data))
 			target_path = ft_strjoin(get_home(data), command->argv[1] + 1);
 		else
 			target_path = command->argv[1];

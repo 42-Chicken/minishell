@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:00:26 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 08:34:49 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 11:27:02 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ static void	handle_heredocs_save(t_btree **head, t_btree *node, void *other)
 	int					fd;
 	t_btree_redir_node	*redir;
 	t_minishell			*data;
-	int					d;
 
 	(void)head;
 	data = (t_minishell *)other;

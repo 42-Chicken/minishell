@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/02/25 09:47:51 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 11:26:36 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	handle_readline(t_minishell *data)
 	t_btree				*prev;
 	int					d;
 	char				**pipes;
-	t_btree_redir_node	*redir;
+	// t_btree_redir_node	*redir;
 
 	// t_btree_redirection_node *redir;
 	// t_btree_redirection_node	*redir;
