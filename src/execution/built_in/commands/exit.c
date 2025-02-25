@@ -6,13 +6,14 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 15:20:57 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:29:49 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-#define EXIT_NOT_A_NUMERIC_ARG "bash: exit: %s: numeric argument required\n"
+#define EXIT_NOT_A_NUMERIC_ARG "minishell\
+: exit: %s: numeric argument required\n"
 #define EXIT_NOT_A_NUMERIC_ARG_CODE 2
 
 int	exit_command(t_minishell *data, t_command *command)

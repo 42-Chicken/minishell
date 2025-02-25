@@ -6,11 +6,12 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 09:24:06 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 11:46:09 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:24:06 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "define.h"
 
 #define SHLVL_TO_HIGH_ERROR "bash: warning: \
 shell level (%d) too high, resetting to 1\n"
@@ -29,5 +30,5 @@ void	update_shlvl(t_minishell *data, char *str, int d)
 		ft_fprintf(STDERR_FILENO, SHLVL_TO_HIGH_ERROR, value);
 		value = 0;
 	}
-	set_env(&data->envp, "SHLVL", ft_itoa(value));
+	set_env(&data->envp, ENV_SHLVL, ft_itoa(value));
 }

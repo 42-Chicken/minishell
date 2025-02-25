@@ -6,12 +6,13 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:07:07 by romain            #+#    #+#             */
-/*   Updated: 2025/02/25 08:31:19 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:22:46 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "signals.h"
+#include "define.h"
 #include <signal.h>
 
 // 4 because there is the fd of the file and the dup fd of stdout
@@ -19,7 +20,7 @@ void	close_heredoc(int sig)
 {
 	g_sig = sig;
 	ft_fprintf(STDOUT_FILENO, "\n");
-	close(4);
+	close(HEREDOC_WRITTING_FD);
 }
 
 void	new_line(int sig)

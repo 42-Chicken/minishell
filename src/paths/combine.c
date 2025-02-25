@@ -6,10 +6,11 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:03:06 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 11:49:16 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:19:33 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "define.h"
 #include "minishell.h"
 #include "paths.h"
 
@@ -83,7 +84,8 @@ char	*cleanup_path(t_minishell *data, char *path)
 		return (ft_strdup(""));
 	home_path = get_home_path(data);
 	if (home_path)
-		newstr = ft_strreplace(newstr, "~", home_path);
+		newstr = ft_strreplace(newstr, ft_strdup(HOME_DIRECTORY_REPRESENTATION),
+				home_path);
 	return (remove_double_dots(newstr));
 }
 

@@ -6,15 +6,13 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:00:26 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/24 15:13:50 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 08:34:49 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "signals.h"
-
-#define HEREDOC_WARNING "\nminishell: warning: here-document at %d delimited by \
-end-of-file (wanted `EOF')\n"
+#include "define.h"
 
 static void	fill_file(t_minishell *data, int fd, char *limiter)
 {
@@ -26,7 +24,7 @@ static void	fill_file(t_minishell *data, int fd, char *limiter)
 	new = dup(STDIN_FILENO);
 	while (g_sig == 0)
 	{
-		ft_fprintf(STDOUT_FILENO, "> ");
+		ft_fprintf(STDOUT_FILENO, HEREDOC_PROMPT);
 		line = get_next_line(new);
 		if (g_sig != 0)
 			break ;
@@ -58,11 +56,11 @@ static void	handle_heredocs_save(t_btree **head, t_btree *node, void *other)
 	redir = (t_btree_redir_node *)node->content;
 	if (!redir || redir->type != REDIRECTION_HERE_DOC_TYPE)
 		return ;
-	redir->file = ft_strjoin("/tmp/minishell_heredoc_", ft_itoa(id++));
+	redir->file = ft_strjoin(HEREDOC_TMP_FILE_START_PATH, ft_itoa(id++));
 	fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
-		ft_fprintf(STDERR_FILENO, "ERROR at creating heredoc in file");
+		ft_fprintf(STDERR_FILENO, HEREDOC_ERROR_AT_FILE_CREATION);
 		return ;
 	}
 	create_safe_memory_context();

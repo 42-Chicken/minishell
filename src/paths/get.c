@@ -6,12 +6,13 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 10:54:00 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 17:31:10 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:16:22 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "paths.h"
+#include "define.h"
 
 char	*get_current_folder_name(void)
 {
@@ -44,7 +45,7 @@ char	*get_home_path(t_minishell *data)
 {
 	char	*path;
 
-	path = (char *)get_env(data->envp, "HOME");
+	path = (char *)get_env(data->envp, ENV_HOME);
 	return (path);
 }
 // char	*i;
@@ -70,7 +71,7 @@ char	*get_current_path(t_minishell *data)
 	getcwd(current, MAX_PATH_LENGTH);
 	if (ft_strlen(current) > 0)
 		return (ft_strdup(current));
-	path = (char *)get_env(data->envp, "PWD");
+	path = (char *)get_env(data->envp, ENV_PWD);
 	if (!path)
 		path = (char *)data->started_path;
 	return (path);

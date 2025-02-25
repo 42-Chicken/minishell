@@ -6,10 +6,11 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 16:27:31 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 14:09:47 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:20:56 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "define.h"
 #include "minishell.h"
 #include "paths.h"
 
@@ -18,9 +19,10 @@
 static const char	*get_base_prompt(void)
 {
 	return ("⦿︎  $SHLVL $CODE " BCYN "$PWD " BBLU "$GIT"
-		"🧪 " RESET);
+			"🧪 " RESET);
 }
 
+// TO chnage with the expander
 const char	*get_prompt(t_minishell *data)
 {
 	char	*prompt;
@@ -34,7 +36,8 @@ const char	*get_prompt(t_minishell *data)
 	else
 		ft_fprintf(STDOUT_FILENO, GRN);
 	if (home && ft_strncmp(get_current_path(data), home, MAX_PATH_LENGTH) == 0)
-		prompt = ft_strreplace(prompt, "$PWD", "~");
+		prompt = ft_strreplace(prompt, "$PWD",
+				ft_strdup(HOME_DIRECTORY_REPRESENTATION));
 	else
 		prompt = ft_strreplace(prompt, "$PWD", get_current_folder_name());
 	if (access(".git", F_OK) != -1)
@@ -43,7 +46,7 @@ const char	*get_prompt(t_minishell *data)
 	else
 		prompt = ft_strreplace(prompt, "$GIT", "");
 	prompt = ft_strreplace(prompt, "$SHLVL", (char *)get_env(data->envp,
-				"SHLVL"));
+				ENV_SHLVL));
 	prompt = ft_strreplace(prompt, "$CODE", ft_itoa(data->exit_code));
 	send_pointer_to_upper_context(prompt);
 	exit_safe_memory_context();

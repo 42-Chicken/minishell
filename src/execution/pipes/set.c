@@ -6,11 +6,11 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 08:36:00 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/17 09:55:59 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 08:35:39 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "errors.h"
+#include "define.h"
 #include "execution.h"
 #include "minishell.h"
 

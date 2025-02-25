@@ -6,13 +6,15 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 11:44:42 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:30:29 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "define.h"
 
-#define EXPORT_INVALID_ID "bash: export: `%s': not a valid identifier\n"
+#define EXPORT_INVALID_ID "minishell\
+: export: `%s': not a valid identifier\n"
 
 static char	*get_var_value(char *str)
 {
@@ -65,7 +67,7 @@ void	handle_env_update(t_minishell *data, char *str)
 		return ;
 	}
 	str = ft_strdup(str);
-	if (ft_strncmp(name, "SHLVL", ft_strlen(name)) == 0)
+	if (ft_strncmp(name, ENV_SHLVL, ft_strlen(name)) == 0)
 	{
 		update_shlvl(data, get_var_value(str), 0);
 		return ;

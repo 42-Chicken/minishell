@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 08:28:57 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:12:13 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,19 @@ typedef enum e_command_status
 typedef enum e_command_errors
 {
 	COMMAND_NO_ERROR = -1,
-	COMMAND_PERMISSION_DENIED,
-	COMMAND_IS_SUCH_FILE_OR_DIRECTORY = 126,
-	COMMAND_NO_SUCH_FILE_OR_DIRECTORY = 127,
-	COMMAND_NOT_FOUND,
-	COMMAND_ARGUMENT_REQUIRED,
+	COMMAND_PERMISSION_DENIED_ERROR,
+	COMMAND_IS_SUCH_FILE_OR_DIRECTORY_ERROR = 126,
+	COMMAND_NO_SUCH_FILE_OR_DIRECTORY_ERROR = 127,
+	COMMAND_NOT_FOUND_ERROR,
+	COMMAND_ARGUMENT_REQUIRED_ERROR,
 }							t_command_errors;
 
 typedef enum e_redirection_errors
 {
 	REDIRECTION_NO_ERROR = -1,
 	REDIRECTION_NO_SUCH_FILE_OR_DIRECTORY,
+	REDIRECTION_HERE_DOC_NO_SUCH_FILE_OR_DIRECTORY,
+	REDIRECTION_HERE_DOC_PERMISSION_DENIED,
 	REDIRECTION_ERROR_OPENING_FILE,
 	REDIRECTION_PERMISSION_DENIED,
 }							t_redirection_errors;

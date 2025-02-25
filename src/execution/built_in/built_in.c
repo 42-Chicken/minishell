@@ -6,10 +6,11 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:31:09 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 15:41:54 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:27:46 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "define.h"
 #include "execution.h"
 #include "minishell.h"
 
@@ -30,19 +31,19 @@ bool	is_built_in_command(t_command *command)
 {
 	if (!command || !command->argv)
 		return (false);
-	if (is_same_str(command->argv[0], "cd"))
+	if (is_same_str(command->argv[0], CD_BT))
 		return (true);
-	else if (is_same_str(command->argv[0], "echo"))
+	else if (is_same_str(command->argv[0], ECHO_BT))
 		return (true);
-	else if (is_same_str(command->argv[0], "pwd"))
+	else if (is_same_str(command->argv[0], PWD_BT))
 		return (true);
-	else if (is_same_str(command->argv[0], "unset"))
+	else if (is_same_str(command->argv[0], UNSET_BT))
 		return (true);
-	else if (is_same_str(command->argv[0], "export"))
+	else if (is_same_str(command->argv[0], EXPORT_BT))
 		return (true);
-	else if (is_same_str(command->argv[0], "env"))
+	else if (is_same_str(command->argv[0], ENV_BT))
 		return (true);
-	else if (is_same_str(command->argv[0], "exit"))
+	else if (is_same_str(command->argv[0], EXIT_BT))
 		return (true);
 	else
 		return (false);
@@ -52,19 +53,19 @@ bool	execute_built_in_command(t_minishell *data, t_command *command)
 {
 	if (!data || !command || !command->argv || !command->argv[0])
 		return (true);
-	if (is_same_str(command->argv[0], "cd"))
+	if (is_same_str(command->argv[0], CD_BT))
 		handle_execution(data, command, cd_command);
-	else if (is_same_str(command->argv[0], "echo"))
+	else if (is_same_str(command->argv[0], ECHO_BT))
 		handle_execution(data, command, echo_command);
-	else if (is_same_str(command->argv[0], "pwd"))
+	else if (is_same_str(command->argv[0], PWD_BT))
 		handle_execution(data, command, pwd_command);
-	else if (is_same_str(command->argv[0], "unset"))
+	else if (is_same_str(command->argv[0], UNSET_BT))
 		handle_execution(data, command, unset_command);
-	else if (is_same_str(command->argv[0], "export"))
+	else if (is_same_str(command->argv[0], EXPORT_BT))
 		handle_execution(data, command, export_command);
-	else if (is_same_str(command->argv[0], "env"))
+	else if (is_same_str(command->argv[0], ENV_BT))
 		handle_execution(data, command, env_command);
-	else if (is_same_str(command->argv[0], "exit"))
+	else if (is_same_str(command->argv[0], EXIT_BT))
 		handle_execution(data, command, exit_command);
 	else
 		return (false);
