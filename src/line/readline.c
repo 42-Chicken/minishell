@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/02/24 14:52:25 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 08:31:08 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,6 @@ void	handle_readline(t_minishell *data)
 		if (data->current_line)
 			add_history(data->current_line);
 	}
-	// else if ((!line || ft_strlen(line) <= 0))
-	// 	data->exit_code = 1; // look more like zsh
 	if (line)
 	{
 		parse_line(data, line);

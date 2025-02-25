@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/24 14:20:49 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 08:30:22 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ extern int	g_sig;
 //
 // ---------------------------------
 void		handle_signals_exit_codes(t_minishell *data);
-void		init_signals(t_minishell *data);
 
 void		switch_to_heredoc_mode(void);
 void		switch_to_child_mode(void);
