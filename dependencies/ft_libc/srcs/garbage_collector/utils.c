@@ -6,11 +6,12 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 08:32:16 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 11:19:39 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 10:11:41 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "garbage.h"
+#include "ft_fprintf.h"
 
 void	add_to_garbage(void *pointer, int context)
 {
@@ -26,7 +27,10 @@ void	add_to_garbage(void *pointer, int context)
 	if (!lst)
 	{
 		free(pointer);
-		safe_exit(1);
+		ft_fprintf(STDERR_FILENO,
+			"minishell: a malloc failed during the execution,\
+			heap memory has been freed entirly");
+		safe_exit(EXIT_FAILURE);
 	}
 	lst->content = pointer;
 	lst->next = NULL;

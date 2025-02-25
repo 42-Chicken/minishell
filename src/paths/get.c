@@ -6,12 +6,13 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 10:54:00 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/19 09:40:11 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:16:22 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "paths.h"
+#include "define.h"
 
 char	*get_current_folder_name(void)
 {
@@ -42,25 +43,25 @@ char	*get_current_folder_name(void)
 
 char	*get_home_path(t_minishell *data)
 {
-	// char	*i;
 	char	*path;
 
-	path = (char *)get_env(data->envp, "HOME");
-	// if (!path)
-	// {
-	// 	path = ft_strnstr(data->started_path, "/home/",
-	// 			ft_strlen(data->started_path));
-	// 	if (path)
-	// 	{
-	// 		i = ft_strchr(path + ft_strlen("/home/"), '/');
-	// 		if (i)
-	// 			path = ft_substr(path, 0, i - path);
-	// 	}
-	// }
-	// if (!path)
-	// 	return (NULL);
+	path = (char *)get_env(data->envp, ENV_HOME);
 	return (path);
 }
+// char	*i;
+// if (!path)
+// {
+// 	path = ft_strnstr(data->started_path, "/home/",
+// 			ft_strlen(data->started_path));
+// 	if (path)
+// 	{
+// 		i = ft_strchr(path + ft_strlen("/home/"), '/');
+// 		if (i)
+// 			path = ft_substr(path, 0, i - path);
+// 	}
+// }
+// if (!path)
+// 	return (NULL);
 
 char	*get_current_path(t_minishell *data)
 {
@@ -70,8 +71,30 @@ char	*get_current_path(t_minishell *data)
 	getcwd(current, MAX_PATH_LENGTH);
 	if (ft_strlen(current) > 0)
 		return (ft_strdup(current));
-	path = (char *)get_env(data->envp, "PWD");
+	path = (char *)get_env(data->envp, ENV_PWD);
 	if (!path)
 		path = (char *)data->started_path;
 	return (path);
+}
+
+bool	is_path(char *str)
+{
+	return (ft_strncmp(str, "../", 3) == 0 || ft_strncmp(str, "/", 1) == 0
+		|| ft_strncmp(str, "./", 2) == 0);
+}
+
+// bool	is_regular_file(const char *path)
+// {
+// 	struct stat	path_stat;
+
+// 	stat(path, &path_stat);
+// 	return (S_ISREG(path_stat.st_mode));
+// }
+
+bool	is_directory_file(const char *path)
+{
+	struct stat	path_stat;
+
+	stat(path, &path_stat);
+	return (S_ISDIR(path_stat.st_mode));
 }

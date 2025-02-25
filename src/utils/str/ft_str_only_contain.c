@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.h                                          :+:      :+:    :+:   */
+/*   ft_str_only_contain.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 08:30:22 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/02/20 11:39:07 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/20 11:45:30 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SIGNALS_H
+#include "minishell.h"
 
-# define SIGNALS_H
+bool	ft_str_only_contain(char *str, char *set)
+{
+	int	i;
 
-# include "minishell.h"
-# include <signal.h>
-
-extern int	g_sig;
-
-// ---------------------------------
-//
-// SIGNALS
-//
-// ---------------------------------
-void		handle_signals_exit_codes(t_minishell *data);
-
-void		switch_to_heredoc_mode(void);
-void		switch_to_child_mode(void);
-void		reset_signals(bool nl);
-
-#endif
+	i = -1;
+	while (str[++i])
+	{
+		if (ft_isalpha(str[i]))
+			continue ;
+		if (!ft_strchr(set, str[i]))
+			return (false);
+	}
+	return (true);
+}

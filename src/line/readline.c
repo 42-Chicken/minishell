@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/02/19 15:30:16 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:35:30 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,16 @@
 
 void	handle_readline(t_minishell *data)
 {
-	char		*line;
-	t_command	*command;
-	t_btree		*node;
-	t_list		*lst;
-	int			d;
-	char		**pipes;
+	char				*line;
+	t_command			*command;
+	t_btree				*node;
+	t_btree				*prev;
+	int					d;
+	char				**pipes;
+	t_btree_redir_node	*redir;
 
+	// t_btree_redirection_node *redir;
+	// t_btree_redirection_node	*redir;
 	line = readline(get_prompt(data));
 	// if (line && ft_strncmp(line, "exit", ft_strlen("exit")) == 0)
 	// {
@@ -38,34 +41,69 @@ void	handle_readline(t_minishell *data)
 	// }
 	(void)command;
 	(void)node;
+	data->execution_tree = NULL;
 	if (line && ft_strlen(line) > 0)
 	{
 		d = 0;
 		pipes = ft_split(line, '|');
-		node = btree_create_node(BTREE_COMMAND_TYPE);
-		node->right = NULL;
+		data->execution_tree = btree_create_node(BTREE_REDIRECTION_TYPE);
+		redir = safe_malloc(sizeof(t_btree_redir_node));
+		redir->type = REDIRECTION_HERE_DOC_TYPE;
+		redir->fd = 0;
+		redir->limiter = (char *)"EOF";
+		redir->file = (char *)"test";
+		redir->error = REDIRECTION_NO_ERROR;
+		redir->doubled = false;
+		data->execution_tree->content = redir;
+		prev = data->execution_tree;
+		// data->execution_tree->prev = node;
 		while (pipes[d])
 		{
-			command = safe_malloc(sizeof(t_command));
-			lst = ft_lstnew(command);
-			if (!node->left->content)
-				node->left->content = lst;
+			node = btree_create_node(BTREE_COMMAND_TYPE);
+			if (!data->execution_tree)
+			{
+				data->execution_tree = node;
+				prev = node;
+			}
 			else
-				ft_lstadd_back((t_list **)&node->left->content, lst);
+			{
+				prev->left = node;
+				node->prev = prev;
+				prev = node;
+			}
+			command = safe_malloc(sizeof(t_command));
 			ft_bzero(command, sizeof(t_command));
 			command->argv = ft_split(pipes[d], ' ');
 			command->envp = (char **)data->envp;
 			command->error = COMMAND_NO_ERROR;
+			command->out_pipe = (t_pipe){PIPE_NO_VALUE, STDOUT_FILENO};
+			command->in_pipe = (t_pipe){PIPE_NO_VALUE, PIPE_NO_VALUE};
+			node->content = (void *)command;
+			if (pipes[d + 1])
+			{
+				node = btree_create_node(BTREE_PIPE_TYPE);
+				prev->left = node;
+				node->prev = prev;
+			}
+			prev = node;
 			d++;
 		}
-		data->execution_tree = node;
+		// node = btree_create_node(BTREE_REDIRECTION_TYPE);
+		// redir = safe_malloc(sizeof(t_btree_redir_node));
+		// redir->type = REDIRECTION_HERE_DOC_TYPE;
+		// redir->file = (char *)"EOF";
+		// redir->error = REDIRECTION_NO_ERROR;
+		// redir->doubled = false;
+		// node->content = redir;
+		// node->prev = prev;
+		// prev->left = node;
+		data->current_line = line;
 		execution_pipeline(data);
+		if (data->current_line)
+			add_history(data->current_line);
 	}
-	else if ((!line || ft_strlen(line) <= 0) && data->exit_code == 0)
-		data->exit_code = 1;
 	if (line)
 	{
-		add_history(line);
 		parse_line(data, line);
 	}
 	if (!line)

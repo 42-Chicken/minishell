@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.h                                          :+:      :+:    :+:   */
+/*   is_number.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 08:30:22 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/02/20 09:26:12 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/20 09:26:19 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SIGNALS_H
+#include "minishell.h"
 
-# define SIGNALS_H
+bool	is_number(char *str)
+{
+	int	i;
 
-# include "minishell.h"
-# include <signal.h>
-
-extern int	g_sig;
-
-// ---------------------------------
-//
-// SIGNALS
-//
-// ---------------------------------
-void		handle_signals_exit_codes(t_minishell *data);
-
-void		switch_to_heredoc_mode(void);
-void		switch_to_child_mode(void);
-void		reset_signals(bool nl);
-
-#endif
+	i = 0;
+	if (!str)
+		return (0);
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (false);
+		i++;
+	}
+	return (true);
+}

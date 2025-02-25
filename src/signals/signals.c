@@ -6,44 +6,52 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:07:07 by romain            #+#    #+#             */
-/*   Updated: 2025/02/14 13:47:26 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:22:46 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "signals.h"
+#include "define.h"
+#include <signal.h>
 
-void	exit_sig(int sig)
+// 4 because there is the fd of the file and the dup fd of stdout
+void	close_heredoc(int sig)
 {
-	ft_fprintf(STDOUT_FILENO, RED);
-	rl_on_new_line();
 	g_sig = sig;
-	(void)sig;
+	ft_fprintf(STDOUT_FILENO, "\n");
+	close(HEREDOC_WRITTING_FD);
 }
 
 void	new_line(int sig)
 {
-	ft_fprintf(STDOUT_FILENO, "\n");
+	g_sig = sig;
+	ft_fprintf(STDOUT_FILENO, "\n", 0);
 	ft_fprintf(STDOUT_FILENO, YEL);
-	g_sig = sig;
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
 	(void)sig;
 }
 
-void	cancel(int sig)
+void	switch_to_child_mode(void)
 {
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-	g_sig = sig;
-	(void)sig;
+	signal(SIGINT, SIG_DFL);
+	signal(SIGTSTP, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }
 
-void	init_signals(t_minishell *data)
+void	switch_to_heredoc_mode(void)
 {
-	signal(SIGINT, new_line);
-	signal(SIGTSTP, cancel);
-	(void)data;
+	signal(SIGINT, close_heredoc);
+}
+
+void	reset_signals(bool nl)
+{
+	if (nl)
+		signal(SIGINT, new_line);
+	else
+		signal(SIGINT, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 }

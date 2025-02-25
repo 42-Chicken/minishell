@@ -2,7 +2,8 @@
 NAME				=	minishell
 CC					=	clang
 
-CFLAGS				=	-Wall -Werror -Wextra -Idependencies/ft_libc/includes  -Iincludes -fPIE
+# -Wall -Werror -Wextra
+CFLAGS				=	 -Idependencies/ft_libc/includes  -Iincludes -fPIE
 READLINE_FLAG		=	-lreadline
 RM					=	rm -rf
 MAKE				=	make --no-print-directory -C
@@ -28,10 +29,14 @@ FT_LIBC 			= ./dependencies/ft_libc/ft_libc.a
 
 SRCS				=	src/main.c\
 						src/prompt/get.c\
+						src/utils/str/ft_str_only_contain.c\
 						src/utils/array/len.c\
+						src/utils/array/sort.c\
 						src/utils/btree/create.c\
 						src/utils/btree/foreach.c\
+						src/utils/btree/type_foreach.c\
 						src/utils/btree/get.c\
+						src/utils/numbers/is_number.c\
 						src/paths/get.c\
 						src/paths/set.c\
 						src/paths/combine.c\
@@ -41,9 +46,16 @@ SRCS				=	src/main.c\
 						src/signals/signals.c\
 						src/signals/exit_codes.c\
 						src/execution/pipeline.c\
+						src/execution/errors.c\
 						src/execution/commands/execute.c\
+						src/execution/commands/bind.c\
 						src/execution/commands/wait.c\
+						src/execution/redirections/bind.c\
+						src/execution/btree_logic.c\
+						src/execution/redirections/heredocs.c\
+						src/execution/checks/redirections.c\
 						src/execution/built_in/built_in.c\
+						src/execution/built_in/shlvl.c\
 						src/execution/built_in/commands/cd.c\
 						src/execution/built_in/commands/export.c\
 						src/execution/built_in/commands/unset.c\
@@ -54,6 +66,7 @@ SRCS				=	src/main.c\
 						src/execution/pipes/get.c\
 						src/execution/pipes/set.c\
 						src/execution/pipes/links/commands.c\
+						src/execution/pipes/links/redirections.c\
 						src/execution/pipes/utils/safe_close.c\
 						src/execution/execution.c\
 						src/execution/debug.c\

@@ -12,7 +12,6 @@
 		"ft_fprintf.h": "c",
 		"paths.h": "c",
 		"execution.h": "c",
-		"errors.h": "c",
 		"compare": "c",
 		"array": "c",
 		"functional": "c",
@@ -21,6 +20,18 @@
 		"string_view": "c",
 		"unistd.h": "c",
 		"stdlib.h": "c",
-		"libft.h": "c"
+		"libft.h": "c",
+		"signals.h": "c",
+		"typeinfo": "c",
+		"deque": "c",
+		"string": "c",
+		"unordered_map": "c",
+		"vector": "c",
+		"initializer_list": "c",
+		"ranges": "c",
+		"span": "c",
+		"wait.h": "c",
+		"random": "c",
+		"define.h": "c"
 	}
 }

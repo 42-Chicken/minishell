@@ -1,27 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.h                                           :+:      :+:    :+:   */
+/*   sort.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/17 08:36:57 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/17 08:39:44 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/02/20 11:13:37 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/20 11:17:30 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ERRORS_H
+#include "minishell.h"
 
-# define ERRORS_H
+void	char_sort_array(char **tab)
+{
+	int		i;
+	int		y;
+	int		len;
+	char	*temp;
 
-# include "minishell.h"
-
-// ---------------------------------
-//
-// ERRORS
-//
-// ---------------------------------
-# define FAIL_PIPE_MESSAGE "a pipe failed to create !"
-# define FAIL_PIPE_EXIT_CODE 1
-
-#endif
+	if (!tab)
+		return ;
+	i = -1;
+	len = char_array_len(tab);
+	while (++i < len && tab[i])
+	{
+		y = -1;
+		while (++y < len && tab[y])
+		{
+			if (ft_strncmp(tab[i], tab[y], ft_strlen(tab[i])) < 0)
+			{
+				temp = tab[i];
+				tab[i] = tab[y];
+				tab[y] = temp;
+			}
+		}
+	}
+}

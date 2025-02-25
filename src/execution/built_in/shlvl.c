@@ -1,20 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set.c                                              :+:      :+:    :+:   */
+/*   shlvl.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/14 12:08:43 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 09:16:42 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/02/20 09:24:06 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/02/25 09:24:06 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "paths.h"
 #include "define.h"
 
-void	set_current_path(t_minishell *data, char *new_path)
+#define SHLVL_TO_HIGH_ERROR "bash: warning: \
+shell level (%d) too high, resetting to 1\n"
+
+void	update_shlvl(t_minishell *data, char *str, int d)
 {
-	set_env(&data->envp, ENV_PWD, new_path);
+	int	value;
+
+	value = 0;
+	if (str && is_number(str))
+		value = ft_atoi(str) + d;
+	if (value < 0)
+		value = 0;
+	if (value > 1000 && d == 0)
+	{
+		ft_fprintf(STDERR_FILENO, SHLVL_TO_HIGH_ERROR, value);
+		value = 0;
+	}
+	set_env(&data->envp, ENV_SHLVL, ft_itoa(value));
 }

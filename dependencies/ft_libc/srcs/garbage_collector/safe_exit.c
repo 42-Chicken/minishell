@@ -6,10 +6,11 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 08:32:36 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 11:19:39 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:01:17 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft_fprintf.h"
 #include "garbage.h"
 
 void	safe_exit(int exit_code)
