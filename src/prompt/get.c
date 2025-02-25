@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 16:27:31 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 09:20:56 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:47:05 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ const char	*get_prompt(t_minishell *data)
 	else
 		ft_fprintf(STDOUT_FILENO, GRN);
 	if (home && ft_strncmp(get_current_path(data), home, MAX_PATH_LENGTH) == 0)
-		prompt = ft_strreplace(prompt, "$PWD",
-				ft_strdup(HOME_DIRECTORY_REPRESENTATION));
+		prompt = ft_strreplace(prompt, "$PWD", HOME_DIRECTORY_REPRESENTATION);
 	else
 		prompt = ft_strreplace(prompt, "$PWD", get_current_folder_name());
 	if (access(".git", F_OK) != -1)

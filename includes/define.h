@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 08:36:57 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 09:28:12 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:47:11 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 //
 // ---------------------------------
 
-# define HOME_DIRECTORY_REPRESENTATION '~'
+# define HOME_DIRECTORY_REPRESENTATION "~"
 
 // ---------------------------------
 //

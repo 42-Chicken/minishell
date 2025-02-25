@@ -6,11 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:29:52 by rguigneb          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/02/19 15:30:10 by rguigneb         ###   ########.fr       */
-=======
-/*   Updated: 2025/02/20 15:27:29 by rguigneb         ###   ########.fr       */
->>>>>>> romain
+/*   Updated: 2025/02/25 09:46:10 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,34 +28,6 @@ static t_pipe	init_prev_command_pipe(t_btree *cmd_node)
 	return (cmd->out_pipe);
 }
 
-<<<<<<< HEAD
-void	link_commands_redirections(t_btree *cmd_node)
-{
-	t_pipe						pipe;
-	t_btree						*node;
-	t_command					*current;
-	t_btree_redirection_node	*redir_node;
-
-	pipe = DEFAULT_PIPE;
-	node = cmd_node;
-	if (!cmd_node || !cmd_node->content || cmd_node->type != BTREE_COMMAND_TYPE)
-		return ;
-	while (node)
-	{
-		if (node->type == BTREE_REDIRECTION_TYPE)
-		{
-			redir_node = (t_btree_redirection_node	*)node->content;
-			if (redir_node)
-				pipe = init_prev_command_pipe(node->prev);
-			current = (t_command *)node->left->content;
-			current->in_pipe = pipe;
-		}
-		node = node->left;
-	}
-}
-
-=======
->>>>>>> romain
 void	link_commands_pipes(t_btree *cmd_node)
 {
 	t_pipe		pipe;

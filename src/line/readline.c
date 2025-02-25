@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/02/25 09:35:30 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:47:51 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,16 @@ void	handle_readline(t_minishell *data)
 	{
 		d = 0;
 		pipes = ft_split(line, '|');
-		data->execution_tree = btree_create_node(BTREE_REDIRECTION_TYPE);
-		redir = safe_malloc(sizeof(t_btree_redir_node));
-		redir->type = REDIRECTION_HERE_DOC_TYPE;
-		redir->fd = 0;
-		redir->limiter = (char *)"EOF";
-		redir->file = (char *)"test";
-		redir->error = REDIRECTION_NO_ERROR;
-		redir->doubled = false;
-		data->execution_tree->content = redir;
-		prev = data->execution_tree;
+		// data->execution_tree = btree_create_node(BTREE_REDIRECTION_TYPE);
+		// redir = safe_malloc(sizeof(t_btree_redir_node));
+		// redir->type = REDIRECTION_HERE_DOC_TYPE;
+		// redir->fd = 0;
+		// redir->limiter = (char *)"EOF";
+		// redir->file = (char *)"test";
+		// redir->error = REDIRECTION_NO_ERROR;
+		// redir->doubled = false;
+		// data->execution_tree->content = redir;
+		// prev = data->execution_tree;
 		// data->execution_tree->prev = node;
 		while (pipes[d])
 		{
