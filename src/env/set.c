@@ -6,12 +6,37 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 08:54:01 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 11:59:13 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/26 10:17:25 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 #include "minishell.h"
+
+void	remove_from_env_index(const char ***envp, int index)
+{
+	int		i;
+	int		k;
+	size_t	new_len;
+	char	**new_env;
+
+	i = 0;
+	k = 0;
+	if (!envp || !*envp || index < 0)
+		return ;
+	new_len = get_env_length(*envp);
+	new_env = safe_malloc(sizeof(char *) * new_len);
+	send_pointer_to_main_context(new_env);
+	while (*envp && (*envp)[i])
+	{
+		if (i == index)
+			i++;
+		else
+			new_env[k++] = (char *)(*envp)[i++];
+	}
+	new_env[k] = NULL;
+	*envp = (const char **)new_env;
+}
 
 void	remove_from_env(const char ***envp, const char *variable)
 {
@@ -67,7 +92,7 @@ void	set_env(const char ***envp, const char *variable, char *value)
 
 	if (!envp || !variable)
 		return ;
-	index = get_env_index(*envp, variable);
+	index = custom_get_var_env_index(*envp, variable);
 	new_line = ft_strjoin(variable, "=");
 	if (!value && index != -1)
 	{

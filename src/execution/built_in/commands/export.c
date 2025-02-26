@@ -6,78 +6,63 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 09:30:29 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/26 10:43:36 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "define.h"
+#include "env.h"
+#include "minishell.h"
 
 #define EXPORT_INVALID_ID "minishell\
 : export: `%s': not a valid identifier\n"
 
-static char	*get_var_value(char *str)
+static bool	handle_addition(t_minishell *data, char *name, char *str)
 {
-	char	*start;
-
-	start = ft_strchr(str, '=');
-	if (!start)
-		return (NULL);
-	start = ft_substr(str, start - str + 1, ft_strlen(str));
-	return (start);
-}
-
-static char	*get_var_name(char *str)
-{
-	char	*start;
-
-	start = ft_strchr(str, '=');
-	if (!start)
-		return (str);
-	str = ft_substr(str, 0, start - str);
-	return (str);
-}
-
-static char	*get_formatted_env_line(char *line)
-{
-	char	*result;
 	char	*value;
+	char	*old_value;
+	char	*joined;
 
-	result = get_var_name(line);
-	value = get_var_value(line);
+	value = get_var_value(str);
 	if (!value)
-		return (result);
-	result = ft_strjoin(result, ft_strdup("=\""));
-	result = ft_strjoin(result, value);
-	result = ft_strjoin(result, ft_strdup("\""));
-	return (result);
+		value = ft_strdup("");
+	value = ft_strreplace(value, "\"", "");
+	old_value = (char *)get_env(data->envp, name);
+	if (!old_value)
+		old_value = ft_strdup("");
+	joined = ft_strjoin(old_value, value);
+	if (joined)
+		set_env(&data->envp, name, joined);
+	return (true);
 }
 
-void	handle_env_update(t_minishell *data, char *str)
+static bool	handle_env_update(t_minishell *data, char *str)
 {
 	char	*name;
 	int		index;
 
 	name = get_var_name(str);
 	if (!name)
-		return ;
+		return (false);
 	if (!ft_str_only_contain(name, "_"))
-	{
-		ft_fprintf(STDERR_FILENO, EXPORT_INVALID_ID, name);
-		return ;
-	}
+		return (ft_fprintf(STDERR_FILENO, EXPORT_INVALID_ID, name), false);
+	if (ft_strlen(str) >= 3 && ft_strncmp(str + ft_strlen(name), "+=", 2) == 0)
+		return (handle_addition(data, name, str));
 	str = ft_strdup(str);
+	str = ft_strreplace(str, "\"", "");
 	if (ft_strncmp(name, ENV_SHLVL, ft_strlen(name)) == 0)
-	{
-		update_shlvl(data, get_var_value(str), 0);
-		return ;
-	}
+		return (update_shlvl(data, get_var_value(str), 0), false);
 	send_pointer_to_main_context(str);
-	index = get_raw_env_index(data->envp, name);
+	index = custom_get_var_env_index(data->envp, name);
+	printf("%s %d\n",name, index);
 	if (index != -1)
-		data->envp[index] = str;
+	{
+		if (ft_strlen(str + ft_strlen(name)) > 0)
+			data->envp[index] = str;
+	}
 	else
 		add_to_env(&data->envp, str);
+	return (true);
 }
 
 int	export_command(t_minishell *data, t_command *command)

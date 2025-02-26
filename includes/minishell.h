@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 11:26:04 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/26 10:30:18 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,6 @@ bool						is_number(char *str);
 void						update_shlvl(t_minishell *data, char *str, int d);
 void						char_sort_array(char **tab);
 bool						ft_str_only_contain(char *str, char *set);
+int							ft_max(int a, int b);
 
 #endif

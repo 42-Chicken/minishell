@@ -36,6 +36,7 @@ SRCS				=	src/main.c\
 						src/utils/btree/type_foreach.c\
 						src/utils/btree/get.c\
 						src/utils/numbers/is_number.c\
+						src/utils/numbers/max.c\
 						src/paths/get.c\
 						src/paths/set.c\
 						src/paths/combine.c\
@@ -69,6 +70,7 @@ SRCS				=	src/main.c\
 						src/execution/pipes/utils/safe_close.c\
 						src/execution/execution.c\
 						src/execution/debug.c\
+						src/env/utils.c\
 						src/env/get.c\
 						src/env/set.c
 

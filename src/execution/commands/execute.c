@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 14:24:39 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 10:03:19 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/26 09:39:20 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,17 +72,17 @@ static bool	can_execute(t_btree *cmd_node, t_command *command)
 	t_btree_redir_node	*redir;
 
 	node = cmd_node->prev;
-	redir = (t_btree_redir_node *)node->content;
 	if (node && node->content && node->type == BTREE_REDIRECTION_TYPE)
 	{
+		redir = (t_btree_redir_node *)node->content;
 		if (redir->error != REDIRECTION_NO_ERROR
 			&& redir->type == REDIRECTION_IN_TYPE)
 			return (false);
 	}
 	node = cmd_node->left;
-	redir = (t_btree_redir_node *)node->content;
 	if (node && node->content && node->type == BTREE_REDIRECTION_TYPE)
 	{
+		redir = (t_btree_redir_node *)node->content;
 		if (redir->error != REDIRECTION_NO_ERROR
 			&& redir->type == REDIRECTION_OUT_TYPE)
 			return (false);
