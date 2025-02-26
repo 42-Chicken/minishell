@@ -6,12 +6,38 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 08:30:12 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/26 10:19:07 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/26 11:06:34 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 #include "minishell.h"
+
+int	custom_get_var_env_index(const char **envp, const char *variable)
+{
+	int	i;
+
+	i = -1;
+	if (!envp || !*envp || !variable)
+		return (-1);
+	while (envp[++i])
+	{
+		if (ft_strchr(envp[i], '='))
+		{
+			if ((int)ft_strlen(variable) == ft_strchr(envp[i], '=') - envp[i]
+				&& ft_strncmp(envp[i], variable, ft_strchr(envp[i], '=')
+					- envp[i]) == 0)
+				return (i);
+		}
+		else
+		{
+			if (ft_strlen(envp[i]) == ft_strlen(variable) && ft_strncmp(envp[i],
+					variable, ft_strlen(variable)) == 0)
+				return (i);
+		}
+	}
+	return (-1);
+}
 
 char	*get_var_value(char *str)
 {

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/26 10:43:36 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/26 11:06:15 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static bool	handle_env_update(t_minishell *data, char *str)
 		return (update_shlvl(data, get_var_value(str), 0), false);
 	send_pointer_to_main_context(str);
 	index = custom_get_var_env_index(data->envp, name);
-	printf("%s %d\n",name, index);
+	printf("%s %d\n", name, index);
 	if (index != -1)
 	{
 		if (ft_strlen(str + ft_strlen(name)) > 0)
