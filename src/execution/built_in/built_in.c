@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:31:09 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 09:27:46 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/27 08:35:32 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 
 static bool	is_same_str(char *str1, char *str2)
 {
-	return (ft_strncmp(str1, str2, ft_strlen(str1)) == 0);
+	return (ft_strlen(str1) == ft_strlen(str2) && ft_strncmp(str1, str2,
+			ft_strlen(str1)) == 0);
 }
 
 static void	handle_execution(t_minishell *data, t_command *command,
