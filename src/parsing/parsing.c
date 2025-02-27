@@ -6,7 +6,7 @@
 /*   By: efranco <efranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/27 14:07:34 by efranco          ###   ########.fr       */
+/*   Updated: 2025/02/27 14:49:46 by efranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,13 @@ int	without_quote(char *str)
 	}
 	return (size);
 }
-char	*extract_quoted(char *str)
+char	*extract_quoted(char *str, t_token **head)
 {
 	char	*new_line;
 	char	flag;
 	int		i;
 	int		j;
+	int		h;
 
 	new_line = safe_malloc(sizeof(char) * without_quote(str) + 1);
 	i = 0;
@@ -97,10 +98,14 @@ char	*extract_quoted(char *str)
 		{
 			flag = str[i];
 			i++;
+			h = i;
 			while (str[i] && str[i] != flag)
 				i++;
 			if (str[i] == flag)
+			{
+				add_token(head, TOKEN_WORD, str + h, i - h);
 				i++;
+			}
 			else
 				return (NULL);
 		}
@@ -134,12 +139,10 @@ t_token	*extract_arg(char *line)
 	t_token	*args;
 	int		i;
 	int		h;
-	char	*new_line;
 
 	i = 0;
 	h = 0;
 	args = NULL;
-	new_line = extract_quoted(line);
 	while (line[i])
 	{
 		if (is_keyword(line[i]) == 1)
@@ -240,7 +243,8 @@ t_token	*tokenize(char *input)
 				return (NULL);
 			}
 		}
-		i++;
+		else
+			i++;
 	}
 	return (tokens);
 }
@@ -249,11 +253,23 @@ void	parse_line(t_minishell *data, char *line)
 {
 	t_token	*tokens;
 	t_token	*args;
+	t_token	*quoted;
+	char	*new_line;
 
-	tokens = tokenize(line);
-	args = extract_arg(line);
-	if (extract_quoted(line) == NULL)
-		printf("Erreur de quote");
+	quoted = NULL;
+	new_line = extract_quoted(line, &quoted);
+	if (new_line == NULL)
+	{
+		ft_fprintf(STDERR_FILENO, "Erreur de quote\n");
+		return ;
+	}
+	tokens = tokenize(new_line);
+	args = extract_arg(new_line);
+	while (quoted)
+	{
+		printf("Quoted : %s\n", quoted->value);
+		quoted = quoted->next;
+	}
 	while (tokens)
 	{
 		printf("Type de Token : %d\n", tokens->type);

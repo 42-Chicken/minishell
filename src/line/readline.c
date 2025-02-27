@@ -6,7 +6,7 @@
 /*   By: efranco <efranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/02/25 13:44:02 by efranco          ###   ########.fr       */
+/*   Updated: 2025/02/27 14:50:41 by efranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	handle_readline(t_minishell *data)
 		// node->prev = prev;
 		// prev->left = node;
 		data->current_line = line;
-		execution_pipeline(data);
+		// execution_pipeline(data);
 		if (data->current_line)
 			add_history(data->current_line);
 	}

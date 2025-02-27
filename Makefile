@@ -109,8 +109,9 @@ $(FT_LIBC) :
 	fi;
 	@$(MAKE) $(shell dirname $@) SAFE=1
 
+# --track-fds=yes --trace-children=yes
 dev	 : clean-objs all
-	valgrind --suppressions=readline.supp -s --track-fds=yes --trace-children=yes --show-leak-kinds=all --leak-check=full ./minishell
+	valgrind --suppressions=readline.supp -s --show-leak-kinds=all --leak-check=full ./minishell
 
 header:
 		@printf "\
