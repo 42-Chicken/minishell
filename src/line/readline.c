@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: efranco <efranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/02/25 09:47:51 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/25 13:44:02 by efranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	handle_readline(t_minishell *data)
 	data->execution_tree = NULL;
 	if (line && ft_strlen(line) > 0)
 	{
+		parse_line(data, line);
 		d = 0;
 		pipes = ft_split(line, '|');
 		// data->execution_tree = btree_create_node(BTREE_REDIRECTION_TYPE);
@@ -101,10 +102,6 @@ void	handle_readline(t_minishell *data)
 		execution_pipeline(data);
 		if (data->current_line)
 			add_history(data->current_line);
-	}
-	if (line)
-	{
-		parse_line(data, line);
 	}
 	if (!line)
 	{
