@@ -6,7 +6,7 @@
 /*   By: efranco <efranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:10:17 by efranco           #+#    #+#             */
-/*   Updated: 2025/02/25 15:21:21 by efranco          ###   ########.fr       */
+/*   Updated: 2025/02/28 12:09:42 by efranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,16 @@ char	*ft_strndup(char *str, int n)
 	}
 	copy[i] = '\0';
 	return(copy);
+}
+int	ft_tokensize(t_token *lst)
+{
+	size_t	i;
+
+	i = 0;
+	while (lst != NULL)
+	{
+		i++;
+		lst = lst->next;
+	}
+	return (i);
 }
