@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 08:54:01 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/26 10:17:25 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/27 09:16:29 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,15 @@ void	remove_from_env_index(const char ***envp, int index)
 	while (*envp && (*envp)[i])
 	{
 		if (i == index)
+		{
+			context_safe_free(0, (void *)(*envp)[i]);
 			i++;
+		}
 		else
 			new_env[k++] = (char *)(*envp)[i++];
 	}
 	new_env[k] = NULL;
+	context_safe_free(0, envp);
 	*envp = (const char **)new_env;
 }
 
@@ -55,11 +59,15 @@ void	remove_from_env(const char ***envp, const char *variable)
 	while (*envp && (*envp)[i])
 	{
 		if (ft_strncmp(variable, (*envp)[i], ft_strlen(variable)) == 0)
+		{
+			context_safe_free(0, (void *)(*envp)[i]);
 			i++;
+		}
 		else
 			new_env[k++] = (char *)(*envp)[i++];
 	}
 	new_env[k] = NULL;
+	context_safe_free(0, envp);
 	*envp = (const char **)new_env;
 }
 
@@ -82,6 +90,7 @@ void	add_to_env(const char ***envp, char *line)
 		i++;
 	}
 	new_env[i] = line;
+	context_safe_free(0, envp);
 	*envp = (const char **)new_env;
 }
 
@@ -95,10 +104,7 @@ void	set_env(const char ***envp, const char *variable, char *value)
 	index = custom_get_var_env_index(*envp, variable);
 	new_line = ft_strjoin(variable, "=");
 	if (!value && index != -1)
-	{
-		remove_from_env(envp, new_line);
-		return ;
-	}
+		return (remove_from_env(envp, new_line));
 	new_line = ft_strjoin(new_line, value);
 	send_pointer_to_main_context(new_line);
 	if (index == -1)

@@ -40,6 +40,7 @@ bool	delete_from_context(void *pointer, int context);
 void	reset_all_garbages(void);
 void	send_pointer_to_upper_context(void *ptr);
 void	send_pointer_to_main_context(void *pointer);
+void	context_safe_free(int context, void *pointer);
 
 void	free_all_contexts_garbage(void);
 

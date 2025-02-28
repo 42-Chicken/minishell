@@ -6,11 +6,20 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 08:31:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 11:19:39 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/27 09:12:29 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "garbage.h"
+
+void	context_safe_free(int context, void *pointer)
+{
+	if (context < 0 || context >= CONTEXT_MAX)
+		return ;
+	if (!delete_from_context(pointer, context))
+		return ;
+	free(pointer);
+}
 
 void	safe_free(void *pointer)
 {
@@ -19,9 +28,7 @@ void	safe_free(void *pointer)
 	context = get_current_context();
 	if (!context)
 		return ;
-	if (!delete_from_context(pointer, *context))
-		return ;
-	free(pointer);
+	context_safe_free(*context, pointer);
 }
 
 bool	delete_pointer_from_list(t_list **head, t_list *lst, void *pointer)

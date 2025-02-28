@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 11:26:16 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/28 08:52:18 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,9 +122,9 @@ int							exit_command(t_minishell *data, t_command *command);
 // ---------------------------------
 
 void						handle_commands(t_minishell *data, t_btree *node);
-void						process_and_logic(t_minishell *data, t_btree *node);
-void						process_or_logic(t_minishell *data, t_btree *node);
-void						recusrive_execute_binary_tree(t_minishell *data,
+bool						process_and_logic(t_minishell *data, t_btree *node);
+bool						process_or_logic(t_minishell *data, t_btree *node);
+bool						recusrive_execute_binary_tree(t_minishell *data,
 								t_btree *node);
 void						save_heredocs_tmp_files(t_minishell *data);
 void						delete_heredocs_tmp_files(t_minishell *data);
