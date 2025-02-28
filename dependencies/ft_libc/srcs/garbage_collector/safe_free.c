@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 08:31:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/27 09:12:29 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/28 13:46:07 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,35 +70,4 @@ bool	delete_from_context(void *pointer, int context)
 	if (!garbage_head || !*garbage_head)
 		return (true);
 	return (delete_pointer_from_list(garbage_head, NULL, pointer));
-}
-
-void	free_garbage(int context)
-{
-	t_list	*lst;
-	t_list	**garbage_head;
-	void	*ptr;
-
-	if (context < 0 || context >= CONTEXT_MAX)
-		return ;
-	garbage_head = get_garbage_from_context(context);
-	if (!garbage_head || !*garbage_head)
-		return ;
-	lst = *garbage_head;
-	while (lst)
-	{
-		ptr = lst->content;
-		if (delete_from_context(ptr, context) && ptr)
-			free(ptr);
-		lst = *garbage_head;
-	}
-	*garbage_head = NULL;
-}
-
-void	free_all_contexts_garbage(void)
-{
-	int	context;
-
-	context = -1;
-	while (++context < CONTEXT_MAX)
-		free_garbage(context);
 }

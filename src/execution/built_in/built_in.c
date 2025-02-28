@@ -6,19 +6,13 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:31:09 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/27 08:35:32 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/28 11:00:21 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "define.h"
 #include "execution.h"
 #include "minishell.h"
-
-static bool	is_same_str(char *str1, char *str2)
-{
-	return (ft_strlen(str1) == ft_strlen(str2) && ft_strncmp(str1, str2,
-			ft_strlen(str1)) == 0);
-}
 
 static void	handle_execution(t_minishell *data, t_command *command,
 		int (*func)(t_minishell *, t_command *))

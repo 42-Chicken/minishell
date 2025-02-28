@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/02/28 10:17:20 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/02/28 14:37:31 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ void	handle_readline(t_minishell *data)
 	// t_btree_redirection_node *redir;
 	// t_btree_redirection_node	*redir;
 	line = readline(get_prompt(data));
+	if (line && ft_strlen(line) > 0)
+		add_history(line);
+	line = expand(data, line);
 	// if (line && ft_strncmp(line, "exit", ft_strlen("exit")) == 0)
 	// {
 	// 	// d = ft_split(line, ' ');
@@ -41,7 +44,7 @@ void	handle_readline(t_minishell *data)
 	// }
 	(void)command;
 	(void)node;
-	
+
 	data->execution_tree = btree_create_node(BTREE_AND_TYPE);
 	data->execution_tree->right = btree_create_node(BTREE_COMMAND_TYPE);
 	command = safe_malloc(sizeof(t_command));
@@ -128,8 +131,6 @@ void	handle_readline(t_minishell *data)
 		// prev->left = node;
 		data->current_line = line;
 		execution_pipeline(data);
-		if (data->current_line)
-			add_history(data->current_line);
 	}
 	if (line)
 	{
@@ -140,5 +141,5 @@ void	handle_readline(t_minishell *data)
 		ft_fprintf(STDOUT_FILENO, "\n");
 		data->stop = true;
 	}
-	free(line);
+	safe_free(line);
 }
