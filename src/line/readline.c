@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/03/03 10:30:06 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/03 10:38:28 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,14 @@
 
 void	handle_readline(t_minishell *data)
 {
+	char		*line;
+	t_command	*command;
+	t_btree		*node;
+	t_btree		*prev;
+	int			d;
+	char		**pipes;
+
+	// t_btree_redir_node	*redir;
 	char		*line;
 	t_command	*command;
 	t_btree		*node;
@@ -44,7 +52,6 @@ void	handle_readline(t_minishell *data)
 	// }
 	(void)command;
 	(void)node;
-
 	data->execution_tree = btree_create_node(BTREE_AND_TYPE);
 	data->execution_tree->right = btree_create_node(BTREE_COMMAND_TYPE);
 	command = safe_malloc(sizeof(t_command));
