@@ -6,13 +6,13 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:00:26 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 11:39:39 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/03 10:54:30 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "define.h"
 #include "minishell.h"
 #include "signals.h"
-#include "define.h"
 
 static void	fill_file(t_minishell *data, int fd, char *limiter)
 {
@@ -25,7 +25,7 @@ static void	fill_file(t_minishell *data, int fd, char *limiter)
 	while (g_sig == 0)
 	{
 		ft_fprintf(STDOUT_FILENO, HEREDOC_PROMPT);
-		line = get_next_line(new); // expansion !
+		line = expand(data, get_next_line(new));
 		if (g_sig != 0)
 			break ;
 		if (!line)
