@@ -1,25 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strings.h                                       :+:      :+:    :+:   */
+/*   endswith.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/02 15:03:54 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/03 08:43:22 by rguigneb         ###   ########.fr       */
+/*   Created: 2024/12/05 17:55:16 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/03/03 09:12:50 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_STRINGS_H
-# define FT_STRINGS_H
+#include "minishell.h"
 
-# include "garbage.h"
-# include <stdbool.h>
-# include <stdlib.h>
+int	endswith(char *str, char *substr)
+{
+	int	i;
+	int	k;
+	int	sub_len;
+	int	str_len;
 
-bool	ft_isspace(int c);
-char	*ft_strreplace(char *str, char *mask, char *value);
-char	*ft_strnjoin(char const *s1, char const *s2, size_t max);
-char	*ft_strreplace_at_index(char *str, int index, int max, char *value);
-
-#endif
+	if (!str)
+		return (0);
+	if (!substr)
+		return (1);
+	sub_len = ft_strlen(substr);
+	str_len = ft_strlen(str);
+	i = str_len - 1;
+	while (str[i] && str_len - i <= sub_len)
+	{
+		k = 0;
+		while (str[i + k] && str[i + k] == substr[k])
+			k++;
+		if (substr[k] == 0)
+			return (1);
+		i--;
+	}
+	return (0);
+}

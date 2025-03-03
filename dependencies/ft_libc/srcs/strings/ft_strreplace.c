@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 09:06:24 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/28 13:54:24 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/03 08:54:21 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,24 @@ char	*ft_strreplace(char *str, char *mask, char *value)
 			i += get_next_cmp_index(str, mask, i);
 		}
 	}
+	return (result);
+}
+
+char	*ft_strreplace_at_index(char *str, int index, int max, char *value)
+{
+	char	*result;
+	char	*last_part;
+	size_t	i;
+
+	i = 0;
+	result = ft_strdup("");
+	if (!str)
+		return (NULL);
+	if (!value)
+		return (ft_strdup(str));
+	result = ft_substr(str, 0, index);
+	last_part = ft_substr(str + index + max, 0, ft_strlen(str + index + max));
+	result = ft_strjoin(result, value);
+	result = ft_strjoin(result, last_part);
 	return (result);
 }

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/28 12:30:02 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/03 10:14:52 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,9 @@ void						handle_readline(t_minishell *data);
 //
 // ---------------------------------
 char						*expand(t_minishell *data, char *str);
+char						*handle_wildcard(t_minishell *data, char *str);
+size_t						get_dir_files_count(char *path);
+char						**get_dir_files_into_array(char *path);
 
 // ---------------------------------
 //
@@ -89,5 +92,7 @@ void						char_sort_array(char **tab);
 bool						ft_str_only_contain(char *str, char *set);
 int							ft_max(int a, int b);
 bool						is_same_str(char *str1, char *str2);
+int							startswith(char *str, char *substr);
+int							endswith(char *str, char *substr);
 
 #endif
