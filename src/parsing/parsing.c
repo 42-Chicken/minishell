@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: efranco <efranco@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/27 11:55:35 by efranco          ###   ########.fr       */
+/*   Updated: 2025/03/03 10:42:21 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ t_token	*extract_arg(char *line)
 	i = 0;
 	h = 0;
 	args = NULL;
+	(void)new_line;
 	// new_line = extract_quoted(line);
 	while (line[i])
 	{
@@ -229,6 +230,9 @@ void	parse_line(t_minishell *data, char *line)
 	t_token	*tokens;
 	t_token	*args;
 
+	(void)tokens;
+	(void)args;
+	(void)data;
 	// tokens = tokenize(line);
 	// args = extract_arg(line);
 	without_quote(line);
