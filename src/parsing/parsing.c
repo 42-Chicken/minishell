@@ -6,7 +6,7 @@
 /*   By: efranco <efranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/28 15:20:31 by efranco          ###   ########.fr       */
+/*   Updated: 2025/03/04 14:58:46 by efranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ t_token	*add_token(t_token **head, TokenType type, char *value, int i, int h)
 		new->value = ft_strdup(value);
 	else
 		new->value = ft_strndup(value, i);
+	// if (type == TOKEN_WORD)
+	// 	new->value = ft_strtrim(new->value, SPACES);
 	new->next = NULL;
 	new->index = h;
 	new->num = -1;
@@ -174,7 +176,7 @@ t_token	*extract_arg(char *line, t_token **head)
 		}
 		i++;
 	}
-	if (h < i)
+	if (line[h])
 		add_token(&args, TOKEN_WORD, line + h, i - h, h);
 	return (args);
 }
@@ -183,6 +185,7 @@ t_token	*tokenize(char *input)
 	t_token	*tokens;
 	t_token	*args;
 	int		i;
+	char	flag;
 
 	tokens = NULL;
 	args = NULL;
@@ -265,6 +268,14 @@ t_token	*tokenize(char *input)
 				return (NULL);
 			}
 		}
+		else if (input[i] == '"' || input[i] == '\'')
+		{
+			flag = input[i];
+			i++;
+			while (input[i] != flag)
+				i++;
+			i++;
+		}
 		else
 			i++;
 	}
@@ -324,30 +335,35 @@ void init_all_index(t_token *tokens, t_token *args, t_token *quoted)
 		i++;
 	}
 }
+void convert_to_btree(t_token *keywords, t_token *args, t_token *quoted)
+{
+
+}
+
 void	parse_line(t_minishell *data, char *line)
 {
-	t_token	*tokens;
+	t_token	*keywords;
 	t_token	*args;
 	t_token	*quoted;
 
 	quoted = NULL;
-	tokens = tokenize(line);
+	keywords = tokenize(line);
 	args = extract_arg(line, &quoted);
 	if (args == NULL)
 	{
 		ft_fprintf(STDERR_FILENO, "Erreur de quote\n");
 		return ;
 	}
-	init_all_index(tokens, args, quoted);
+	init_all_index(keywords, args, quoted);
 	while (quoted)
 	{
 		printf("Quoted : [%s] | Index : [%d]\n", quoted->value, quoted->num);
 		quoted = quoted->next;
 	}
-	while (tokens)
+	while (keywords)
 	{
-		printf("Token : [%s] | Index : [%d]\n", tokens->value, tokens->num);
-		tokens = tokens->next;
+		printf("Token : [%s] | Index : [%d]\n", keywords->value, keywords->num);
+		keywords = keywords->next;
 	}
 	while (args)
 	{
