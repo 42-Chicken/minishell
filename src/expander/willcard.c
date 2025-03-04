@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 08:32:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/03 10:34:47 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/04 13:02:26 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*filter_wildcard(char *str, size_t i)
 	patern = get_patern(str, i);
 	result = ft_strdup("");
 	dirs_names = get_dir_files_into_array((char *)".");
-	while (dirs_names[++y])
+	while (dirs_names && dirs_names[++y])
 	{
 		if (ft_fnmatch(patern, dirs_names[y]))
 		{
