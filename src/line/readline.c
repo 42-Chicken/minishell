@@ -6,7 +6,7 @@
 /*   By: efranco <efranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/02/27 14:50:41 by efranco          ###   ########.fr       */
+/*   Updated: 2025/03/05 09:02:29 by efranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,50 +45,50 @@ void	handle_readline(t_minishell *data)
 	if (line && ft_strlen(line) > 0)
 	{
 		parse_line(data, line);
-		d = 0;
-		pipes = ft_split(line, '|');
-		// data->execution_tree = btree_create_node(BTREE_REDIRECTION_TYPE);
-		// redir = safe_malloc(sizeof(t_btree_redir_node));
-		// redir->type = REDIRECTION_HERE_DOC_TYPE;
-		// redir->fd = 0;
-		// redir->limiter = (char *)"EOF";
-		// redir->file = (char *)"test";
-		// redir->error = REDIRECTION_NO_ERROR;
-		// redir->doubled = false;
-		// data->execution_tree->content = redir;
-		// prev = data->execution_tree;
-		// data->execution_tree->prev = node;
-		while (pipes[d])
-		{
-			node = btree_create_node(BTREE_COMMAND_TYPE);
-			if (!data->execution_tree)
-			{
-				data->execution_tree = node;
-				prev = node;
-			}
-			else
-			{
-				prev->left = node;
-				node->prev = prev;
-				prev = node;
-			}
-			command = safe_malloc(sizeof(t_command));
-			ft_bzero(command, sizeof(t_command));
-			command->argv = ft_split(pipes[d], ' ');
-			command->envp = (char **)data->envp;
-			command->error = COMMAND_NO_ERROR;
-			command->out_pipe = (t_pipe){PIPE_NO_VALUE, STDOUT_FILENO};
-			command->in_pipe = (t_pipe){PIPE_NO_VALUE, PIPE_NO_VALUE};
-			node->content = (void *)command;
-			if (pipes[d + 1])
-			{
-				node = btree_create_node(BTREE_PIPE_TYPE);
-				prev->left = node;
-				node->prev = prev;
-			}
-			prev = node;
-			d++;
-		}
+		// d = 0;
+		// pipes = ft_split(line, '|');
+		// // data->execution_tree = btree_create_node(BTREE_REDIRECTION_TYPE);
+		// // redir = safe_malloc(sizeof(t_btree_redir_node));
+		// // redir->type = REDIRECTION_HERE_DOC_TYPE;
+		// // redir->fd = 0;
+		// // redir->limiter = (char *)"EOF";
+		// // redir->file = (char *)"test";
+		// // redir->error = REDIRECTION_NO_ERROR;
+		// // redir->doubled = false;
+		// // data->execution_tree->content = redir;
+		// // prev = data->execution_tree;
+		// // data->execution_tree->prev = node;
+		// while (pipes[d])
+		// {
+		// 	node = btree_create_node(BTREE_COMMAND_TYPE);
+		// 	if (!data->execution_tree)
+		// 	{
+		// 		data->execution_tree = node;
+		// 		prev = node;
+		// 	}
+		// 	else
+		// 	{
+		// 		prev->left = node;
+		// 		node->prev = prev;
+		// 		prev = node;
+		// 	}
+		// 	command = safe_malloc(sizeof(t_command));
+		// 	ft_bzero(command, sizeof(t_command));
+		// 	command->argv = ft_split(pipes[d], ' ');
+		// 	command->envp = (char **)data->envp;
+		// 	command->error = COMMAND_NO_ERROR;
+		// 	command->out_pipe = (t_pipe){PIPE_NO_VALUE, STDOUT_FILENO};
+		// 	command->in_pipe = (t_pipe){PIPE_NO_VALUE, PIPE_NO_VALUE};
+		// 	node->content = (void *)command;
+		// 	if (pipes[d + 1])
+		// 	{
+		// 		node = btree_create_node(BTREE_PIPE_TYPE);
+		// 		prev->left = node;
+		// 		node->prev = prev;
+		// 	}
+		// 	prev = node;
+		// 	d++;
+		// }
 		// node = btree_create_node(BTREE_REDIRECTION_TYPE);
 		// redir = safe_malloc(sizeof(t_btree_redir_node));
 		// redir->type = REDIRECTION_HERE_DOC_TYPE;
@@ -99,6 +99,7 @@ void	handle_readline(t_minishell *data)
 		// node->prev = prev;
 		// prev->left = node;
 		data->current_line = line;
+		print_execution_tree(data);
 		// execution_pipeline(data);
 		if (data->current_line)
 			add_history(data->current_line);

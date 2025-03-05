@@ -6,7 +6,7 @@
 /*   By: efranco <efranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/05 12:34:26 by efranco          ###   ########.fr       */
+/*   Updated: 2025/03/04 15:15:38 by efranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,10 +281,10 @@ t_token	*tokenize(char *input)
 	}
 	return (tokens);
 }
-void	init_all_index(t_token *tokens, t_token *args, t_token *quoted)
+void init_all_index(t_token *tokens, t_token *args, t_token *quoted)
 {
-	int		min;
-	t_token	*tmp;
+	int 	min;
+	t_token *tmp;
 	int		i;
 	int		size;
 	t_token	*head_tokens;
@@ -297,13 +297,14 @@ void	init_all_index(t_token *tokens, t_token *args, t_token *quoted)
 	head_tokens = tokens;
 	head_args = args;
 	head_quoted = quoted;
-	while (i < size)
+
+	while(i < size)
 	{
 		min = INT_MAX;
 		tokens = head_tokens;
-		while (tokens)
+		while(tokens)
 		{
-			if (tokens->index < min && tokens->num < 0)
+			if(tokens->index < min && tokens->num < 0)
 			{
 				tmp = tokens;
 				min = tokens->index;
@@ -311,9 +312,9 @@ void	init_all_index(t_token *tokens, t_token *args, t_token *quoted)
 			tokens = tokens->next;
 		}
 		args = head_args;
-		while (args)
+		while(args)
 		{
-			if (args->index < min && args->num < 0)
+			if(args->index < min && args->num < 0)
 			{
 				tmp = args;
 				min = args->index;
@@ -321,9 +322,9 @@ void	init_all_index(t_token *tokens, t_token *args, t_token *quoted)
 			args = args->next;
 		}
 		quoted = head_quoted;
-		while (quoted)
+		while(quoted)
 		{
-			if (quoted->index < min && quoted->num < 0)
+			if(quoted->index < min && quoted->num < 0)
 			{
 				tmp = quoted;
 				min = quoted->index;
@@ -334,33 +335,7 @@ void	init_all_index(t_token *tokens, t_token *args, t_token *quoted)
 		i++;
 	}
 }
-int	get_max_lst(t_token *keywords, t_token *args, t_token *quoted)
-{
-	int	max;
-
-	max = INT_MIN;
-	while (keywords)
-	{
-		if (max < keywords->num)
-			max = keywords->num;
-		keywords = keywords->next;
-	}
-	while (args)
-	{
-		if (max < args->num)
-			max = args->num;
-		args = args->next;
-	}
-	while (quoted)
-	{
-		if (max < quoted->num)
-			max = quoted->num;
-		quoted = quoted->next;
-	}
-	return (max);
-}
-t_token	*get_index_lst(int index, t_token *keywords, t_token *args,
-		t_token *quoted)
+t_token *get_index_lst(int index, t_token *keywords, t_token *args, t_token *quoted)
 {
 	while (keywords)
 	{
@@ -381,170 +356,34 @@ t_token	*get_index_lst(int index, t_token *keywords, t_token *args,
 		quoted = quoted->next;
 	}
 	return (NULL);
+
 }
 
-t_list	*create_lst_args(t_token *keywords, t_token *args, t_token *quoted)
-{
-	t_list	*head;
-	t_list	*lst;
-	t_token	*current;
-	int		index;
-	int		limit;
-	int		max;
-	char	**tab;
-	int		i;
 
-	head = NULL;
-	lst = NULL;
+
+void convert_to_btree(t_token *keywords, t_token *args, t_token *quoted)
+{
+	int	index;
+	t_token *current;
+	t_btree	*tree;
+
 	index = 0;
-	max = get_max_lst(keywords, args, quoted);
-	while (index <= max)
+	tree = NULL;
+	while (get_index_lst(index, keywords, args, quoted))
 	{
 		current = get_index_lst(index, keywords, args, quoted);
-		limit = 0;
-		while (current && (current->type == TOKEN_WORD
-				|| current->type == TOKEN_QUOTED))
-		{
-			limit++;
-			current = get_index_lst(index + limit, keywords, args, quoted);
-		}
-		if (limit > 0)
-		{
-			i = 0;
-			tab = safe_malloc(sizeof(char *) * (limit + 1));
-			while (i < limit)
-			{
-				current = get_index_lst(index, keywords, args, quoted);
-				tab[i] = ft_strdup(current->value);
-				i++;
-				index++;
-			}
-			tab[limit] = NULL;
-			lst = ft_lstnew(tab);
-			ft_lstadd_back(&head, lst);
-		}
-		else
-			index++;
-	}
-	return (head);
-}
-int	verif_arg(char *str)
-{
-	int	i;
+		if (current->type == TOKEN_PIPE)
+			tree = btree_create_node(BTREE_PIPE_TYPE);
 
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i])
-	{
-		if (str[i] != ' ')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-t_list	*get_organized_index(t_list *organized, int index)
-{
-	int	i;
-
-	i = 0;
-	printf("index : %d\n", index);
-	while (organized && i < index)
-		organized = organized->next;
-	return (organized);
-}
-
-// t_btree	*convert_to_btree(t_btree **tree, int index, t_token *keywords,
-// 		t_token *args, t_token *quoted)
-// {
-// 	t_token		*current;
-// 	t_btree		*node;
-// 	t_command	*command;
-// 	static int	args_index = -1;
-// 	t_list		*organized;
-
-// 	organized = create_new_args(keywords, args, quoted);
-// 	if (args_index == -1)
-// 	{
-// 		args_index = ft_lstsize(organized);
-// 	}
-// 	current = get_index_lst(index, keywords, args, quoted);
-// 	node = NULL;
-// 	if (current->type == TOKEN_AND || current->type == TOKEN_OR)
-// 	{
-// 		if (!tree)
-// 			*tree = btree_create_node(TOKEN_OR);
-// 		(*tree)->right = convert_to_btree(*tree, index + 1, keywords, args, quoted);
-// 	}
-// 	else
-// 	{
-// 		// char **
-// 		if (current->type == TOKEN_PIPE)
-// 			node = btree_create_node(BTREE_PIPE_TYPE);
-// 		else
-// 		{
-// 			node = btree_create_node(BTREE_COMMAND_TYPE);
-// 			command = safe_malloc(sizeof(t_command));
-// 			ft_bzero(command, sizeof(t_command));
-// 			command->argv = get_organized_index(organized, args_index--);
-// 			node->content = command;
-// 		}
-// 		if (current->type == TOKEN_WORD)
-// 		{
-// 			node = btree_create_node(BTREE_REDIRECTION_TYPE);
-// 			node->content = safe_malloc(sizeof(t_btree_redir_node));
-// 			((t_btree_redir_node *)node->content)->doubled = true;
-// 			((t_btree_redir_node *)node->content)->file = true;
-// 		}
-// 		if (current->type == TOKEN_APPEND)
-// 		{
-// 			node = btree_create_node(BTREE_REDIRECTION_TYPE);
-// 			node->content = safe_malloc(sizeof(t_btree_redir_node));
-// 			((t_btree_redir_node*)node->content)->doubled = true;
-// 			((t_btree_redir_node*)node->content)->file = true;
-// 		}
-// 		return (node);
-// 	}
-// }
-
-int	is_and_or(t_token *keywords)
-{
-	int	i;
-
-	i = 0;
-	while (keywords)
-	{
-		if (keywords->type == TOKEN_AND || keywords->type == TOKEN_OR)
-			i = keywords->num;
-		keywords = keywords->next;
-	}
-	return (i);
-}
-t_btree	*convert_to_btree(t_btree **tree, t_token *keywords,
-	 		t_token *args, t_token *quoted)
-
-{
-	t_list	*organized_args;
-	t_btree	*node;
-	t_token	*tmp;
-	int		index;
-
-	organized_args = create_lst_args(keywords, args, quoted);
-	index = is_and_or(keywords);
-	if (index > 0)
-	{
-		tmp = get_index_lst(index, keywords, args, quoted);
+		index++;
 	}
 }
+
 void	parse_line(t_minishell *data, char *line)
 {
 	t_token	*keywords;
 	t_token	*args;
 	t_token	*quoted;
-	t_list	*new_args;
-	t_btree	*tree;
-	int		i;
 
 	quoted = NULL;
 	keywords = tokenize(line);
@@ -555,15 +394,6 @@ void	parse_line(t_minishell *data, char *line)
 		return ;
 	}
 	init_all_index(keywords, args, quoted);
-	new_args = create_lst_arg(keywords, args, quoted);
-	while (new_args)
-	{
-		i = 0;
-		while (((char **)new_args->content)[i])
-			printf("%s", ((char **)new_args->content)[i++]);
-		printf("\n");
-		new_args = new_args->next;
-	}
 	while (quoted)
 	{
 		printf("Quoted : [%s] | Index : [%d]\n", quoted->value, quoted->num);

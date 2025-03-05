@@ -6,7 +6,7 @@
 /*   By: efranco <efranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/05 09:20:36 by efranco          ###   ########.fr       */
+/*   Updated: 2025/02/28 14:35:30 by efranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct s_token
 	struct s_token	*next;
 	int				index;
     int             num;
-}					 t_token;
+}					t_token;
 // ---------------------------------
 //
 // PARSING

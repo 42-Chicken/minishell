@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   binary_tree.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: efranco <efranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:47:33 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/24 11:39:03 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/05 11:31:43 by efranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,22 @@ typedef enum e_btree_node_type
 typedef struct s_btree
 {
 	void				*content;
+	char				**argv;
 	t_btree_node_type	type;
 	struct s_btree		*left;
 	struct s_btree		*right;
 	struct s_btree		*prev;
 }						t_btree;
+
+// typedef struct s_command
+// {
+// 	char					**argv;
+// 	char					**envp;
+// 	bool					part_of_pipe;
+// 	t_pipe					in_pipe;
+// 	t_pipe					out_pipe;
+// 	t_command_errors		error;
+// }							t_command;
 
 // ---------------------------------
 //
