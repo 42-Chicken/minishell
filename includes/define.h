@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 08:36:57 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/28 14:42:13 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/05 09:32:16 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@
 // ---------------------------------
 
 # define HOME_DIRECTORY_REPRESENTATION "~"
+# define EXPANDER_EXIT_CODE_PATERN "$?"
+# define EXPANDER_PID_PATERN "$?"
+# define PID "PIDI"
 
 // ---------------------------------
 //

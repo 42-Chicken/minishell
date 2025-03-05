@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/03 10:14:52 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/05 09:16:54 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@
 # define MAX_PATH_LENGTH 4095
 # define SPACES " \t\n\v\f\r"
 # define KEYWORDS "|&<>"
+
+typedef enum e_quote_type
+{
+	QUOTE_NONE = -1,
+	QUOTE_DOUBLED,
+	QUOTE_SIMPLE,
+}							t_e_quote_type;
 
 typedef struct s_command	t_command;
 
@@ -94,5 +101,6 @@ int							ft_max(int a, int b);
 bool						is_same_str(char *str1, char *str2);
 int							startswith(char *str, char *substr);
 int							endswith(char *str, char *substr);
+t_e_quote_type				is_in_quote_at(char *str, int index);
 
 #endif

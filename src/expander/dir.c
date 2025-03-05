@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 09:09:27 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/04 13:02:01 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/05 09:28:45 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ char	**get_dir_files_into_array(char *path)
 
 	i = 0;
 	len = get_dir_files_count(path);
+	if (len <= 0)
+		return (NULL);
 	tab = safe_malloc(sizeof(char *) * (len + 1));
 	dir = opendir(path);
 	if (!dir)
