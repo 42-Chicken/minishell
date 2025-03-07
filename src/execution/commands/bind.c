@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:26:59 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 10:01:19 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/07 14:11:12 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	try_access(t_command *command, char *path)
 	set_errors(command, command->argv[0], true);
 }
 
-static void	bind_command(t_btree **head, t_btree *node)
+static void	bind_command(t_btree **head, t_btree *node, t_minishell *data)
 {
 	t_command	*command;
 	char		*path;
@@ -66,7 +66,7 @@ static void	bind_command(t_btree **head, t_btree *node)
 	command = (t_command *)node->content;
 	if (is_built_in_command(command))
 		return ;
-	path = (char *)get_env((char const **)command->envp, ENV_PATH);
+	path = (char *)get_env((char const **)data->envp, ENV_PATH);
 	if (!path)
 		return ;
 	if (command->argv[0][0] == '.' && command->argv[0][1] == '.'
@@ -83,5 +83,6 @@ static void	bind_command(t_btree **head, t_btree *node)
 
 void	bind_commands_to_executable(t_minishell *data)
 {
-	btree_type_foreach(&data->execution_tree, BTREE_COMMAND_TYPE, bind_command);
+	btree_type_foreach_other(&data->execution_tree, BTREE_COMMAND_TYPE,
+		(void (*)(t_btree **, t_btree *, void *))bind_command, data);
 }

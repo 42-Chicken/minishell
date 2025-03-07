@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:07:17 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 10:00:32 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/07 14:14:08 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ static void	print_commands_errors(t_btree *node)
 	t_command	*command;
 
 	command = (t_command *)node->content;
+	if (is_built_in_command(command))
+		return ;
 	if (command->error == COMMAND_NO_ERROR)
 		return ;
 	if (command->error == COMMAND_NOT_FOUND_ERROR)
