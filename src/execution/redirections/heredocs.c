@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:00:26 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/03 10:54:30 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/07 10:59:26 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ static void	handle_heredocs_save(t_btree **head, t_btree *node, void *other)
 	switch_to_heredoc_mode();
 	fill_file(data, fd, redir->limiter);
 	reset_signals(true);
+	if (g_sig == SIGINT)
+		data->execution_tree = NULL; // verif
 	exit_safe_memory_context();
 	close(fd);
 }
