@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:26:59 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/07 14:11:12 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/08 14:52:19 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	bind_command(t_btree **head, t_btree *node, t_minishell *data)
 
 	(void)head;
 	command = (t_command *)node->content;
-	if (is_built_in_command(command))
+	if (is_built_in_command(command) || !command->argv || !command->argv[0])
 		return ;
 	path = (char *)get_env((char const **)data->envp, ENV_PATH);
 	if (!path)

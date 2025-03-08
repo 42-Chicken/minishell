@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:23:29 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/28 09:24:30 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/08 14:39:28 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ static void	execute_commands_and_wait(t_minishell *data, t_btree *node)
 		{
 			command = (t_command *)current->content;
 			exec_command(data, current, command);
+			if (command->in_pipe.write)
+				safe_close(command->in_pipe.write);
+			if (command->in_pipe.read)
+				safe_close(command->in_pipe.read);
+			if (command->out_pipe.write)
+				safe_close(command->out_pipe.write);
 		}
 		current = current->left;
 	}

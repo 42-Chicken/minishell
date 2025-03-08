@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 14:24:39 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/26 09:39:20 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/08 14:39:22 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	exec_command(t_minishell *data, t_btree *cmd_node, t_command *command)
 {
 	pid_t	fork_id;
 
+	set_env(&data->envp, "_", command->argv[0]);
 	if (!execute_built_in_command(data, command))
 	{
 		fork_id = fork();
@@ -113,10 +114,4 @@ void	exec_command(t_minishell *data, t_btree *cmd_node, t_command *command)
 			exit_with_code(command);
 		}
 	}
-	if (command->in_pipe.write)
-		safe_close(command->in_pipe.write);
-	if (command->in_pipe.read)
-		safe_close(command->in_pipe.read);
-	if (command->out_pipe.write)
-		safe_close(command->out_pipe.write);
 }
