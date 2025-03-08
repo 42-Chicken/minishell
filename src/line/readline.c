@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/03/07 14:09:44 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/08 11:53:13 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	handle_readline(t_minishell *data)
 	// data->execution_tree->left->right->content = (void *)command;
 
 	// prev = data->execution_tree->left;
+	data->execution_tree_error = EXECTREE_ERR_NONE;
 	if (line && ft_strlen(line) > 0)
 	{
 	// 	d = 0;

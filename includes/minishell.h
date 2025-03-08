@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/05 09:16:54 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/08 11:52:39 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,14 @@ typedef enum e_quote_type
 	QUOTE_SIMPLE,
 }							t_e_quote_type;
 
+typedef enum e_exec_tree_errors
+{
+	EXECTREE_ERR_NONE,
+	EXECTREE_ERR_UNEXEPTED_PIPE,
+	EXECTREE_ERR_UNEXEPTED_OR,
+	EXECTREE_ERR_UNEXEPTED_AND,
+}							t_e_exec_tree_errors;
+
 typedef struct s_command	t_command;
 
 typedef struct s_minishell
@@ -52,6 +60,7 @@ typedef struct s_minishell
 	char					*current_line;
 	char const				started_path[MAX_PATH_LENGTH];
 	t_btree					*execution_tree;
+	t_e_exec_tree_errors	execution_tree_error;
 	unsigned char			exit_code;
 	bool					stop;
 }							t_minishell;

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/07 14:08:33 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/08 12:22:47 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -570,6 +570,8 @@ t_btree *create_final_tree(t_list *remaning_nodes)
 	{
 		node = remaning_nodes->content;
 		node->left = create_final_tree(remaning_nodes->next);
+		if (node->left)
+			node->left->prev = node;
 	}
 	else
 	{
