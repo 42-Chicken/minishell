@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:00:26 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/07 10:59:26 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/08 14:04:02 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "minishell.h"
 #include "signals.h"
 
-static void	fill_file(t_minishell *data, int fd, char *limiter)
+static void	fill_file(t_minishell *data, int fd, char *limit)
 {
 	char	*line;
 	int		line_count;
@@ -30,10 +30,10 @@ static void	fill_file(t_minishell *data, int fd, char *limiter)
 			break ;
 		if (!line)
 		{
-			ft_fprintf(STDERR_FILENO, HEREDOC_WARNING, data->line_count);
+			ft_fprintf(STDERR_FILENO, HEREDOC_WARNING, data->line_count, limit);
 			break ;
 		}
-		if (ft_strlen(line) > 1 && ft_strncmp(line, limiter, ft_strlen(line)
+		if (ft_strlen(line) > 1 && ft_strncmp(line, limit, ft_strlen(line)
 				- 1) == 0)
 			break ;
 		write(fd, line, ft_strlen(line));

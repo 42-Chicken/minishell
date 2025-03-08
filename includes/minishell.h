@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/08 11:52:39 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/08 14:00:44 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ const char					*get_prompt(t_minishell *minishell);
 // UTILS
 //
 // ---------------------------------
+void						check_exec_tree(t_minishell *data);
 size_t						char_array_len(char **array);
 bool						is_number(char *str);
 void						update_shlvl(t_minishell *data, char *str, int d);

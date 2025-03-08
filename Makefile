@@ -31,6 +31,7 @@ SRCS				=	src/main.c\
 						src/expander/expander.c\
 						src/expander/willcard.c\
 						src/expander/dir.c\
+						src/tree_checks/tree_checks.c\
 						src/utils/str/ft_str_only_contain.c\
 						src/utils/str/is_same_str.c\
 						src/utils/str/endswith.c\

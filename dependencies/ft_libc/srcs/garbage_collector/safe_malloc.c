@@ -6,12 +6,12 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 08:31:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 10:11:11 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/08 14:15:22 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "garbage.h"
 #include "ft_fprintf.h"
+#include "garbage.h"
 
 void	*safe_malloc(size_t size)
 {
@@ -23,7 +23,7 @@ void	*safe_malloc(size_t size)
 	{
 		ft_fprintf(STDERR_FILENO,
 			"minishell: a malloc failed during the execution,\
-			heap memory has been freed entirly");
+heap memory has been freed entirly\n");
 		safe_exit(EXIT_FAILURE);
 	}
 	context = get_current_context();

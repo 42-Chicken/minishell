@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/08 12:22:47 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/08 14:21:12 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -445,9 +445,9 @@ int	verif_arg(char *str)
 	return (0);
 }
 
-t_command *create_command(char **argv)
+t_command	*create_command(char **argv)
 {
-	t_command *command;
+	t_command	*command;
 
 	command = safe_malloc(sizeof(t_command));
 	ft_bzero(command, sizeof(t_command));
@@ -459,10 +459,10 @@ t_list	*create_final_lst(t_token *keywords, t_list *args)
 {
 	t_list	*lst;
 	t_list	*current;
-	// t_token *new_token;
-	int	index;
+	int		index;
 
-	lst	= NULL;
+	// t_token *new_token;
+	lst = NULL;
 	index = ft_lstsize(args);
 	while (index > 0)
 	{
@@ -481,8 +481,8 @@ t_list	*create_final_lst(t_token *keywords, t_list *args)
 
 t_list	*create_btree_nodes_lst(t_list *lst)
 {
-	t_list *head;
-	t_list *current;
+	t_list	*head;
+	t_list	*current;
 
 	head = NULL;
 	while (lst)
@@ -503,8 +503,11 @@ t_list	*create_btree_nodes_lst(t_list *lst)
 			current = ft_lstnew(btree_create_node(BTREE_REDIRECTION_TYPE));
 		else
 		{
-			current = ft_lstnew(btree_create_node(BTREE_COMMAND_TYPE));
-			((t_btree *)current->content)->content = create_command((char**)lst->content);
+			if (lst->content)
+			{
+				current = ft_lstnew(btree_create_node(BTREE_COMMAND_TYPE));
+				((t_btree *)current->content)->content = create_command((char **)lst->content);
+			}
 		}
 		ft_lstadd_back(&head, current);
 		lst = lst->next;
@@ -512,15 +515,15 @@ t_list	*create_btree_nodes_lst(t_list *lst)
 	return (head);
 }
 
-
-t_btree *get_last_condition(t_list *lst)
+t_btree	*get_last_condition(t_list *lst)
 {
-	t_list *current;
+	t_list	*current;
 
 	current = NULL;
 	while (lst)
 	{
-		if (((t_btree *)lst->content)->type == BTREE_AND_TYPE || ((t_btree *)lst->content)->type == BTREE_OR_TYPE)
+		if (((t_btree *)lst->content)->type == BTREE_AND_TYPE
+			|| ((t_btree *)lst->content)->type == BTREE_OR_TYPE)
 			current = lst;
 		lst = lst->next;
 	}
@@ -529,9 +532,9 @@ t_btree *get_last_condition(t_list *lst)
 	return (NULL);
 }
 
-t_list *left_truncate_lst(t_list *lst, t_btree *stop)
+t_list	*left_truncate_lst(t_list *lst, t_btree *stop)
 {
-	t_list *new_lst;
+	t_list	*new_lst;
 
 	new_lst = NULL;
 	while (lst && lst->content != stop)
@@ -542,9 +545,9 @@ t_list *left_truncate_lst(t_list *lst, t_btree *stop)
 	return (new_lst);
 }
 
-t_list *right_truncate_lst(t_list *lst, t_btree *stop)
+t_list	*right_truncate_lst(t_list *lst, t_btree *stop)
 {
-	t_list *new_lst;
+	t_list	*new_lst;
 
 	new_lst = NULL;
 	while (lst && lst->content != stop)
@@ -559,9 +562,9 @@ t_list *right_truncate_lst(t_list *lst, t_btree *stop)
 	return (new_lst);
 }
 
-t_btree *create_final_tree(t_list *remaning_nodes)
+t_btree	*create_final_tree(t_list *remaning_nodes)
 {
-	t_btree *node;
+	t_btree	*node;
 
 	if (!remaning_nodes)
 		return (NULL);
@@ -575,7 +578,8 @@ t_btree *create_final_tree(t_list *remaning_nodes)
 	}
 	else
 	{
-		node->right = create_final_tree(right_truncate_lst(remaning_nodes, node));
+		node->right = create_final_tree(right_truncate_lst(remaning_nodes,
+					node));
 		if (node->right)
 			node->right->prev = node;
 		node->left = create_final_tree(left_truncate_lst(remaning_nodes, node));
@@ -593,6 +597,7 @@ void	parse_line(t_minishell *data, char *line)
 	t_list	*new_args;
 	t_btree	*tree;
 	t_list	*lst;
+	t_list	*c;
 
 	quoted = NULL;
 	keywords = tokenize(line);
@@ -628,37 +633,35 @@ void	parse_line(t_minishell *data, char *line)
 	// }
 	// printf("\n");
 	lst = create_btree_nodes_lst(lst);
-	// c = lst;
-	// while (c)
-	// {
-	// 	if (((t_btree *)c->content)->type == BTREE_OR_TYPE)
-	// 		printf(" OR ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_AND_TYPE)
-	// 		printf(" AND ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_PIPE_TYPE)
-	// 		printf(" | ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
-	// 		printf(" < ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
-	// 		printf(" > ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
-	// 		printf(" >> ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
-	// 		printf(" << ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_COMMAND_TYPE)
-	// 		printf(" COMMAND ");
-	// 	else
-	// 		printf(" OTHER ");
-	// 	c = c->next;
-	// }
-	// printf("\n");
-
+	c = lst;
+	while (c)
+	{
+		if (((t_btree *)c->content)->type == BTREE_OR_TYPE)
+			printf(" OR ");
+		else if (((t_btree *)c->content)->type == BTREE_AND_TYPE)
+			printf(" AND ");
+		else if (((t_btree *)c->content)->type == BTREE_PIPE_TYPE)
+			printf(" | ");
+		else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
+			printf(" < ");
+		else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
+			printf(" > ");
+		else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
+			printf(" >> ");
+		else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
+			printf(" << ");
+		else if (((t_btree *)c->content)->type == BTREE_COMMAND_TYPE)
+			printf(" COMMAND ");
+		else
+			printf(" OTHER ");
+		c = c->next;
+	}
+	printf("\n");
 	tree = create_final_tree(lst);
 	// printf("right : %p\n", tree->right);
 	// printf("left : %p\n", tree->left);
 	data->execution_tree = tree;
 }
-
 
 // while (new_args)
 // {
@@ -668,74 +671,72 @@ void	parse_line(t_minishell *data, char *line)
 // 		printf("\n");
 // 		new_args = new_args->next;
 // 	}
-	// while (quoted)
-	// {
-		// 	printf("Quoted : [%s] | Index : [%d]\n", quoted->value, quoted->num);
-		// 	quoted = quoted->next;
-		// }
-		// while (keywords)
-		// {
-			// 	printf("Token : [%s] | Index : [%d]\n", keywords->value, keywords->num);
-			// 	keywords = keywords->next;
-			// }
-			// while (args)
-			// {
-				// 	printf("arguments : [%s] | Index : [%d]\n", args->value, args->num);
-				// 	args = args->next;
-				// }
+// while (quoted)
+// {
+// 	printf("Quoted : [%s] | Index : [%d]\n", quoted->value, quoted->num);
+// 	quoted = quoted->next;
+// }
+// while (keywords)
+// {
+// 	printf("Token : [%s] | Index : [%d]\n", keywords->value, keywords->num);
+// 	keywords = keywords->next;
+// }
+// while (args)
+// {
+// 	printf("arguments : [%s] | Index : [%d]\n", args->value, args->num);
+// 	args = args->next;
+// }
 
+// t_btree	*convert_to_btree(t_btree **tree, int index, t_token *keywords,
+// 		t_token *args, t_token *quoted)
+// {
+// 	t_token		*current;
+// 	t_btree		*node;
+// 	t_command	*command;
+// 	static int	args_index = -1;
+// 	t_list		*organized;
 
-
-
-				// t_btree	*convert_to_btree(t_btree **tree, int index, t_token *keywords,
-				// 		t_token *args, t_token *quoted)
-				// {
-				// 	t_token		*current;
-				// 	t_btree		*node;
-				// 	t_command	*command;
-				// 	static int	args_index = -1;
-				// 	t_list		*organized;
-
-				// 	organized = create_new_args(keywords, args, quoted);
-				// 	if (args_index == -1)
-				// 	{
-				// 		args_index = ft_lstsize(organized);
-				// 	}
-				// 	current = get_index_lst(index, keywords, args, quoted);
-				// 	node = NULL;
-				// 	if (current->type == TOKEN_AND || current->type == TOKEN_OR)
-				// 	{
-				// 		if (!tree)
-				// 			*tree = btree_create_node(TOKEN_OR);
-				// 		(*tree)->right = convert_to_btree(*tree, index + 1, keywords, args, quoted);
-				// 	}
-				// 	else
-				// 	{
-				// 		// char **
-				// 		if (current->type == TOKEN_PIPE)
-				// 			node = btree_create_node(BTREE_PIPE_TYPE);
-				// 		else
-				// 		{
-				// 			node = btree_create_node(BTREE_COMMAND_TYPE);
-				// 			command = safe_malloc(sizeof(t_command));
-				// 			ft_bzero(command, sizeof(t_command));
-				// 			command->argv = get_organized_index(organized, args_index--);
-				// 			node->content = command;
-				// 		}
-				// 		if (current->type == TOKEN_WORD)
-				// 		{
-				// 			node = btree_create_node(BTREE_REDIRECTION_TYPE);
-				// 			node->content = safe_malloc(sizeof(t_btree_redir_node));
-				// 			((t_btree_redir_node *)node->content)->doubled = true;
-				// 			((t_btree_redir_node *)node->content)->file = true;
-				// 		}
-				// 		if (current->type == TOKEN_APPEND)
-				// 		{
-				// 			node = btree_create_node(BTREE_REDIRECTION_TYPE);
-				// 			node->content = safe_malloc(sizeof(t_btree_redir_node));
-				// 			((t_btree_redir_node*)node->content)->doubled = true;
-				// 			((t_btree_redir_node*)node->content)->file = true;
-				// 		}
-				// 		return (node);
-				// 	}
-				// }
+// 	organized = create_new_args(keywords, args, quoted);
+// 	if (args_index == -1)
+// 	{
+// 		args_index = ft_lstsize(organized);
+// 	}
+// 	current = get_index_lst(index, keywords, args, quoted);
+// 	node = NULL;
+// 	if (current->type == TOKEN_AND || current->type == TOKEN_OR)
+// 	{
+// 		if (!tree)
+// 			*tree = btree_create_node(TOKEN_OR);
+// 		(*tree)->right = convert_to_btree(*tree, index + 1, keywords, args,
+				// quoted);
+// 	}
+// 	else
+// 	{
+// 		// char **
+// 		if (current->type == TOKEN_PIPE)
+// 			node = btree_create_node(BTREE_PIPE_TYPE);
+// 		else
+// 		{
+// 			node = btree_create_node(BTREE_COMMAND_TYPE);
+// 			command = safe_malloc(sizeof(t_command));
+// 			ft_bzero(command, sizeof(t_command));
+// 			command->argv = get_organized_index(organized, args_index--);
+// 			node->content = command;
+// 		}
+// 		if (current->type == TOKEN_WORD)
+// 		{
+// 			node = btree_create_node(BTREE_REDIRECTION_TYPE);
+// 			node->content = safe_malloc(sizeof(t_btree_redir_node));
+// 			((t_btree_redir_node *)node->content)->doubled = true;
+// 			((t_btree_redir_node *)node->content)->file = true;
+// 		}
+// 		if (current->type == TOKEN_APPEND)
+// 		{
+// 			node = btree_create_node(BTREE_REDIRECTION_TYPE);
+// 			node->content = safe_malloc(sizeof(t_btree_redir_node));
+// 			((t_btree_redir_node*)node->content)->doubled = true;
+// 			((t_btree_redir_node*)node->content)->file = true;
+// 		}
+// 		return (node);
+// 	}
+// }
