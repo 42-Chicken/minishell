@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/10 15:19:00 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/10 16:00:49 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -638,13 +638,14 @@ int	verif_arg(char *str)
 	return (0);
 }
 
-t_command	*create_command(char **argv)
+t_command	*create_command(char **argv, unsigned int priority)
 {
 	t_command	*command;
 
 	command = safe_malloc(sizeof(t_command));
 	ft_bzero(command, sizeof(t_command));
 	command->argv = argv;
+	command->priority = priority;
 	return (command);
 }
 
@@ -698,7 +699,8 @@ t_list	*create_btree_nodes_lst(t_list *lst)
 			if (lst->content)
 			{
 				current = ft_lstnew(btree_create_node(BTREE_COMMAND_TYPE));
-				((t_btree *)current->content)->content = create_command(((t_token *)lst->content)->argv);
+				((t_btree *)current->content)->content = create_command(((t_token *)lst->content)->argv,
+						((t_token *)lst->content)->priority);
 			}
 		}
 		if (current)
@@ -832,6 +834,24 @@ int	ft_number_quote(char *str)
 	return (count);
 }
 
+int	check_only_quote(char *str)
+{
+	int		i;
+	char	flag;
+
+	i = 0;
+	if (str[i] == '"' || str[i] == '\'')
+		flag = str[i];
+	else
+		return (0);
+	while (str[i])
+	{
+		if (str[i] != flag)
+			return (0);
+		i++;
+	}
+	return (1);
+}
 void	extract_quote(t_token **head, t_token *quoted)
 {
 	char	*str;
@@ -842,6 +862,11 @@ void	extract_quote(t_token **head, t_token *quoted)
 
 	while (quoted)
 	{
+		if (check_only_quote(quoted->value) == 1)
+		{
+			quoted = quoted->next;
+			continue ;
+		}
 		i = ft_number_quote(quoted->value);
 		j = 0;
 		flag = 0;
@@ -871,7 +896,7 @@ void	extract_quote(t_token **head, t_token *quoted)
 		}
 		str[j] = '\0';
 		add_token(head, TOKEN_QUOTED, str, -1, quoted->index,
-			get_priority_at(str, i));
+			get_priority_at(str, quoted->index));
 		quoted = quoted->next;
 	}
 }
@@ -885,8 +910,8 @@ void	parse_line(t_minishell *data, char *line)
 	t_list	*new_args;
 	t_btree	*tree;
 	t_list	*lst;
-	// t_list	*c;
 
+	// t_list	*c;
 	if (verif_quote(line) == 0)
 	{
 		ft_fprintf(STDERR_FILENO, "Erreur de quote\n");

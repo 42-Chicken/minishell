@@ -8,3 +8,4 @@
 - ~~TERM=xterm-256color~~
 - ~~quote for expander~~
 - HEREDOC + ctrl c = no exec;
+- () not same error !

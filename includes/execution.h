@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/10 15:49:42 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/10 15:59:56 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_command
 	char					**argv;
 	char					**envp;
 	bool					part_of_pipe;
+	unsigned int			priority;
 	t_pipe					in_pipe;
 	t_pipe					out_pipe;
 	t_command_errors		error;

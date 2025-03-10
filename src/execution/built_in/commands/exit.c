@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 09:29:49 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/10 16:01:49 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 int	exit_command(t_minishell *data, t_command *command)
 {
-	if (!command->part_of_pipe)
+	if (!command->part_of_pipe && command->priority == 0)
 		ft_fprintf(STDOUT_FILENO, "exit\n");
 	if (command->argv[1])
 	{
@@ -29,7 +29,7 @@ int	exit_command(t_minishell *data, t_command *command)
 		}
 		data->exit_code = (unsigned char)ft_atoi(command->argv[1]);
 	}
-	if (!command->part_of_pipe)
+	if (!command->part_of_pipe && command->priority == 0)
 		safe_exit(data->exit_code);
 	return (data->exit_code);
 }
