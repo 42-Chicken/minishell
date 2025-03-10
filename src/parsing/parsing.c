@@ -6,13 +6,61 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/10 09:42:10 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/10 15:19:00 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing.h"
 #include <limits.h>
+
+int	get_max_lst(t_token *keywords, t_token *args, t_token *quoted)
+{
+	int	max;
+
+	max = INT_MIN;
+	while (keywords)
+	{
+		if (max < keywords->num)
+			max = keywords->num;
+		keywords = keywords->next;
+	}
+	while (args)
+	{
+		if (max < args->num)
+			max = args->num;
+		args = args->next;
+	}
+	while (quoted)
+	{
+		if (max < quoted->num)
+			max = quoted->num;
+		quoted = quoted->next;
+	}
+	return (max);
+}
+
+int	line_is_empty(t_token *current)
+{
+	int	i;
+
+	i = 0;
+	if (!current || !current->value)
+		return (1);
+	if (current->type == TOKEN_WORD || current->type == TOKEN_QUOTED)
+	{
+		while (current->value[i])
+		{
+			if (current->value[i] != ' ')
+			{
+				return (0);
+			}
+			i++;
+		}
+		return (1);
+	}
+	return (0);
+}
 
 t_token	*ft_tokenlast(t_token *lst)
 {
@@ -37,6 +85,19 @@ void	ft_tokenadd_back(t_token **lst, t_token *new)
 	}
 	last = ft_tokenlast((*lst));
 	last->next = new;
+}
+
+int	is_keywords(t_token *current)
+{
+	if (!current)
+		return (0);
+	if (current->type == TOKEN_AND || current->type == TOKEN_OR
+		|| current->type == TOKEN_APPEND || current->type == TOKEN_HEREDOC
+		|| current->type == TOKEN_PIPE || current->type == TOKEN_REDIR_IN
+		|| current->type == TOKEN_REDIR_OUT)
+		return (1);
+	else
+		return (0);
 }
 
 t_token	*add_token(t_token **head, TokenType type, char *value, int i, int h,
@@ -141,7 +202,7 @@ int	is_keyword(char c, int flag)
 		return (0);
 }
 
-t_token	*extract_arg(char *line, t_token **head)
+int	verif_quote(char *line)
 {
 	t_token	*args;
 	int		i;
@@ -155,27 +216,97 @@ t_token	*extract_arg(char *line, t_token **head)
 	{
 		if (line[i] == '\'' || line[i] == '"')
 		{
-			add_token(&args, TOKEN_WORD, line + h, i - h, h,
-				get_priority_at(line, h + 1));
 			flag = line[i];
 			i++;
-			h = i;
 			while (line[i] && line[i] != flag)
 				i++;
 			if (line[i] == flag)
-			{
-				add_token(head, TOKEN_QUOTED, line + h, i - h, h,
-					get_priority_at(line, h + 1));
 				i++;
-				h = i;
-			}
 			else
-				return (NULL);
+				return (0);
+		}
+		else
+			i++;
+	}
+	return (1);
+}
+
+t_token	*get_index_lst(int index, t_token *keywords, t_token *args,
+		t_token *quoted)
+{
+	while (keywords)
+	{
+		if (index == keywords->num)
+			return (keywords);
+		keywords = keywords->next;
+	}
+	while (args)
+	{
+		if (index == args->num)
+			return (args);
+		args = args->next;
+	}
+	while (quoted)
+	{
+		if (index == quoted->num)
+			return (quoted);
+		quoted = quoted->next;
+	}
+	return (NULL);
+}
+
+t_token	*extract_arg(char *line, t_token **head)
+{
+	t_token	*args;
+	int		i;
+	int		h;
+	char	flag;
+	int		count;
+
+	i = 0;
+	h = 0;
+	args = NULL;
+	while (line[i])
+	{
+		if (line[i] == '\'' || line[i] == '"')
+		{
+			flag = line[i];
+			while ((!ft_isspace(line[i - 1]) && i - 1 >= 0 && !is_keyword(line[i
+						- 1], 0)) || (is_keyword(line[i], 0)
+					&& is_in_quote_at(line, i) != QUOTE_NONE))
+			{
+				i--;
+			}
+			if (i != h)
+				add_token(&args, TOKEN_WORD, line + h, i - h, h,
+					get_priority_at(line, h));
+			h = i;
+			count = 0;
+			while (line[i] && count < 2)
+			{
+				if (line[i] == flag)
+					count++;
+				if (count == 2)
+				{
+					while ((line[i] && !ft_isspace(line[i])
+							&& !is_keyword(line[i], 0)) || (is_keyword(line[i],
+								0) && is_in_quote_at(line, i) != QUOTE_NONE))
+					{
+						i++;
+					}
+				}
+				else
+					i++;
+			}
+			add_token(head, TOKEN_QUOTED, line + h, i - h, h,
+				get_priority_at(line, h + 1));
+			h = i;
 		}
 		if (is_keyword(line[i], 0) == 1)
 		{
-			add_token(&args, TOKEN_WORD, line + h, i - h, h,
-				get_priority_at(line, h + 1));
+			if (i != h)
+				add_token(&args, TOKEN_WORD, line + h, i - h, h,
+					get_priority_at(line, h + 1));
 			if (is_keyword(line[i + 1], 0) == 1)
 				i++;
 			h = i + 1;
@@ -186,6 +317,119 @@ t_token	*extract_arg(char *line, t_token **head)
 		add_token(&args, TOKEN_WORD, line + h, i - h, h, get_priority_at(line, h
 				+ 1));
 	return (args);
+}
+
+int	tab_len(char **str)
+{
+	int	i;
+
+	i = 0;
+	if (!str || !*str)
+		return (0);
+	while (str[i])
+		i++;
+	return (i);
+}
+char	**add_tab_to_tab(char **old, char **str)
+{
+	char	**tab;
+	int		size;
+	int		i;
+	int		j;
+
+	size = tab_len(old) + tab_len(str);
+	i = 0;
+	tab = safe_malloc(sizeof(char *) * (size + 1));
+	ft_bzero(tab, sizeof(char *) * (size + 1));
+	while (old && old[i])
+	{
+		tab[i] = old[i];
+		i++;
+	}
+	j = 0;
+	while (str && str[j])
+		tab[i++] = str[j++];
+	tab[i] = NULL;
+	return (tab);
+}
+char	**add_to_tab(char **old, char *str)
+{
+	char	**tab;
+	int		size;
+	int		i;
+
+	size = tab_len(old);
+	i = 0;
+	tab = safe_malloc(sizeof(char *) * (size + 2));
+	ft_bzero(tab, sizeof(char *) * (size + 2));
+	while (old && old[i])
+	{
+		tab[i] = old[i];
+		i++;
+	}
+	tab[i++] = str;
+	tab[i] = NULL;
+	return (tab);
+}
+
+void	create_lst_args(t_list **head, t_token *keywords, t_token *args,
+		t_token *quoted)
+{
+	t_list	*lst;
+	char	**tab;
+	int		index;
+	int		max;
+	int		priority;
+	t_token	*current;
+	t_token	*new_token;
+
+	index = 0;
+	tab = NULL;
+	priority = 0;
+	max = get_max_lst(keywords, args, quoted);
+	lst = NULL;
+	while (index <= max)
+	{
+		current = get_index_lst(index, keywords, args, quoted);
+		while (current && (current->type == TOKEN_WORD
+				|| current->type == TOKEN_QUOTED))
+		{
+			priority = current->priority;
+			if (current && current->type == TOKEN_QUOTED
+				&& line_is_empty(current) == 0)
+			{
+				tab = add_to_tab(tab, current->value);
+			}
+			else if (current && current->type == TOKEN_WORD
+				&& line_is_empty(current) == 0)
+			{
+				tab = add_tab_to_tab(tab, ft_split(current->value, ' '));
+				// for each spaces
+			}
+			index++;
+			current = get_index_lst(index, keywords, args, quoted);
+		}
+		if (current && is_keywords(current))
+		{
+			new_token = safe_malloc(sizeof(t_token));
+			ft_bzero(new_token, sizeof(t_token));
+			new_token->type = TOKEN_WORD;
+			new_token->argv = tab;
+			new_token->priority = priority;
+			ft_lstadd_back(head, ft_lstnew(new_token));
+			tab = NULL;
+		}
+		index++;
+	}
+	if (tab)
+	{
+		new_token = safe_malloc(sizeof(t_token));
+		ft_bzero(new_token, sizeof(t_token));
+		new_token->type = TOKEN_WORD;
+		new_token->argv = tab;
+		new_token->priority = priority;
+		ft_lstadd_back(head, ft_lstnew(new_token));
+	}
 }
 
 unsigned int	get_priority_at(char *str, unsigned int index)
@@ -229,7 +473,7 @@ t_token	*tokenize(char *input)
 		i++;
 	while (input[i])
 	{
-		if (input[i] == '|')
+		if (input[i] == '|' && is_in_quote_at(input, i) == QUOTE_NONE)
 		{
 			if (input[i + 1] == '|')
 			{
@@ -249,7 +493,7 @@ t_token	*tokenize(char *input)
 				i++;
 			}
 		}
-		else if (input[i] == '<')
+		else if (input[i] == '<' && is_in_quote_at(input, i) == QUOTE_NONE)
 		{
 			if (input[i + 1] == '<')
 			{
@@ -269,7 +513,7 @@ t_token	*tokenize(char *input)
 				i++;
 			}
 		}
-		else if (input[i] == '>')
+		else if (input[i] == '>' && is_in_quote_at(input, i) == QUOTE_NONE)
 		{
 			if (is_keyword(input[i + 1], 4))
 				i++;
@@ -291,7 +535,7 @@ t_token	*tokenize(char *input)
 				i++;
 			}
 		}
-		else if (input[i] == '&')
+		else if (input[i] == '&' && is_in_quote_at(input, i) == QUOTE_NONE)
 		{
 			if (input[i + 1] == '&')
 			{
@@ -323,6 +567,7 @@ t_token	*tokenize(char *input)
 	}
 	return (tokens);
 }
+
 void	init_all_index(t_token *tokens, t_token *args, t_token *quoted)
 {
 	int		min;
@@ -376,106 +621,7 @@ void	init_all_index(t_token *tokens, t_token *args, t_token *quoted)
 		i++;
 	}
 }
-int	get_max_lst(t_token *keywords, t_token *args, t_token *quoted)
-{
-	int	max;
 
-	max = INT_MIN;
-	while (keywords)
-	{
-		if (max < keywords->num)
-			max = keywords->num;
-		keywords = keywords->next;
-	}
-	while (args)
-	{
-		if (max < args->num)
-			max = args->num;
-		args = args->next;
-	}
-	while (quoted)
-	{
-		if (max < quoted->num)
-			max = quoted->num;
-		quoted = quoted->next;
-	}
-	return (max);
-}
-t_token	*get_index_lst(int index, t_token *keywords, t_token *args,
-		t_token *quoted)
-{
-	while (keywords)
-	{
-		if (index == keywords->num)
-			return (keywords);
-		keywords = keywords->next;
-	}
-	while (args)
-	{
-		if (index == args->num)
-			return (args);
-		args = args->next;
-	}
-	while (quoted)
-	{
-		if (index == quoted->num)
-			return (quoted);
-		quoted = quoted->next;
-	}
-	return (NULL);
-}
-
-t_list	*create_lst_args(t_token *keywords, t_token *args, t_token *quoted)
-{
-	t_list	*head;
-	t_list	*lst;
-	t_token	*current;
-	int		index;
-	int		limit;
-	int		max;
-	char	**tab;
-	int		i;
-	t_token	*new_token;
-
-	head = NULL;
-	lst = NULL;
-	index = 0;
-	max = get_max_lst(keywords, args, quoted);
-	while (index <= max)
-	{
-		current = get_index_lst(index, keywords, args, quoted);
-		limit = 0;
-		while (current && (current->type == TOKEN_WORD
-				|| current->type == TOKEN_QUOTED))
-		{
-			limit++;
-			current = get_index_lst(index + limit, keywords, args, quoted);
-		}
-		if (limit > 0)
-		{
-			i = 0;
-			tab = safe_malloc(sizeof(char *) * (limit + 1));
-			while (i < limit)
-			{
-				current = get_index_lst(index, keywords, args, quoted);
-				tab = ft_split(current->value, ' '); // tout les spaces
-				i++;
-				index++;
-			}
-			// tab[limit] = NULL;
-			new_token = safe_malloc(sizeof(t_token));
-			ft_bzero(new_token, sizeof(t_token));
-			new_token->priority = current->priority;
-			new_token->argv = tab;
-			new_token->type = TOKEN_WORD;
-			lst = ft_lstnew(new_token);
-			ft_lstadd_back(&head, lst);
-		}
-		else
-			index++;
-	}
-	return (head);
-}
 int	verif_arg(char *str)
 {
 	int	i;
@@ -662,79 +808,159 @@ t_btree	*create_final_tree(t_list *remaning_nodes, unsigned int priority)
 	return (node);
 }
 
+int	ft_number_quote(char *str)
+{
+	int		i;
+	char	flag;
+	int		count;
+
+	i = 0;
+	count = 0;
+	while (str[i])
+	{
+		if ((str[i] == '"' || str[i] == '\''))
+		{
+			flag = str[i];
+			count++;
+			i++;
+			while (str[i] != flag && str[i])
+				i++;
+			count++;
+		}
+		i++;
+	}
+	return (count);
+}
+
+void	extract_quote(t_token **head, t_token *quoted)
+{
+	char	*str;
+	int		size;
+	int		i;
+	int		j;
+	char	flag;
+
+	while (quoted)
+	{
+		i = ft_number_quote(quoted->value);
+		j = 0;
+		flag = 0;
+		size = ft_strlen(quoted->value);
+		str = safe_malloc(sizeof(char) * size - (i + 1));
+		i = 0;
+		while (quoted->value[i])
+		{
+			if ((quoted->value[i] == '"' || quoted->value[i] == '\''))
+			{
+				flag = quoted->value[i];
+				i++;
+				while (quoted->value[i] != flag)
+				{
+					str[j] = quoted->value[i];
+					i++;
+					j++;
+				}
+				i++;
+			}
+			else
+			{
+				str[j] = quoted->value[i];
+				i++;
+				j++;
+			}
+		}
+		str[j] = '\0';
+		add_token(head, TOKEN_QUOTED, str, -1, quoted->index,
+			get_priority_at(str, i));
+		quoted = quoted->next;
+	}
+}
+
 void	parse_line(t_minishell *data, char *line)
 {
 	t_token	*keywords;
 	t_token	*args;
+	t_token	*half_quoted;
 	t_token	*quoted;
 	t_list	*new_args;
 	t_btree	*tree;
 	t_list	*lst;
-	t_list	*c;
+	// t_list	*c;
 
-	quoted = NULL;
-	keywords = tokenize(line);
-	args = extract_arg(line, &quoted);
-	if (args == NULL)
+	if (verif_quote(line) == 0)
 	{
 		ft_fprintf(STDERR_FILENO, "Erreur de quote\n");
 		return ;
 	}
+	half_quoted = NULL;
+	args = extract_arg(line, &half_quoted);
+	keywords = tokenize(line);
+	quoted = NULL;
+	extract_quote(&quoted, half_quoted);
 	init_all_index(keywords, args, quoted);
-	new_args = create_lst_args(keywords, args, quoted);
+	new_args = NULL;
+	create_lst_args(&new_args, keywords, args, quoted);
+	// while (new_args)
+	// {
+	// 	i = 0;
+	// 	while (((t_token *)new_args->content)->argv[i])
+	// 		printf("%s ", ((t_token *)new_args->content)->argv[i++]);
+	// 	printf("\n");
+	// 	new_args = new_args->next;
+	// }
 	lst = create_final_lst(keywords, new_args);
-	c = lst;
-	// echo i && (echo 3 && (echo 4 && echo 5)) && (echo 1 && echo 2)
-	while (c)
-	{
-		if (((t_token *)c->content)->type == TOKEN_OR)
-			printf(" OR %u", ((t_token *)c->content)->priority);
-		else if (((t_token *)c->content)->type == TOKEN_AND)
-			printf(" AND %u", ((t_token *)c->content)->priority);
-		else if (((t_token *)c->content)->type == TOKEN_PIPE)
-			printf(" | %u", ((t_token *)c->content)->priority);
-		else if (((t_token *)c->content)->type == TOKEN_REDIR_IN)
-			printf(" < %u", ((t_token *)c->content)->priority);
-		else if (((t_token *)c->content)->type == TOKEN_REDIR_OUT)
-			printf(" > %u", ((t_token *)c->content)->priority);
-		else if (((t_token *)c->content)->type == TOKEN_APPEND)
-			printf(" >> %u", ((t_token *)c->content)->priority);
-		else if (((t_token *)c->content)->type == TOKEN_HEREDOC)
-			printf(" << %u", ((t_token *)c->content)->priority);
-		else if (((t_token *)c->content)->type == TOKEN_QUOTED
-			|| ((t_token *)c->content)->type == TOKEN_WORD)
-			printf(" WORD/QUOTED %u", ((t_token *)c->content)->priority);
-		else
-			printf(" OTHER ");
-		c = c->next;
-	}
-	printf("\n");
+	// c = lst;
+	// while (c)
+	// {
+	// 	if (((t_token *)c->content)->type == TOKEN_OR)
+	// 		printf(" OR %u", ((t_token *)c->content)->priority);
+	// 	else if (((t_token *)c->content)->type == TOKEN_AND)
+	// 		printf(" AND %u", ((t_token *)c->content)->priority);
+	// 	else if (((t_token *)c->content)->type == TOKEN_PIPE)
+	// 		printf(" | %u", ((t_token *)c->content)->priority);
+	// 	else if (((t_token *)c->content)->type == TOKEN_REDIR_IN)
+	// 		printf(" < %u", ((t_token *)c->content)->priority);
+	// 	else if (((t_token *)c->content)->type == TOKEN_REDIR_OUT)
+	// 		printf(" > %u", ((t_token *)c->content)->priority);
+	// 	else if (((t_token *)c->content)->type == TOKEN_APPEND)
+	// 		printf(" >> %u", ((t_token *)c->content)->priority);
+	// 	else if (((t_token *)c->content)->type == TOKEN_HEREDOC)
+	// 		printf(" << %u", ((t_token *)c->content)->priority);
+	// 	else if (((t_token *)c->content)->type == TOKEN_QUOTED
+	// 		|| ((t_token *)c->content)->type == TOKEN_WORD)
+	// 		printf(" WORD/QUOTED %u", ((t_token *)c->content)->priority);
+	// 	else
+	// 		printf(" OTHER %d", ((t_token *)(c->content))->priority);
+	// 	c = c->next;
+	// }
 	lst = create_btree_nodes_lst(lst);
-	c = lst;
-	while (c)
-	{
-		if (((t_btree *)c->content)->type == BTREE_OR_TYPE)
-			printf(" OR ");
-		else if (((t_btree *)c->content)->type == BTREE_AND_TYPE)
-			printf(" AND ");
-		else if (((t_btree *)c->content)->type == BTREE_PIPE_TYPE)
-			printf(" | ");
-		else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
-			printf(" < ");
-		else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
-			printf(" > ");
-		else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
-			printf(" >> ");
-		else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
-			printf(" << ");
-		else if (((t_btree *)c->content)->type == BTREE_COMMAND_TYPE)
-			printf(" COMMAND ");
-		else
-			printf(" OTHER ");
-		c = c->next;
-	}
-	printf("\n");
 	tree = create_final_tree(lst, 0);
+	data->execution_tree = tree;
+	// printf("\n");
+	// c = lst;
+	// while (c)
+	// {
+	// 	if (((t_btree *)c->content)->type == BTREE_OR_TYPE)
+	// 		printf(" OR ");
+	// 	else if (((t_btree *)c->content)->type == BTREE_AND_TYPE)
+	// 		printf(" AND ");
+	// 	else if (((t_btree *)c->content)->type == BTREE_PIPE_TYPE)
+	// 		printf(" | ");
+	// 	else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
+	// 		printf(" < ");
+	// 	else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
+	// 		printf(" > ");
+	// 	else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
+	// 		printf(" >> ");
+	// 	else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
+	// 		printf(" << ");
+	// 	else if (((t_btree *)c->content)->type == BTREE_COMMAND_TYPE)
+	// 		printf(" COMMAND ");
+	// 	else
+	// 		printf(" OTHER ");
+	// 	c = c->next;
+	// }
+	// printf("\n");
 	// printf("right : %p\n", tree->right);
 	// printf("left : %p\n", tree->left);
 	data->execution_tree = tree;

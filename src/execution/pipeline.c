@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 08:22:24 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/10 09:09:48 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/10 15:40:22 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	execution_pipeline(t_minishell *data)
 	bind_commands_to_executable(data);
 	bind_redirections_to_fds(data);
 	check_exec_tree(data);
-	print_execution_tree(data);
 	if (data->execution_tree_error == EXECTREE_ERR_NONE)
 	{
 		print_tree_errors(data);

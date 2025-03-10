@@ -56,6 +56,7 @@ SRCS				=	src/main.c\
 						src/execution/pipeline.c\
 						src/execution/errors.c\
 						src/execution/commands/execute.c\
+						src/execution/commands/expand.c\
 						src/execution/commands/bind.c\
 						src/execution/commands/wait.c\
 						src/execution/redirections/bind.c\
