@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:47:33 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/28 08:36:01 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/10 08:43:57 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef enum e_btree_node_type
 typedef struct s_btree
 {
 	void				*content;
+	unsigned int		priority;
 	bool				passed;
 	t_btree_node_type	type;
 	struct s_btree		*left;

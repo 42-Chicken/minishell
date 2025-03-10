@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/08 14:21:12 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/10 09:34:51 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void	ft_tokenadd_back(t_token **lst, t_token *new)
 	last->next = new;
 }
 
-t_token	*add_token(t_token **head, TokenType type, char *value, int i, int h)
+t_token	*add_token(t_token **head, TokenType type, char *value, int i, int h,
+		unsigned int priority)
 {
 	t_token	*new;
 
@@ -50,11 +51,12 @@ t_token	*add_token(t_token **head, TokenType type, char *value, int i, int h)
 		new->value = ft_strdup(value);
 	else
 		new->value = ft_strndup(value, i);
-	// if (type == TOKEN_WORD)
-	// 	new->value = ft_strtrim(new->value, SPACES);
+	if (type == TOKEN_WORD)
+		new->value = ft_strtrim(new->value, SPACES "()");
 	new->next = NULL;
 	new->index = h;
 	new->num = -1;
+	new->priority = priority;
 	ft_tokenadd_back(head, new);
 	return (new);
 }
@@ -153,7 +155,8 @@ t_token	*extract_arg(char *line, t_token **head)
 	{
 		if (line[i] == '\'' || line[i] == '"')
 		{
-			add_token(&args, TOKEN_WORD, line + h, i - h, h);
+			add_token(&args, TOKEN_WORD, line + h, i - h, h,
+				get_priority_at(line, h + 1));
 			flag = line[i];
 			i++;
 			h = i;
@@ -161,7 +164,8 @@ t_token	*extract_arg(char *line, t_token **head)
 				i++;
 			if (line[i] == flag)
 			{
-				add_token(head, TOKEN_QUOTED, line + h, i - h, h);
+				add_token(head, TOKEN_QUOTED, line + h, i - h, h,
+					get_priority_at(line, h + 1));
 				i++;
 				h = i;
 			}
@@ -170,7 +174,8 @@ t_token	*extract_arg(char *line, t_token **head)
 		}
 		if (is_keyword(line[i], 0) == 1)
 		{
-			add_token(&args, TOKEN_WORD, line + h, i - h, h);
+			add_token(&args, TOKEN_WORD, line + h, i - h, h,
+				get_priority_at(line, h + 1));
 			if (is_keyword(line[i + 1], 0) == 1)
 				i++;
 			h = i + 1;
@@ -178,9 +183,38 @@ t_token	*extract_arg(char *line, t_token **head)
 		i++;
 	}
 	if (line[h])
-		add_token(&args, TOKEN_WORD, line + h, i - h, h);
+		add_token(&args, TOKEN_WORD, line + h, i - h, h, get_priority_at(line, h
+				+ 1));
 	return (args);
 }
+
+unsigned int	get_priority_at(char *str, unsigned int index)
+{
+	unsigned int	i;
+	unsigned int	priority;
+
+	i = -1;
+	priority = 0;
+	while (str[++i] && i <= index)
+	{
+		if (str[i] == '(')
+		{
+			if (ft_strchr(str + i, ')'))
+				priority++;
+			else
+				ft_fprintf(STDERR_FILENO, "Error: at `('\n");
+		}
+		else if (str[i] == ')')
+		{
+			if (priority > 0)
+				priority--;
+			else
+				ft_fprintf(STDERR_FILENO, "Error: too many `)'\n");
+		}
+	}
+	return (priority);
+}
+
 t_token	*tokenize(char *input)
 {
 	t_token	*tokens;
@@ -205,11 +239,13 @@ t_token	*tokenize(char *input)
 					printf("Erreur de syntaxe : TRIPLE PIPE\n");
 					return (NULL);
 				}
-				add_token(&tokens, TOKEN_OR, "||", -1, i - 2);
+				add_token(&tokens, TOKEN_OR, "||", -1, i - 2,
+					get_priority_at(input, i - 2));
 			}
 			else
 			{
-				add_token(&tokens, TOKEN_PIPE, "|", -1, i - 1);
+				add_token(&tokens, TOKEN_PIPE, "|", -1, i - 1,
+					get_priority_at(input, i));
 				i++;
 			}
 		}
@@ -223,11 +259,13 @@ t_token	*tokenize(char *input)
 					printf("Erreur de syntaxe : TRIPLE HEREDOC\n");
 					return (NULL);
 				}
-				add_token(&tokens, TOKEN_HEREDOC, "<<", -1, i - 2);
+				add_token(&tokens, TOKEN_HEREDOC, "<<", -1, i - 2,
+					get_priority_at(input, i - 2));
 			}
 			else
 			{
-				add_token(&tokens, TOKEN_REDIR_IN, "<", -1, i - 1);
+				add_token(&tokens, TOKEN_REDIR_IN, "<", -1, i - 1,
+					get_priority_at(input, i));
 				i++;
 			}
 		}
@@ -243,11 +281,13 @@ t_token	*tokenize(char *input)
 					printf("Erreur de syntaxe : TRIPLE APPEND\n");
 					return (NULL);
 				}
-				add_token(&tokens, TOKEN_APPEND, ">>", -1, i - 2);
+				add_token(&tokens, TOKEN_APPEND, ">>", -1, i - 2,
+					get_priority_at(input, i - 2));
 			}
 			else
 			{
-				add_token(&tokens, TOKEN_REDIR_OUT, ">", -1, i - 1);
+				add_token(&tokens, TOKEN_REDIR_OUT, ">", -1, i - 1,
+					get_priority_at(input, i));
 				i++;
 			}
 		}
@@ -261,7 +301,8 @@ t_token	*tokenize(char *input)
 					printf("Erreur de syntaxe : TRIPLE AND\n");
 					return (NULL);
 				}
-				add_token(&tokens, TOKEN_AND, "&&", -1, i - 2);
+				add_token(&tokens, TOKEN_AND, "&&", -1, i - 2,
+					get_priority_at(input, i - 2));
 			}
 			else
 			{
@@ -394,6 +435,7 @@ t_list	*create_lst_args(t_token *keywords, t_token *args, t_token *quoted)
 	int		max;
 	char	**tab;
 	int		i;
+	t_token	*new_token;
 
 	head = NULL;
 	lst = NULL;
@@ -421,7 +463,12 @@ t_list	*create_lst_args(t_token *keywords, t_token *args, t_token *quoted)
 				index++;
 			}
 			// tab[limit] = NULL;
-			lst = ft_lstnew(tab);
+			new_token = safe_malloc(sizeof(t_token));
+			ft_bzero(new_token, sizeof(t_token));
+			new_token->priority = current->priority;
+			new_token->argv = tab;
+			new_token->type = TOKEN_WORD;
+			lst = ft_lstnew(new_token);
 			ft_lstadd_back(&head, lst);
 		}
 		else
@@ -460,12 +507,14 @@ t_list	*create_final_lst(t_token *keywords, t_list *args)
 	t_list	*lst;
 	t_list	*current;
 	int		index;
+	t_token	*new_token;
 
-	// t_token *new_token;
 	lst = NULL;
 	index = ft_lstsize(args);
 	while (index > 0)
 	{
+		new_token = safe_malloc(sizeof(t_token));
+		ft_bzero(new_token, sizeof(t_token));
 		current = ft_lstnew(args->content);
 		args = args->next;
 		if (keywords)
@@ -506,30 +555,51 @@ t_list	*create_btree_nodes_lst(t_list *lst)
 			if (lst->content)
 			{
 				current = ft_lstnew(btree_create_node(BTREE_COMMAND_TYPE));
-				((t_btree *)current->content)->content = create_command((char **)lst->content);
+				((t_btree *)current->content)->content = create_command(((t_token *)lst->content)->argv);
 			}
 		}
+		if (current)
+			((t_btree *)current->content)->priority = ((t_token *)lst->content)->priority;
 		ft_lstadd_back(&head, current);
 		lst = lst->next;
 	}
 	return (head);
 }
 
-t_btree	*get_last_condition(t_list *lst)
+t_btree	*get_last_condition(t_list *lst, unsigned int priority)
 {
 	t_list	*current;
 
 	current = NULL;
 	while (lst)
 	{
-		if (((t_btree *)lst->content)->type == BTREE_AND_TYPE
-			|| ((t_btree *)lst->content)->type == BTREE_OR_TYPE)
+		if ((((t_btree *)lst->content)->type == BTREE_AND_TYPE
+				|| ((t_btree *)lst->content)->type == BTREE_OR_TYPE)
+			&& ((t_btree *)lst->content)->priority == priority)
 			current = lst;
 		lst = lst->next;
 	}
 	if (current)
 		return (current->content);
 	return (NULL);
+}
+
+bool	remain_node_for_priority(t_list *lst, unsigned int priority)
+{
+	t_list	*current;
+
+	current = NULL;
+	while (lst)
+	{
+		if ((((t_btree *)lst->content)->type == BTREE_AND_TYPE
+				|| ((t_btree *)lst->content)->type == BTREE_OR_TYPE)
+			&& ((t_btree *)lst->content)->priority == priority)
+			current = lst;
+		lst = lst->next;
+	}
+	if (current)
+		return (true);
+	return (false);
 }
 
 t_list	*left_truncate_lst(t_list *lst, t_btree *stop)
@@ -562,27 +632,33 @@ t_list	*right_truncate_lst(t_list *lst, t_btree *stop)
 	return (new_lst);
 }
 
-t_btree	*create_final_tree(t_list *remaning_nodes)
+t_btree	*create_final_tree(t_list *remaning_nodes, unsigned int priority)
 {
 	t_btree	*node;
 
 	if (!remaning_nodes)
 		return (NULL);
-	node = get_last_condition(remaning_nodes);
+	if (!remain_node_for_priority(remaning_nodes, priority))
+		priority++;
+	node = get_last_condition(remaning_nodes, priority);
 	if (!node)
 	{
 		node = remaning_nodes->content;
-		node->left = create_final_tree(remaning_nodes->next);
+		node->left = create_final_tree(remaning_nodes->next, priority);
 		if (node->left)
 			node->left->prev = node;
+		node->right = create_final_tree(remaning_nodes->next, priority);
+		if (node->right)
+			node->right->prev = node;
 	}
 	else
 	{
 		node->right = create_final_tree(right_truncate_lst(remaning_nodes,
-					node));
+					node), priority);
 		if (node->right)
 			node->right->prev = node;
-		node->left = create_final_tree(left_truncate_lst(remaning_nodes, node));
+		node->left = create_final_tree(left_truncate_lst(remaning_nodes, node),
+				priority);
 		if (node->left)
 			node->left->prev = node;
 	}
@@ -610,28 +686,32 @@ void	parse_line(t_minishell *data, char *line)
 	init_all_index(keywords, args, quoted);
 	new_args = create_lst_args(keywords, args, quoted);
 	lst = create_final_lst(keywords, new_args);
-	// t_list *c = lst;
-	// while (c)
-	// {
-	// 	if (((t_token *)c->content)->type == TOKEN_OR)
-	// 		printf(" OR ");
-	// 	else if (((t_token *)c->content)->type == TOKEN_AND)
-	// 		printf(" AND ");
-	// 	else if (((t_token *)c->content)->type == TOKEN_PIPE)
-	// 		printf(" | ");
-	// 	else if (((t_token *)c->content)->type == TOKEN_REDIR_IN)
-	// 		printf(" < ");
-	// 	else if (((t_token *)c->content)->type == TOKEN_REDIR_OUT)
-	// 		printf(" > ");
-	// 	else if (((t_token *)c->content)->type == TOKEN_APPEND)
-	// 		printf(" >> ");
-	// 	else if (((t_token *)c->content)->type == TOKEN_HEREDOC)
-	// 		printf(" << ");
-	// 	else
-	// 		printf(" OTHER ");
-	// 	c = c->next;
-	// }
-	// printf("\n");
+	c = lst;
+	// echo i && (echo 3 && (echo 4 && echo 5)) && (echo 1 && echo 2)
+	while (c)
+	{
+		if (((t_token *)c->content)->type == TOKEN_OR)
+			printf(" OR %u", ((t_token *)c->content)->priority);
+		else if (((t_token *)c->content)->type == TOKEN_AND)
+			printf(" AND %u", ((t_token *)c->content)->priority);
+		else if (((t_token *)c->content)->type == TOKEN_PIPE)
+			printf(" | %u", ((t_token *)c->content)->priority);
+		else if (((t_token *)c->content)->type == TOKEN_REDIR_IN)
+			printf(" < %u", ((t_token *)c->content)->priority);
+		else if (((t_token *)c->content)->type == TOKEN_REDIR_OUT)
+			printf(" > %u", ((t_token *)c->content)->priority);
+		else if (((t_token *)c->content)->type == TOKEN_APPEND)
+			printf(" >> %u", ((t_token *)c->content)->priority);
+		else if (((t_token *)c->content)->type == TOKEN_HEREDOC)
+			printf(" << %u", ((t_token *)c->content)->priority);
+		else if (((t_token *)c->content)->type == TOKEN_QUOTED
+			|| ((t_token *)c->content)->type == TOKEN_WORD)
+			printf(" WORD/QUOTED %u", ((t_token *)c->content)->priority);
+		else
+			printf(" OTHER ");
+		c = c->next;
+	}
+	printf("\n");
 	lst = create_btree_nodes_lst(lst);
 	c = lst;
 	while (c)
@@ -657,7 +737,7 @@ void	parse_line(t_minishell *data, char *line)
 		c = c->next;
 	}
 	printf("\n");
-	tree = create_final_tree(lst);
+	tree = create_final_tree(lst, 0);
 	// printf("right : %p\n", tree->right);
 	// printf("left : %p\n", tree->left);
 	data->execution_tree = tree;
@@ -708,7 +788,7 @@ void	parse_line(t_minishell *data, char *line)
 // 		if (!tree)
 // 			*tree = btree_create_node(TOKEN_OR);
 // 		(*tree)->right = convert_to_btree(*tree, index + 1, keywords, args,
-				// quoted);
+// quoted);
 // 	}
 // 	else
 // 	{
