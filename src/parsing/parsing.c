@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/10 16:00:49 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/10 16:16:27 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -687,14 +687,34 @@ t_list	*create_btree_nodes_lst(t_list *lst)
 		else if (((t_token *)lst->content)->type == TOKEN_PIPE)
 			current = ft_lstnew(btree_create_node(BTREE_PIPE_TYPE));
 		else if (((t_token *)lst->content)->type == TOKEN_REDIR_IN)
+		{
 			current = ft_lstnew(btree_create_node(BTREE_REDIRECTION_TYPE));
+			((t_btree *)current->content)->content = safe_malloc(sizeof(t_btree_redir_node));
+			ft_bzero(((t_btree *)current->content)->content,
+				sizeof(t_btree_redir_node));
+			((t_btree_redir_node *)((t_btree *)current->content)->content)->type = REDIRECTION_IN_TYPE;
+			if (current->next)
+				((t_btree_redir_node *)((t_btree *)current->content)->content)->file = ((t_token *)current->next->content)->argv[0];
+		}
 		else if (((t_token *)lst->content)->type == TOKEN_REDIR_OUT)
 			current = ft_lstnew(btree_create_node(BTREE_REDIRECTION_TYPE));
 		else if (((t_token *)lst->content)->type == TOKEN_APPEND)
+		{
 			current = ft_lstnew(btree_create_node(BTREE_REDIRECTION_TYPE));
+			((t_btree *)current->content)->content = safe_malloc(sizeof(t_btree_redir_node));
+			ft_bzero(((t_btree *)current->content)->content,
+				sizeof(t_btree_redir_node));
+			((t_btree_redir_node *)((t_btree *)current->content)->content)->type = REDIRECTION_OUT_TYPE;
+			((t_btree_redir_node *)((t_btree *)current->content)->content)->doubled = true;
+			if (lst->next)
+			{
+				((t_btree_redir_node *)((t_btree *)current->content)->content)->file = ((t_token *)lst->next->content)->argv[0];
+				((t_token *)lst->next->content)->type = TOKEN_EOF;
+			}
+		}
 		else if (((t_token *)lst->content)->type == TOKEN_HEREDOC)
 			current = ft_lstnew(btree_create_node(BTREE_REDIRECTION_TYPE));
-		else
+		else if (((t_token *)lst->content)->type != TOKEN_EOF)
 		{
 			if (lst->content)
 			{
@@ -704,8 +724,11 @@ t_list	*create_btree_nodes_lst(t_list *lst)
 			}
 		}
 		if (current)
+		{
 			((t_btree *)current->content)->priority = ((t_token *)lst->content)->priority;
-		ft_lstadd_back(&head, current);
+			ft_lstadd_back(&head, current);
+		}
+		current = NULL;
 		lst = lst->next;
 	}
 	return (head);
@@ -910,8 +933,8 @@ void	parse_line(t_minishell *data, char *line)
 	t_list	*new_args;
 	t_btree	*tree;
 	t_list	*lst;
+	t_list	*c;
 
-	// t_list	*c;
 	if (verif_quote(line) == 0)
 	{
 		ft_fprintf(STDERR_FILENO, "Erreur de quote\n");
@@ -962,30 +985,30 @@ void	parse_line(t_minishell *data, char *line)
 	tree = create_final_tree(lst, 0);
 	data->execution_tree = tree;
 	// printf("\n");
-	// c = lst;
-	// while (c)
-	// {
-	// 	if (((t_btree *)c->content)->type == BTREE_OR_TYPE)
-	// 		printf(" OR ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_AND_TYPE)
-	// 		printf(" AND ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_PIPE_TYPE)
-	// 		printf(" | ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
-	// 		printf(" < ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
-	// 		printf(" > ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
-	// 		printf(" >> ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
-	// 		printf(" << ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_COMMAND_TYPE)
-	// 		printf(" COMMAND ");
-	// 	else
-	// 		printf(" OTHER ");
-	// 	c = c->next;
-	// }
-	// printf("\n");
+	c = lst;
+	while (c)
+	{
+		if (((t_btree *)c->content)->type == BTREE_OR_TYPE)
+			printf(" OR ");
+		else if (((t_btree *)c->content)->type == BTREE_AND_TYPE)
+			printf(" AND ");
+		else if (((t_btree *)c->content)->type == BTREE_PIPE_TYPE)
+			printf(" | ");
+		else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
+			printf(" < ");
+		else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
+			printf(" > ");
+		else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
+			printf(" >> ");
+		else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
+			printf(" << ");
+		else if (((t_btree *)c->content)->type == BTREE_COMMAND_TYPE)
+			printf(" COMMAND ");
+		else
+			printf(" OTHER ");
+		c = c->next;
+	}
+	printf("\n");
 	// printf("right : %p\n", tree->right);
 	// printf("left : %p\n", tree->left);
 	data->execution_tree = tree;
