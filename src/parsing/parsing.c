@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/10 09:34:51 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/10 09:42:10 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -507,14 +507,11 @@ t_list	*create_final_lst(t_token *keywords, t_list *args)
 	t_list	*lst;
 	t_list	*current;
 	int		index;
-	t_token	*new_token;
 
 	lst = NULL;
 	index = ft_lstsize(args);
 	while (index > 0)
 	{
-		new_token = safe_malloc(sizeof(t_token));
-		ft_bzero(new_token, sizeof(t_token));
 		current = ft_lstnew(args->content);
 		args = args->next;
 		if (keywords)

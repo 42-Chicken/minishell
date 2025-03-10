@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 10:21:55 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/05 09:32:51 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/10 10:06:36 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ char	*expand(t_minishell *data, char *str)
 		result = ft_strreplace(result, EXPANDER_EXIT_CODE_PATERN,
 				ft_itoa(data->exit_code));
 	if (result && ft_strnstr(result, EXPANDER_PID_PATERN, ft_strlen(result)))
-		result = ft_strreplace(result, EXPANDER_PID_PATERN, PID);
+		result = ft_strreplace(result, EXPANDER_PID_PATERN, GIGACHAD);
 	result = expand_from_env(data, result);
 	result = handle_tild(data, result);
 	result = handle_wildcard(data, result);
