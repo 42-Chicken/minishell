@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:07:17 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 15:20:10 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:57:00 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static void	print_redirections_errors(t_btree *node)
 		error = ERROR_UNEXPTED_TOKEN_NEW_LINE;
 	if (error)
 		ft_fprintf(STDERR_FILENO, error, redir->file);
-	// redir->error = REDIRECTION_NO_ERROR;
 }
 
 static void	print_commands_errors(t_btree *node)
@@ -61,7 +60,8 @@ static void	print_commands_errors(t_btree *node)
 		error = ERROR_COMMAND_ARGUMENTS;
 	if (error && (!node->prev || (node->prev
 				&& node->prev->type == BTREE_REDIRECTION_TYPE
-				&& ((t_btree_redir_node *)node->prev->content)->error != REDIRECTION_NO_ERROR)))
+				&& ((t_btree_redir_node *)node->prev->content)->error != \
+				REDIRECTION_NO_ERROR)))
 		ft_fprintf(STDERR_FILENO, error, command->argv[0]);
 }
 

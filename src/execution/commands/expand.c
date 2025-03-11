@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:44:01 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 08:30:45 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:55:37 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	expand_commands_args(t_minishell *data, t_btree *cmd_node)
 	t_command	*current;
 
 	node = cmd_node;
-	if (cmd_node->prev)
+	if (cmd_node->prev && cmd_node->prev->type == BTREE_REDIRECTION_TYPE)
 		node = cmd_node->prev;
 	while (node)
 	{

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 19:26:01 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/01/21 11:41:50 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 16:16:53 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	end = ft_strlen(s1) - 1;
 	while (is_in_set(s1[first], set))
 		first++;
-	while (is_in_set(s1[end], set))
+	while (end > 0 && is_in_set(s1[end], set))
 		end--;
 	return (ft_substr(s1, first, end - first + 1));
 }

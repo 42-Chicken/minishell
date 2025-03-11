@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 08:22:24 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 10:22:58 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:56:55 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	execution_pipeline(t_minishell *data)
 		bind_redirections_to_fds(data);
 		print_tree_errors(data);
 		execute_binary_tree(data);
-		print_execution_tree(data);
+		// print_execution_tree(data);
 		delete_heredocs_tmp_files(data);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 08:32:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/05 09:16:19 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:34:34 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	*filter_wildcard(char *str, size_t i)
 		{
 			if (startswith(dirs_names[y], ".") && !startswith(patern, "."))
 				continue ;
-			if (y != 0)
+			if (ft_strlen(result) > 0)
 				result = ft_strjoin(result, " ");
 			result = ft_strjoin(result, dirs_names[y]);
 		}

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:29:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 10:13:04 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:56:16 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static void	set_default_output(t_btree *cmd_node)
 	{
 		if (node->type == BTREE_COMMAND_TYPE && !node->left)
 			((t_command *)node->content)->out_pipe = pipe;
-		// if (node->type == BTREE_COMMAND_TYPE && !node->left)
 		node = node->left;
 	}
 }

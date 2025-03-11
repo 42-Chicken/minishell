@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 11:46:25 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 09:56:07 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:55:47 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	recursive_check_call(t_btree **head, t_btree *node,
 	if (node->type == BTREE_PIPE_TYPE)
 	{
 		if (!node->prev || (node->prev->type != BTREE_COMMAND_TYPE
-			&& node->prev->type != BTREE_REDIRECTION_TYPE))
+				&& node->prev->type != BTREE_REDIRECTION_TYPE))
 			data->execution_tree_error = EXECTREE_ERR_UNEXEPTED_PIPE;
 		else if (!node->left)
 			data->execution_tree_error = EXECTREE_ERR_UNEXEPTED_PIPE;

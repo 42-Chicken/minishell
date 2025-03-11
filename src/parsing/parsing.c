@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 15:29:18 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 16:17:53 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ t_token	*add_token(t_token **head, TokenType type, char *value, int i, int h,
 		new->value = ft_strdup(value);
 	else
 		new->value = ft_strndup(value, i);
-	if (new->value && type == TOKEN_WORD)
+	if (new->value && ft_strlen(new->value) > 0 && type == TOKEN_WORD)
 		new->value = ft_strtrim(new->value, SPACES "()");
 	new->next = NULL;
 	new->index = h;
@@ -149,44 +149,6 @@ int	without_quote(char *str)
 	}
 	return (size);
 }
-// char	*extract_quoted(char *str, t_token **head)
-// {
-// 	char	*new_line;
-// 	char	flag;
-// 	int		i;
-// 	int		j;
-// 	int		h;
-
-// 	new_line = safe_malloc(sizeof(char) * without_quote(str) + 1);
-// 	i = 0;
-// 	j = 0;
-// 	while (str[i])
-// 	{
-// 		if (str[i] == '\'' || str[i] == '"')
-// 		{
-// 			flag = str[i];
-// 			i++;
-// 			h = i;
-// 			while (str[i] && str[i] != flag)
-// 				i++;
-// 			if (str[i] == flag)
-// 			{
-// 				add_token(head, TOKEN_WORD, str + h, i - h, h);
-// 				i++;
-// 			}
-// 			else
-// 				return (NULL);
-// 		}
-// 		else
-// 		{
-// 			new_line[j] = str[i];
-// 			i++;
-// 			j++;
-// 		}
-// 	}
-// 	new_line[j] = '\0';
-// 	return (new_line);
-// }
 
 int	is_keyword(char c, int flag)
 {
@@ -292,9 +254,11 @@ t_token	*extract_arg(char *line, t_token **head)
 					count++;
 				if (count == 2)
 				{
-					while ((line[i] && !ft_isspace(line[i])
-							&& !is_keyword(line[i], 0)) || (is_keyword(line[i],
-								0) && is_in_quote_at(line, i) != QUOTE_NONE))
+					while (line[i] && ((!ft_isspace(line[i])
+								&& !is_keyword(line[i], 0))
+							|| ((is_keyword(line[i], 0)) && is_in_quote_at(line,
+									i) != QUOTE_NONE) || (ft_isspace(line[i])
+								&& is_in_quote_at(line, i) != QUOTE_NONE)))
 					{
 						i++;
 					}
@@ -305,6 +269,7 @@ t_token	*extract_arg(char *line, t_token **head)
 			add_token(head, TOKEN_QUOTED, line + h, i - h, h,
 				get_priority_at(line, h + 1));
 			h = i;
+			continue ;
 		}
 		if (is_keyword(line[i], 0) == 1)
 		{
@@ -438,8 +403,7 @@ void	create_lst_args(t_list **head, t_token *keywords, t_token *args,
 				|| current->type == TOKEN_QUOTED))
 		{
 			priority = current->priority;
-			if (current && current->type == TOKEN_QUOTED
-				&& line_is_empty(current) == 0)
+			if (current && current->type == TOKEN_QUOTED)
 			{
 				tab = add_to_tab(tab, current->value);
 			}
@@ -828,9 +792,9 @@ t_btree	*create_redirection_node(t_list **head, t_list *lst, bool doubled,
 					((t_token *)lst->next->content)->argv + 1);
 		}
 		else if ((type == REDIRECTION_IN_TYPE
-			|| type == REDIRECTION_HERE_DOC_TYPE) && ((t_token *)lst->next->content)->argv[1])
+				|| type == REDIRECTION_HERE_DOC_TYPE)
+			&& ((t_token *)lst->next->content)->argv[1])
 		{
-
 			prev = ft_lstnew(btree_create_node(BTREE_COMMAND_TYPE));
 			((t_btree *)prev->content)->content = create_command(add_tab_to_tab(NULL,
 						((t_token *)lst->next->content)->argv + 1),
@@ -1060,7 +1024,7 @@ void	extract_quote(t_token **head, t_token *quoted)
 		j = 0;
 		flag = 0;
 		size = ft_strlen(quoted->value);
-		str = safe_malloc(sizeof(char) * size - (i + 1));
+		str = safe_malloc(sizeof(char) * (size + 1) - (i));
 		i = 0;
 		while (quoted->value[i])
 		{
@@ -1068,7 +1032,7 @@ void	extract_quote(t_token **head, t_token *quoted)
 			{
 				flag = quoted->value[i];
 				i++;
-				while (quoted->value[i] != flag)
+				while (quoted->value[i] != flag && quoted->value[i])
 				{
 					str[j] = quoted->value[i];
 					i++;
@@ -1076,7 +1040,7 @@ void	extract_quote(t_token **head, t_token *quoted)
 				}
 				i++;
 			}
-			else
+			else if (quoted->value[i])
 			{
 				str[j] = quoted->value[i];
 				i++;
@@ -1113,8 +1077,8 @@ void	parse_line(t_minishell *data, char *line)
 	t_list	*new_args;
 	t_btree	*tree;
 	t_list	*lst;
-	t_list	*c;
 
+	// t_list	*c;
 	if (verif_quote(line) == 0)
 	{
 		ft_fprintf(STDERR_FILENO, "Erreur de quote\n");
@@ -1167,29 +1131,29 @@ void	parse_line(t_minishell *data, char *line)
 	tree = create_final_tree(lst, 0);
 	data->execution_tree = tree;
 	// printf("\n");
-	c = lst;
-	while (c)
-	{
-		if (((t_btree *)c->content)->type == BTREE_OR_TYPE)
-			printf(" OR ");
-		else if (((t_btree *)c->content)->type == BTREE_AND_TYPE)
-			printf(" AND ");
-		else if (((t_btree *)c->content)->type == BTREE_PIPE_TYPE)
-			printf(" | ");
-		else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
-			printf(" < ");
-		else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
-			printf(" > ");
-		else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
-			printf(" >> ");
-		else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
-			printf(" << ");
-		else if (((t_btree *)c->content)->type == BTREE_COMMAND_TYPE)
-			printf(" COMMAND ");
-		else
-			printf(" OTHER ");
-		c = c->next;
-	}
+	// c = lst;
+	// while (c)
+	// {
+	// 	if (((t_btree *)c->content)->type == BTREE_OR_TYPE)
+	// 		printf(" OR ");
+	// 	else if (((t_btree *)c->content)->type == BTREE_AND_TYPE)
+	// 		printf(" AND ");
+	// 	else if (((t_btree *)c->content)->type == BTREE_PIPE_TYPE)
+	// 		printf(" | ");
+	// 	else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
+	// 		printf(" < ");
+	// 	else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
+	// 		printf(" > ");
+	// 	else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
+	// 		printf(" >> ");
+	// 	else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
+	// 		printf(" << ");
+	// 	else if (((t_btree *)c->content)->type == BTREE_COMMAND_TYPE)
+	// 		printf(" COMMAND ");
+	// 	else
+	// 		printf(" OTHER ");
+	// 	c = c->next;
+	// }
 	// printf("right : %p\n", tree->right);
 	// printf("left : %p\n", tree->left);
 	data->execution_tree = tree;
