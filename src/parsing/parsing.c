@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 12:27:21 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:29:18 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,9 +275,9 @@ t_token	*extract_arg(char *line, t_token **head)
 		if (line[i] == '\'' || line[i] == '"')
 		{
 			flag = line[i];
-			while (i - 1 >= 0 && ((!ft_isspace(line[i - 1]) && !is_keyword(line[i
-						- 1], 0)) || (is_keyword(line[i], 0)
-					&& is_in_quote_at(line, i) != QUOTE_NONE)))
+			while (i - 1 >= 0 && ((!ft_isspace(line[i - 1])
+						&& !is_keyword(line[i - 1], 0)) || (is_keyword(line[i],
+							0) && is_in_quote_at(line, i) != QUOTE_NONE)))
 			{
 				i--;
 			}
@@ -322,6 +322,45 @@ t_token	*extract_arg(char *line, t_token **head)
 				+ 1));
 	return (args);
 }
+
+// char	*extract_from_line(char *str, int *i)
+// {
+// 	while (str && str[*i] && is_keyword(str[*i], 5))
+// 		(*i)++;
+// 	if (!str[i])
+// 		return (NULL);
+// 	while (str && str[*i] && !is_keyword(str[*i], 5) && !ft_isspace(str[*i]))
+// 	{
+// 		if ((str[*i] == '\'' || str[*i] == '"'))
+// 		{
+// 			if (ft_strchr(str, (str[*i])))
+// 			{
+// 				*i = ft_strchr(str, (str[*i])) - str;
+// 				continue ;
+// 			}
+// 			else
+// 				ft_fprintf(STDERR_FILENO, "ERROR QUOTES");
+// 		}
+// 		else
+// 			(*i)++;
+// 	}
+// 	return (ft_substr(str, 0, *i));
+// }
+
+// t_token	*extract_arg(char *line, t_token **quoted)
+// {
+// 	t_token	*args;
+// 	int		i;
+
+// 	args = NULL;
+// 	(void)quoted;
+// 	i = 0;
+// 	while (line[i])
+// 	{
+// 		printf("%s %d\n", extract_from_line(line + i, &i), i);
+// 	}
+// 	return (args);
+// }
 
 int	tab_len(char **str)
 {
@@ -771,23 +810,27 @@ t_btree	*create_redirection_node(t_list **head, t_list *lst, bool doubled,
 	node = btree_create_node(BTREE_REDIRECTION_TYPE);
 	node->content = safe_malloc(sizeof(t_btree_redir_node));
 	ft_bzero(node->content, sizeof(t_btree_redir_node));
+	((t_btree_redir_node *)node->content)->error = REDIRECTION_NO_ERROR;
 	((t_btree_redir_node *)node->content)->type = type;
 	((t_btree_redir_node *)node->content)->doubled = doubled;
-	if (lst->next)
+	if (lst->next && ((t_token *)lst->next->content)->argv)
 	{
 		if (type == REDIRECTION_HERE_DOC_TYPE)
 			((t_btree_redir_node *)node->content)->limiter = ((t_token *)lst->next->content)->argv[0];
 		else
 			((t_btree_redir_node *)node->content)->file = ((t_token *)lst->next->content)->argv[0];
-		((t_token *)lst->next->content)->type = TOKEN_EOF;
+		if (((t_token *)lst->next->content)->type == TOKEN_WORD)
+			((t_token *)lst->next->content)->type = TOKEN_EOF;
 		prev = get_before_last(*head);
-		if (prev)
+		if (prev && ((t_btree *)prev->content)->type == BTREE_COMMAND_TYPE)
 		{
 			((t_command *)((t_btree *)prev->content)->content)->argv = add_tab_to_tab(((t_command *)((t_btree *)prev->content)->content)->argv,
 					((t_token *)lst->next->content)->argv + 1);
 		}
-		else
+		else if ((type == REDIRECTION_IN_TYPE
+			|| type == REDIRECTION_HERE_DOC_TYPE) && ((t_token *)lst->next->content)->argv[1])
 		{
+
 			prev = ft_lstnew(btree_create_node(BTREE_COMMAND_TYPE));
 			((t_btree *)prev->content)->content = create_command(add_tab_to_tab(NULL,
 						((t_token *)lst->next->content)->argv + 1),
@@ -939,6 +982,8 @@ t_btree	*create_final_tree(t_list *remaning_nodes, unsigned int priority)
 		node->right = create_final_tree(remaning_nodes->next, priority);
 		if (node->right)
 			node->right->prev = node;
+		if (node->right == node->left)
+			node->right = NULL;
 	}
 	else
 	{

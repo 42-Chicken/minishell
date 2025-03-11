@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/10 15:59:56 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 14:17:24 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef enum e_redirection_errors
 	REDIRECTION_HERE_DOC_PERMISSION_DENIED,
 	REDIRECTION_ERROR_OPENING_FILE,
 	REDIRECTION_PERMISSION_DENIED,
+	REDIRECTION_UNEXPETED_TOKEN,
 }							t_redirection_errors;
 
 typedef enum e_redirection_types

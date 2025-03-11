@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:27:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 11:19:38 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:23:41 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	link_commands_redirections(t_btree *tree)
 
 			}
 			else if (redir && redir->type == REDIRECTION_OUT_TYPE && node->prev)
-				link_redirection_to_cmd_node(redir, node->prev);
+				link_redirection_to_cmd_node(redir, recusrive_prev_get(node, BTREE_COMMAND_TYPE));
 		}
 		node = node->left;
 	}

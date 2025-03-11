@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 08:36:57 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/10 10:05:48 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:07:23 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ current working directory !\n"
 : warning: here-document at %d delimited by end-of-file (wanted `%s')\n"
 # define HEREDOC_PROMPT "> "
 # define HEREDOC_TMP_FILE_START_PATH "/tmp/minishell_heredoc_"
-# define HEREDOC_ERROR_AT_FILE_CREATION "minishell\
+# define HEREDOC_ERROR_FILE_CREATION "minishell\
 : failed to create heredoc file"
 
 // ---------------------------------
@@ -91,6 +91,8 @@ current working directory !\n"
 # define ERROR_PERMISSION_DENIED_EXIT_CODE 126
 # define ERROR_CANNOT_OPEN_FILE "minishell\
 : %s: cannot open file\n"
+# define ERROR_UNEXPTED_TOKEN_NEW_LINE "minishell\
+: syntax error near unexpected token `newline'\n"
 # define ERROR_TREE_AND "minishell\
 : syntax error: unexpected `&&'\n"
 # define ERROR_TREE_OR "minishell\

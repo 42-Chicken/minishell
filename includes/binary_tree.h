@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:47:33 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/10 08:43:57 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:07:34 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ t_btree					*get_first_previous(t_btree *node,
 t_btree					*recusrive_left_get(t_btree *node,
 							t_btree_node_type type);
 t_btree					*recusrive_rigth_get(t_btree *node,
+							t_btree_node_type type);
+t_btree					*recusrive_prev_get(t_btree *node,
 							t_btree_node_type type);
 
 void					btree_type_foreach(t_btree **head,

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:00:26 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 09:48:28 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:27:16 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	fill_file(t_minishell *data, int fd, char *limit)
 	close(new);
 }
 
-static void	handle_heredocs_save(t_btree **head, t_btree *node, void *other)
+static bool	handle_heredocs_save(t_btree **head, t_btree *node, void *other)
 {
 	static int			id = 0;
 	int					fd;
@@ -53,23 +53,23 @@ static void	handle_heredocs_save(t_btree **head, t_btree *node, void *other)
 	(void)head;
 	data = (t_minishell *)other;
 	redir = (t_btree_redir_node *)node->content;
-	if (!redir || redir->type != REDIRECTION_HERE_DOC_TYPE || redir->file)
-		return ;
+	if (!redir || redir->type != REDIRECTION_HERE_DOC_TYPE)
+		return (false);
+	if (!redir->limiter)
+		return (redir->error = REDIRECTION_UNEXPETED_TOKEN, false);
 	redir->file = ft_strjoin(HEREDOC_TMP_FILE_START_PATH, ft_itoa(id++));
 	fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
-	{
-		ft_fprintf(STDERR_FILENO, HEREDOC_ERROR_AT_FILE_CREATION);
-		return ;
-	}
+		return (ft_fprintf(STDERR_FILENO, HEREDOC_ERROR_FILE_CREATION), false);
 	create_safe_memory_context();
 	switch_to_heredoc_mode();
 	fill_file(data, fd, redir->limiter);
 	reset_signals(true);
 	if (g_sig == SIGINT)
-		data->execution_tree = NULL; // verif
+		data->execution_tree = NULL;
 	exit_safe_memory_context();
 	close(fd);
+	return (true);
 }
 
 static void	handle_heredocs_unlink(t_btree **head, t_btree *node)
@@ -86,7 +86,7 @@ static void	handle_heredocs_unlink(t_btree **head, t_btree *node)
 void	save_heredocs_tmp_files(t_minishell *data)
 {
 	btree_type_foreach_other(&data->execution_tree, BTREE_REDIRECTION_TYPE,
-		handle_heredocs_save, data);
+		(void (*)(t_btree **, t_btree *, void *))handle_heredocs_save, data);
 }
 
 void	delete_heredocs_tmp_files(t_minishell *data)

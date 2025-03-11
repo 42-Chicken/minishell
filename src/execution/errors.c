@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:07:17 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 12:09:14 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:20:10 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,11 @@ static void	print_redirections_errors(t_btree *node)
 		error = ERROR_PERMISSION_DENIED;
 	if (redir->error == REDIRECTION_ERROR_OPENING_FILE)
 		error = ERROR_CANNOT_OPEN_FILE;
+	if (redir->error == REDIRECTION_UNEXPETED_TOKEN)
+		error = ERROR_UNEXPTED_TOKEN_NEW_LINE;
 	if (error)
 		ft_fprintf(STDERR_FILENO, error, redir->file);
+	// redir->error = REDIRECTION_NO_ERROR;
 }
 
 static void	print_commands_errors(t_btree *node)
@@ -65,11 +68,11 @@ static void	print_commands_errors(t_btree *node)
 static void	print_tree_errors_recusive(t_btree **head, t_btree *node,
 		void *data)
 {
-	(void)data;
 	(void)head;
+	(void)data;
 	if (node->type == BTREE_COMMAND_TYPE)
 		print_commands_errors(node);
-	if (node->type == BTREE_REDIRECTION_TYPE)
+	else if (node->type == BTREE_REDIRECTION_TYPE)
 		print_redirections_errors(node);
 }
 
