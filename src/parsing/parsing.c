@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 16:17:53 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 17:10:11 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1129,8 +1129,8 @@ void	parse_line(t_minishell *data, char *line)
 	// }
 	lst = create_btree_nodes_lst(lst);
 	tree = create_final_tree(lst, 0);
+	printf("Parsing finished !\n");
 	data->execution_tree = tree;
-	// printf("\n");
 	// c = lst;
 	// while (c)
 	// {

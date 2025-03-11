@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:07:07 by romain            #+#    #+#             */
-/*   Updated: 2025/02/25 09:22:46 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 16:37:18 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ void	close_heredoc(int sig)
 {
 	g_sig = sig;
 	ft_fprintf(STDOUT_FILENO, "\n");
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 	close(HEREDOC_WRITTING_FD);
 }
 
