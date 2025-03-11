@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 10:02:05 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 11:47:52 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static bool	update_env(t_minishell *data, t_command *command, char *key)
 {
 	char	*path;
 
-	if (command->part_of_pipe)
+	if (command->part_of_pipe || command->priority != 0)
 		return (true);
 	path = get_current_path(data);
 	if (!path)
@@ -69,7 +69,8 @@ int	cd_command(t_minishell *data, t_command *command)
 	if (!update_env(data, command, ENV_OLDPWD))
 		return (EXIT_FAILURE);
 	if ((command->part_of_pipe && access(target_path, F_OK) == -1)
-		|| (!command->part_of_pipe && chdir(target_path) == -1))
+		|| (command->priority == 0 && !command->part_of_pipe
+			&& chdir(target_path) == -1))
 		return (ft_fprintf(STDERR_FILENO, CD_COULD_NOT_FIND_DIRECTORY,
 				target_path), EXIT_FAILURE);
 	if (!update_env(data, command, ENV_PWD))

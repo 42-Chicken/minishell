@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/10 15:42:00 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 11:48:19 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	export_command(t_minishell *data, t_command *command)
 	int	i;
 
 	i = -1;
-	if (command->part_of_pipe)
+	if (command->part_of_pipe || command->priority != 0)
 		return (EXIT_SUCCESS);
 	char_sort_array((char **)data->envp);
 	if (char_array_len(command->argv) <= 1)

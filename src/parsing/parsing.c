@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 11:27:41 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 11:44:55 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -441,22 +441,60 @@ unsigned int	get_priority_at(char *str, unsigned int index)
 	priority = 0;
 	while (str[++i] && i <= index)
 	{
-		if (str[i] == '(')
+		if (str[i] == '(' && is_in_quote_at(str, i) == QUOTE_NONE)
 		{
-			if (ft_strchr(str + i, ')'))
+			if (ft_strchr(str + i, ')') && is_in_quote_at(ft_strchr(str + i, ')'), 0) == QUOTE_NONE)
+				priority++;
+		}
+		else if (str[i] == ')' && is_in_quote_at(str, i) == QUOTE_NONE)
+		{
+			if (priority > 0)
+				priority--;
+		}
+	}
+	return (priority);
+}
+
+bool	only_spaces(char *str, unsigned int index)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (str && str[++i] && i < index)
+	{
+		if (!ft_isspace(str[i]))
+			return (false);
+	}
+	return (true);
+}
+
+bool	check_priorities(char *str)
+{
+	unsigned int	i;
+	unsigned int	priority;
+
+	i = -1;
+	priority = 0;
+	while (str && str[++i])
+	{
+		if (str[i] == '(' && is_in_quote_at(str, i) == QUOTE_NONE)
+		{
+			if (ft_strchr(str + i, ')') && is_in_quote_at(ft_strchr(str + i, ')'), 0) == QUOTE_NONE)
 				priority++;
 			else
-				ft_fprintf(STDERR_FILENO, "Error: at `('\n");
+				return (ft_fprintf(STDERR_FILENO, "minishell: brackets are not closed properly `)'\n"), true);
+			if (only_spaces(str + i, ft_strchr(str + i, ')') - str))
+				return (ft_fprintf(STDERR_FILENO, "minishell: syntax error near unexpected token `)'\n"), true);
 		}
-		else if (str[i] == ')')
+		else if (str[i] == ')' && is_in_quote_at(str, i) == QUOTE_NONE)
 		{
 			if (priority > 0)
 				priority--;
 			else
-				ft_fprintf(STDERR_FILENO, "Error: too many `)'\n");
+				return (ft_fprintf(STDERR_FILENO, "Error: too many `)'\n"), true);
 		}
 	}
-	return (priority);
+	return (false);
 }
 
 t_token	*tokenize(char *input)
@@ -1027,6 +1065,8 @@ void	parse_line(t_minishell *data, char *line)
 		ft_fprintf(STDERR_FILENO, "Erreur de quote\n");
 		return ;
 	}
+	if (check_priorities(line))
+		return ;
 	half_quoted = NULL;
 	args = extract_arg(line, &half_quoted);
 	keywords = tokenize(line);
