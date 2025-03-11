@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 11:44:55 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 12:27:21 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ t_token	*add_token(t_token **head, TokenType type, char *value, int i, int h,
 		new->value = ft_strdup(value);
 	else
 		new->value = ft_strndup(value, i);
-	if (type == TOKEN_WORD)
+	if (new->value && type == TOKEN_WORD)
 		new->value = ft_strtrim(new->value, SPACES "()");
 	new->next = NULL;
 	new->index = h;
@@ -198,6 +198,10 @@ int	is_keyword(char c, int flag)
 		return (1);
 	if (c == '>' && flag != 4)
 		return (1);
+	if (c == '(' && flag != 4)
+		return (1);
+	if (c == ')' && flag != 4)
+		return (1);
 	else
 		return (0);
 }
@@ -271,9 +275,9 @@ t_token	*extract_arg(char *line, t_token **head)
 		if (line[i] == '\'' || line[i] == '"')
 		{
 			flag = line[i];
-			while ((!ft_isspace(line[i - 1]) && i - 1 >= 0 && !is_keyword(line[i
+			while (i - 1 >= 0 && ((!ft_isspace(line[i - 1]) && !is_keyword(line[i
 						- 1], 0)) || (is_keyword(line[i], 0)
-					&& is_in_quote_at(line, i) != QUOTE_NONE))
+					&& is_in_quote_at(line, i) != QUOTE_NONE)))
 			{
 				i--;
 			}
@@ -443,7 +447,8 @@ unsigned int	get_priority_at(char *str, unsigned int index)
 	{
 		if (str[i] == '(' && is_in_quote_at(str, i) == QUOTE_NONE)
 		{
-			if (ft_strchr(str + i, ')') && is_in_quote_at(ft_strchr(str + i, ')'), 0) == QUOTE_NONE)
+			if (ft_strchr(str + i, ')') && is_in_quote_at(ft_strchr(str + i,
+						')'), 0) == QUOTE_NONE)
 				priority++;
 		}
 		else if (str[i] == ')' && is_in_quote_at(str, i) == QUOTE_NONE)
@@ -479,19 +484,25 @@ bool	check_priorities(char *str)
 	{
 		if (str[i] == '(' && is_in_quote_at(str, i) == QUOTE_NONE)
 		{
-			if (ft_strchr(str + i, ')') && is_in_quote_at(ft_strchr(str + i, ')'), 0) == QUOTE_NONE)
+			if (ft_strchr(str + i, ')') && is_in_quote_at(ft_strchr(str + i,
+						')'), 0) == QUOTE_NONE)
 				priority++;
 			else
-				return (ft_fprintf(STDERR_FILENO, "minishell: brackets are not closed properly `)'\n"), true);
-			if (only_spaces(str + i, ft_strchr(str + i, ')') - str))
-				return (ft_fprintf(STDERR_FILENO, "minishell: syntax error near unexpected token `)'\n"), true);
+				return (ft_fprintf(STDERR_FILENO,
+						"minishell: brackets are not closed properly `)'\n"),
+					true);
+			if (only_spaces(str + i, ft_strchr(str + i, ')') - (str + i)))
+				return (ft_fprintf(STDERR_FILENO,
+						"minishell: syntax error near unexpected token `)'\n"),
+					true);
 		}
 		else if (str[i] == ')' && is_in_quote_at(str, i) == QUOTE_NONE)
 		{
 			if (priority > 0)
 				priority--;
 			else
-				return (ft_fprintf(STDERR_FILENO, "Error: too many `)'\n"), true);
+				return (ft_fprintf(STDERR_FILENO, "Error: too many `)'\n"),
+					true);
 		}
 	}
 	return (false);
@@ -772,8 +783,7 @@ t_btree	*create_redirection_node(t_list **head, t_list *lst, bool doubled,
 		prev = get_before_last(*head);
 		if (prev)
 		{
-			((t_command *)((t_btree *)prev->content)->content)->argv =\
-			add_tab_to_tab(((t_command *)((t_btree *)prev->content)->content)->argv,
+			((t_command *)((t_btree *)prev->content)->content)->argv = add_tab_to_tab(((t_command *)((t_btree *)prev->content)->content)->argv,
 					((t_token *)lst->next->content)->argv + 1);
 		}
 		else
@@ -1135,7 +1145,6 @@ void	parse_line(t_minishell *data, char *line)
 			printf(" OTHER ");
 		c = c->next;
 	}
-	printf("\n");
 	// printf("right : %p\n", tree->right);
 	// printf("left : %p\n", tree->left);
 	data->execution_tree = tree;

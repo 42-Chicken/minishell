@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:07:17 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/07 14:14:08 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 12:09:14 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@ static void	print_commands_errors(t_btree *node)
 		error = ERROR_NO_SUCH_FILE_OR_DIRECTORY;
 	if (command->error == COMMAND_ARGUMENT_REQUIRED_ERROR)
 		error = ERROR_COMMAND_ARGUMENTS;
-	if (error)
+	if (error && (!node->prev || (node->prev
+				&& node->prev->type == BTREE_REDIRECTION_TYPE
+				&& ((t_btree_redir_node *)node->prev->content)->error != REDIRECTION_NO_ERROR)))
 		ft_fprintf(STDERR_FILENO, error, command->argv[0]);
 }
 
