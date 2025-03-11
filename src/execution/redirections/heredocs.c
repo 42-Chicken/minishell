@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:00:26 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/08 14:04:02 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 09:48:28 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ static void	fill_file(t_minishell *data, int fd, char *limit)
 			ft_fprintf(STDERR_FILENO, HEREDOC_WARNING, data->line_count, limit);
 			break ;
 		}
-		if (ft_strlen(line) > 1 && ft_strncmp(line, limit, ft_strlen(line)
-				- 1) == 0)
+		if (ft_strlen(line) > 1 && is_same_str(ft_substr(line, 0,
+					ft_strlen(line) - 1), limit))
 			break ;
 		write(fd, line, ft_strlen(line));
 		line_count++;
@@ -53,7 +53,7 @@ static void	handle_heredocs_save(t_btree **head, t_btree *node, void *other)
 	(void)head;
 	data = (t_minishell *)other;
 	redir = (t_btree_redir_node *)node->content;
-	if (!redir || redir->type != REDIRECTION_HERE_DOC_TYPE)
+	if (!redir || redir->type != REDIRECTION_HERE_DOC_TYPE || redir->file)
 		return ;
 	redir->file = ft_strjoin(HEREDOC_TMP_FILE_START_PATH, ft_itoa(id++));
 	fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);

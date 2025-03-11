@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:27:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/24 09:38:31 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 11:19:38 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,13 @@ void	link_commands_redirections(t_btree *tree)
 			redir = (t_btree_redir_node *)node->content;
 			if (redir && (redir->type == REDIRECTION_IN_TYPE
 					|| redir->type == REDIRECTION_HERE_DOC_TYPE) && node->left)
-				link_redirection_to_cmd_node(redir, node->left);
+			{
+				if (node->left->type == BTREE_COMMAND_TYPE)
+					link_redirection_to_cmd_node(redir, node->left);
+				else if (recusrive_left_get(node, BTREE_COMMAND_TYPE))
+					((t_command *)recusrive_left_get(node, BTREE_COMMAND_TYPE)->content)->in_pipe = get_pipe();
+
+			}
 			else if (redir && redir->type == REDIRECTION_OUT_TYPE && node->prev)
 				link_redirection_to_cmd_node(redir, node->prev);
 		}

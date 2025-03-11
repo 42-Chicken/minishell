@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:38:44 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/20 17:30:51 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 09:42:55 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,22 @@
 #include "ft_fprintf.h"
 #include "minishell.h"
 
-static void	print_commands(void *content)
+static void	print_commands(t_btree *node, void *content)
 {
 	t_command	*command;
 
 	command = (t_command *)content;
 	ft_fprintf(STDOUT_FILENO,
-				"(name : %s pipe : %d | inr : %d inw : %d | outr :\
-		%d outw : %d) ",
+				"%p > (name : %s pipe : %d | inr : %d inw : %d | outr :\
+		%d outw : %d) | prev : %p",
+				node,
 				command->argv[0],
 				command->part_of_pipe,
 				command->in_pipe.read,
 				command->in_pipe.write,
 				command->out_pipe.read,
-				command->out_pipe.write);
+				command->out_pipe.write,
+				node->prev);
 }
 
 static void	print_recustive(t_minishell *data, t_btree *node, int offset)
@@ -42,7 +44,7 @@ static void	print_recustive(t_minishell *data, t_btree *node, int offset)
 		ft_fprintf(STDOUT_FILENO, "	");
 	if (node->type == BTREE_COMMAND_TYPE)
 	{
-		print_commands((t_command *)node->content);
+		print_commands(node, (t_command *)node->content);
 		ft_fprintf(STDOUT_FILENO, "\n");
 		print_recustive(data, node->left, offset + 1);
 	}
@@ -53,9 +55,14 @@ static void	print_recustive(t_minishell *data, t_btree *node, int offset)
 	}
 	if (node->type == BTREE_REDIRECTION_TYPE)
 	{
-		ft_fprintf(STDOUT_FILENO, "REDIR to %d | error : %d\n",
+		ft_fprintf(STDOUT_FILENO, "%p > REDIR to %d | limiter : %s | error : %d | left : %p | prev : %p\n",
+			node,
 			((t_btree_redir_node *)node->content)->fd,
-			((t_btree_redir_node *)node->content)->error);
+			((t_btree_redir_node *)node->content)->limiter,
+			((t_btree_redir_node *)node->content)->error,
+			node->left,
+			node->prev
+		);
 		print_recustive(data, node->left, offset + 1);
 	}
 	else if (node->type == BTREE_OR_TYPE)

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:51:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 08:40:33 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 08:58:56 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static void	bind_redirections(t_btree **head, t_btree *node)
 
 	(void)head;
 	redir = (t_btree_redir_node *)node->content;
+	redir->error = REDIRECTION_NO_ERROR;
 	if (!redir)
 		return ;
 	if (redir->type == REDIRECTION_IN_TYPE)

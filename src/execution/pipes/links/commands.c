@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:29:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/08 12:27:48 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/11 10:13:04 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,22 @@ static t_pipe	init_prev_command_pipe(t_btree *cmd_node)
 	cmd->part_of_pipe = true;
 	cmd->out_pipe = get_pipe();
 	return (cmd->out_pipe);
+}
+
+static void	set_default_output(t_btree *cmd_node)
+{
+	t_pipe	pipe;
+	t_btree	*node;
+
+	pipe = (t_pipe){PIPE_NO_VALUE, STDOUT_FILENO};
+	node = cmd_node;
+	while (node)
+	{
+		if (node->type == BTREE_COMMAND_TYPE && !node->left)
+			((t_command *)node->content)->out_pipe = pipe;
+		// if (node->type == BTREE_COMMAND_TYPE && !node->left)
+		node = node->left;
+	}
 }
 
 void	link_commands_pipes(t_btree *cmd_node)
@@ -49,10 +65,9 @@ void	link_commands_pipes(t_btree *cmd_node)
 				current = (t_command *)next->content;
 				current->in_pipe = pipe;
 				current->part_of_pipe = true;
-				if (!recusrive_left_get(next, BTREE_PIPE_TYPE))
-					current->out_pipe = (t_pipe){PIPE_NO_VALUE, STDOUT_FILENO};
 			}
 		}
 		node = node->left;
 	}
+	set_default_output(cmd_node);
 }
