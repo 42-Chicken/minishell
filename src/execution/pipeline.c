@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 08:22:24 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 11:51:39 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 12:26:01 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,18 @@ void	execution_pipeline(t_minishell *data)
 	save_heredocs_tmp_files(data);
 	bind_commands_to_executable(data);
 	bind_redirections_to_fds(data);
-	print_tree_errors(data);
+	print_tree_errors(data, data->execution_tree);
 	if (data->execution_tree_error == EXECTREE_ERR_NONE)
 	{
 		data->exit_code = 0;
 		execute_binary_tree(data);
-		// print_execution_tree(data);
-		// print_execution_tree(data);
 	}
 	else
+	{
 		print_error(data);
-	// if (data->exit_code == 0)
-	// 	data->exit_code = code;
+		if (data->exit_code == 0)
+			data->exit_code = DEFAULT_ERROR_EXIT_CODE;
+	}
 	delete_heredocs_tmp_files(data);
 	exit_safe_memory_context();
 }

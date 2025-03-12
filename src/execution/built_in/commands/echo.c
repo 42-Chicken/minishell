@@ -6,12 +6,14 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 11:48:33 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 12:21:57 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// 	if (write(command->out_pipe.write, 0, 0) == -1)
+// return (EXIT_FAILURE);
 int	echo_command(t_minishell *data, t_command *command)
 {
 	int		i;
@@ -22,8 +24,6 @@ int	echo_command(t_minishell *data, t_command *command)
 	len = char_array_len(command->argv);
 	i = 0;
 	new_line = true;
-	if (write(command->out_pipe.write, 0, 0) == -1)
-		return (EXIT_FAILURE);
 	if (len > 1)
 	{
 		if (!ft_strncmp("-n", command->argv[1], ft_strlen(command->argv[1])))

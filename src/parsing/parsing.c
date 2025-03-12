@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 10:38:27 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 12:16:41 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	is_keywords(t_token *current)
 		return (0);
 }
 
-t_token	*add_token(t_token **head, TokenType type, char *value, int i, int h,
+t_token	*add_token(t_token **head, t_e_token_type type, char *value, int i, int h,
 		unsigned int priority)
 {
 	t_token	*new;
@@ -1063,11 +1063,13 @@ void	parse_line(t_minishell *data, char *line)
 
 	quote = verif_quote(line);
 	if (quote == '\'')
-		return (ft_fprintf(STDERR_FILENO, ERROR_SINGLE_QUOTE), (void)0);
+		return (data->exit_code = 2, ft_fprintf(STDERR_FILENO,
+				ERROR_SINGLE_QUOTE), (void)0);
 	else if (quote == '"')
-		return (ft_fprintf(STDERR_FILENO, ERROR_DOUBLE_QUOTE), (void)0);
+		return (data->exit_code = 2, ft_fprintf(STDERR_FILENO,
+				ERROR_DOUBLE_QUOTE), (void)0);
 	if (check_priorities(line))
-		return ;
+		return (data->exit_code = 2, (void)0);
 	half_quoted = NULL;
 	args = extract_arg(line, &half_quoted);
 	keywords = tokenize(data, line);

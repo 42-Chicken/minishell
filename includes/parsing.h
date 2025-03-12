@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/10 08:57:49 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 12:17:48 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,23 @@
 
 # include "minishell.h"
 
-typedef enum
+typedef enum TokenType
 {
-	TOKEN_WORD,      // Mot
-	TOKEN_PIPE,      // |
-	TOKEN_REDIR_IN,  // <
-	TOKEN_REDIR_OUT, // >
-	TOKEN_APPEND,    // >>
-	TOKEN_HEREDOC,   // <<
-	TOKEN_AND,       // &&
-	TOKEN_OR,        // ||
-	TOKEN_QUOTED,    // ""
+	TOKEN_WORD,
+	TOKEN_PIPE,
+	TOKEN_REDIR_IN,
+	TOKEN_REDIR_OUT,
+	TOKEN_APPEND,
+	TOKEN_HEREDOC,
+	TOKEN_AND,
+	TOKEN_OR,
+	TOKEN_QUOTED,
 	TOKEN_EOF
-}					TokenType;
+}					t_e_token_type;
 
 typedef struct s_token
 {
-	TokenType		type;
+	t_e_token_type	type;
 	char			*value;
 	char			**argv;
 	struct s_token	*next;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: efranco <efranco@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:10:17 by efranco           #+#    #+#             */
-/*   Updated: 2025/02/28 12:09:42 by efranco          ###   ########.fr       */
+/*   Updated: 2025/03/12 12:18:27 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@ char	*ft_strndup(char *str, int n)
 		i++;
 	}
 	copy[i] = '\0';
-	return(copy);
+	return (copy);
 }
+
 int	ft_tokensize(t_token *lst)
 {
 	size_t	i;

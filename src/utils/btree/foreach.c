@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 11:27:17 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 10:14:38 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 12:15:19 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ static void	btree_foreach_recursive(t_btree **head, t_btree *current,
 	btree_foreach_recursive(head, current->right, func, other);
 }
 
-// static void	btree_foreach_from_end_recursive(t_btree **head, t_btree *current,
+// static void	btree_foreach_from_end_recursive(t_btree **head,
+// t_btree *current,
 // 		void (*func)(t_btree **, t_btree *, void *), void *other)
 // {
 // 	if (!head || !*head || !current || !func)

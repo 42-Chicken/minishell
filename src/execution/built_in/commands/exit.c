@@ -6,17 +6,15 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 09:18:33 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 12:20:29 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-#define EXIT_NOT_A_NUMERIC_ARG \
-	"minishell\
+#define EXIT_NOT_A_NUMERIC_ARG "minishell\
 : exit: %s: numeric argument required\n"
-#define EXIT_TOO_MANY_ARG \
-	"minishell\
+#define EXIT_TOO_MANY_ARG "minishell\
 : exit: too many arguments\n"
 #define EXIT_NOT_A_NUMERIC_ARG_CODE 2
 #define EXIT_TOO_MANY_ARG_CODE 1

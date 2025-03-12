@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 09:13:33 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 12:21:06 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 
 #define CD_HOME_NOT_SET "minishell: cd: HOME not set\n"
 #define CD_TOO_MANY_ARG "minishell: cd: too many arguments\n"
-#define CD_COULD_NOT_OPEN_WORKING_DIRECTORY \
-	"minishell: could not open\
+#define CD_COULD_NOT_OPEN_WORKING_DIRECTORY "minishell: could not open\
  working directory\n"
 #define CD_COULD_NOT_FIND_DIRECTORY "minishell\
 : cd: %s: No such file or directory\n"

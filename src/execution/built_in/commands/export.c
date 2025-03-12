@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 09:10:27 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 12:22:17 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ static bool	handle_env_update(t_minishell *data, char *str)
 
 	name = get_var_name(str);
 	if (!name || ft_strlen(name) == 0)
-		return (ft_fprintf(STDERR_FILENO, EXPORT_INVALID_ID, name), EXIT_FAILURE);
+		return (ft_fprintf(STDERR_FILENO, EXPORT_INVALID_ID, name), 1);
 	if (!ft_str_only_contain(name, "_"))
-		return (ft_fprintf(STDERR_FILENO, EXPORT_INVALID_ID, name), EXIT_FAILURE);
+		return (ft_fprintf(STDERR_FILENO, EXPORT_INVALID_ID, name), 1);
 	if (ft_strlen(str) >= 3 && ft_strncmp(str + ft_strlen(name), "+=", 2) == 0)
 		return (handle_addition(data, name, str));
 	str = ft_strdup(str);
@@ -67,7 +67,7 @@ static bool	handle_env_update(t_minishell *data, char *str)
 int	export_command(t_minishell *data, t_command *command)
 {
 	int	i;
-	int exit_code;
+	int	exit_code;
 
 	i = -1;
 	exit_code = EXIT_SUCCESS;
