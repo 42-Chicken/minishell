@@ -6,14 +6,14 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 09:06:24 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/03 08:54:21 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 13:07:23 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_strings.h"
 #include <stdio.h>
 
-static int	get_next_cmp_index(char *str, char *mask, int i)
+int	get_next_cmp_index(char *str, char *mask, int i)
 {
 	int	k;
 

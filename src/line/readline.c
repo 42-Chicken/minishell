@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/03/12 12:09:25 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 13:16:20 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	handle_readline(t_minishell *data)
 	// line = expand(data, get_next_line(STDIN_FILENO));
 	line = readline(get_prompt(data));
 	expanded = expand(data, line);
+	printf("%s\n", expanded);
 	if (expanded && ft_strlen(expanded) > 0)
 		add_history(line);
 	line = expanded;

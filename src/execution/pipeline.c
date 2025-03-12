@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 08:22:24 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 12:26:01 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 12:51:26 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	execution_pipeline(t_minishell *data)
 		print_error(data);
 		if (data->exit_code == 0)
 			data->exit_code = DEFAULT_ERROR_EXIT_CODE;
+		ft_fprintf(STDERR_FILENO, ERROR_UNEXPTED_TOKEN_NEW_LINE);
 	}
 	delete_heredocs_tmp_files(data);
 	exit_safe_memory_context();

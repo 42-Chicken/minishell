@@ -6,12 +6,49 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 10:21:55 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 09:04:51 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 13:24:07 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "define.h"
 #include "minishell.h"
+
+char	*ft_custom_strreplace(char *str, char *mask, char *value)
+{
+	char	*result;
+	size_t	i;
+
+	i = 0;
+	result = ft_strdup("");
+	if (!str)
+		return (NULL);
+	if (!mask || !mask[0] || !value)
+		return (ft_strdup(str));
+	while (str[i])
+	{
+		if (ft_strncmp(str + i, mask, ft_strlen(mask)) == 0
+			&& is_in_quote_at(str, i) != QUOTE_SIMPLE)
+		{
+			result = ft_strjoin(result, value);
+			i += ft_strlen(mask);
+		}
+		else
+		{
+			if (get_next_cmp_index(str, mask, i) == 0)
+			{
+				result = ft_strnjoin(result, str + i, 1);
+				i += 1;
+			}
+			else
+			{
+				result = ft_strnjoin(result, str + i, get_next_cmp_index(str,
+							mask, i));
+				i += get_next_cmp_index(str, mask, i);
+			}
+		}
+	}
+	return (result);
+}
 
 t_e_quote_type	is_in_quote_at(char *str, int index)
 {
@@ -82,9 +119,10 @@ static char	*expand_from_env(t_minishell *data, char *str)
 		if (!inside)
 			continue ;
 		if (is_in_quote_at(str, inside - str) != QUOTE_SIMPLE)
-			str = ft_strreplace_at_index(str, inside - str,
-					ft_strlen(dollar_var_name), (char *)get_env(data->envp,
-						name));
+		{
+			str = ft_custom_strreplace(str, dollar_var_name,
+					(char *)get_env(data->envp, name));
+		}
 	}
 	return (str);
 }
@@ -98,10 +136,10 @@ char	*expand(t_minishell *data, char *str)
 	result = ft_strdup(str);
 	if (result && ft_strnstr(result, EXPANDER_EXIT_CODE_PATERN,
 			ft_strlen(result)))
-		result = ft_strreplace(result, EXPANDER_EXIT_CODE_PATERN,
+		result = ft_custom_strreplace(result, EXPANDER_EXIT_CODE_PATERN,
 				ft_itoa(data->exit_code));
 	if (result && ft_strnstr(result, EXPANDER_PID_PATERN, ft_strlen(result)))
-		result = ft_strreplace(result, EXPANDER_PID_PATERN, GIGACHAD);
+		result = ft_custom_strreplace(result, EXPANDER_PID_PATERN, GIGACHAD);
 	result = expand_from_env(data, result);
 	result = handle_tild(data, result);
 	result = handle_wildcard(data, result);
