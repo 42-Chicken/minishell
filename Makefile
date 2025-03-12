@@ -58,6 +58,9 @@ SRCS				=	src/main.c\
 						src/parsing/lists.c\
 						src/parsing/proprieties.c\
 						src/parsing/args.c\
+						src/parsing/btree.c\
+						src/parsing/btree_nodes.c\
+						src/parsing/lst_args.c\
 						src/parsing/quote.c\
 						src/parsing/quote_utils.c\
 						src/parsing/token.c\

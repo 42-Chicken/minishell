@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 14:45:37 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:01:11 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,16 @@ int					ft_number_quote(char *str);
 int					handle_append(t_token **tokens, char *input, int *i);
 
 int					handle_and(t_token **tokens, char *input, int *i);
+
+void				process_token(t_token *current, char ***tab, int *priority);
+void				add_new_token(t_list **head, char ***tab, int priority);
+void				create_lst_args(t_list **head, t_token *keywords,
+						t_token *args, t_token *quoted);
+
+t_btree				*create_final_tree(t_list *remaning_nodes,
+						unsigned int priority);
+
+t_list				*create_btree_nodes_lst(t_list *lst);
+t_command			*create_command(char **argv, unsigned int priority);
 
 #endif
