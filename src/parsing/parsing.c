@@ -6,7 +6,7 @@
 /*   By: efranco <efranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 21:22:13 by efranco          ###   ########.fr       */
+/*   Updated: 2025/03/12 21:32:32 by efranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	add_token_to_list(t_list **head, char ***tab, int priority)
 }
 
 void	init_data_lst(t_create_lst *data, t_token *keywords, t_token *args,
-		t_create_lst *quoted)
+		t_token *quoted)
 {
 	data->tab = NULL;
 	data->index = 0;
@@ -211,14 +211,21 @@ t_list	*create_btree_nodes_lst(t_list *lst)
 	return (head);
 }
 
+int	check_remaining_nodes(t_list *remaning_nodes, unsigned int *priority)
+{
+	if (!remaning_nodes)
+		return (0);
+	if (!remain_node_for_priority(remaning_nodes, *priority))
+		(*priority)++;
+	return (1);
+}
+
 t_btree	*create_final_tree(t_list *remaning_nodes, unsigned int priority)
 {
 	t_btree	*node;
 
-	if (!remaning_nodes)
+	if (!check_remaining_nodes(remaning_nodes, &priority))
 		return (NULL);
-	if (!remain_node_for_priority(remaning_nodes, priority))
-		priority++;
 	node = get_last_condition(remaning_nodes, priority);
 	if (!node)
 	{
