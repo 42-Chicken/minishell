@@ -39,6 +39,7 @@
 		"utility": "c",
 		"numbers": "c",
 		"parsing.h": "c",
-		"limits.h": "c"
+		"limits.h": "c",
+		"limits": "c"
 	}
 }

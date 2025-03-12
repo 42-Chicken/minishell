@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   extract_arg.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: efranco <efranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 14:19:11 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 14:46:54 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:28:59 by efranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+
+typedef struct s_extract
+{
+	t_token	*args;
+	int		i;
+	int		h;
+}			t_extract;
 
 void	skip_to_end_of_quoted_section(char *line, int *i)
 {
@@ -43,57 +50,57 @@ void	process_keyword(char *line, int *i, int *h, t_token **args)
 	*h = *i + 1;
 }
 
-void	process_quoted_section(char *line, int *i, int *h, t_token **args,
-		t_token **head)
+void	process_quoted_section(char *line, t_extract *data, t_token **head)
 {
 	char	flag;
 	int		count;
 
-	flag = line[*i];
+	flag = line[data->i];
 	count = 0;
-	adjust_start_position(line, i);
-	if (*i != *h)
-		add_token(args, TOKEN_WORD, line + *h, *i - *h, *h,
-			get_priority_at(line, *h));
-	*h = *i;
-	while (line[*i] && count < 2)
+	adjust_start_position(line, &data->i);
+	if (data->i != data->h)
+		add_token(&data->args, TOKEN_WORD, line + data->h, data->i - data->h,
+			data->h, get_priority_at(line, data->h));
+	data->h = data->i;
+	while (line[data->i] && count < 2)
 	{
-		if (line[*i] == flag)
+		if (line[data->i] == flag)
 			count++;
 		if (count == 2)
-			skip_to_end_of_quoted_section(line, i);
+			skip_to_end_of_quoted_section(line, &data->i);
 		else
-			(*i)++;
+			(data->i)++;
 	}
-	add_token(head, TOKEN_QUOTED, line + *h, *i - *h, *h, get_priority_at(line,
-			*h + 1));
-	*h = *i;
+	add_token(head, TOKEN_QUOTED, line + data->h, data->i - data->h, data->h,
+		get_priority_at(line, data->h + 1));
+	data->h = data->i;
 }
-
+void	init_data_extract(t_extract *data)
+{
+	data->i = 0;
+	data->args = NULL;
+	data->h = 0;
+}
 t_token	*extract_arg(char *line, t_token **head)
 {
-	t_token	*args;
-	int		i;
-	int		h;
+	t_extract	data;
 
-	i = 0;
-	args = NULL;
-	h = 0;
-	while (line[i])
+	init_data_extract(&data);
+	while (line[data.i])
 	{
-		if (line[i] == '\'' || line[i] == '"')
+		if (line[data.i] == '\'' || line[data.i] == '"')
 		{
-			process_quoted_section(line, &i, &h, &args, head);
+			process_quoted_section(line, &data, head);
 			continue ;
 		}
-		if (is_keyword(line[i], 0) == 1)
+		if (is_keyword(line[data.i], 0) == 1)
 		{
-			process_keyword(line, &i, &h, &args);
+			process_keyword(line, &data.i, &data.h, &data.args);
 		}
-		i++;
+		data.i++;
 	}
-	if (line[h])
-		add_token(&args, TOKEN_WORD, line + h, i - h, h, get_priority_at(line, h
-				+ 1));
-	return (args);
+	if (line[data.h])
+		add_token(&data.args, TOKEN_WORD, line + data.h, data.i - data.h,
+			data.h, get_priority_at(line, data.h + 1));
+	return (data.args);
 }

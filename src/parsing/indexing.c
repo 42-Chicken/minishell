@@ -3,15 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   indexing.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: efranco <efranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 14:22:35 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 14:46:58 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:14:23 by efranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "limits.h"
 #include "parsing.h"
+
+typedef struct s_init_index
+{
+	int		min;
+	t_token	*tmp;
+	int		i;
+	int		size;
+	t_token	*head_tokens;
+	t_token	*head_args;
+	t_token	*head_quoted;
+}			t_init_index;
 
 void	update_min_token(t_token **tokens, t_token **tmp, int *min)
 {
@@ -26,33 +37,34 @@ void	update_min_token(t_token **tokens, t_token **tmp, int *min)
 	}
 }
 
+void	init_data(t_init_index *data, t_token *tokens, t_token *args,
+		t_token *quoted)
+{
+	data->tmp = NULL;
+	data->i = 0;
+	data->size = ft_tokensize(tokens) + ft_tokensize(args)
+		+ ft_tokensize(quoted);
+	data->head_tokens = tokens;
+	data->head_args = args;
+	data->head_quoted = quoted;
+}
+
 void	init_all_index(t_token *tokens, t_token *args, t_token *quoted)
 {
-	int		min;
-	t_token	*tmp;
-	int		i;
-	int		size;
-	t_token	*head_tokens;
-	t_token	*head_args;
-	t_token	*head_quoted;
+	t_init_index	data;
 
-	tmp = NULL;
-	i = 0;
-	size = ft_tokensize(tokens) + ft_tokensize(args) + ft_tokensize(quoted);
-	head_tokens = tokens;
-	head_args = args;
-	head_quoted = quoted;
-	while (i < size)
+	init_data(&data, tokens, args, quoted);
+	while (data.i < data.size)
 	{
-		min = INT_MAX;
-		tokens = head_tokens;
-		update_min_token(&tokens, &tmp, &min);
-		args = head_args;
-		update_min_token(&args, &tmp, &min);
-		quoted = head_quoted;
-		update_min_token(&quoted, &tmp, &min);
-		tmp->num = i;
-		i++;
+		data.min = INT_MAX;
+		tokens = data.head_tokens;
+		update_min_token(&tokens, &data.tmp, &data.min);
+		args = data.head_args;
+		update_min_token(&args, &data.tmp, &data.min);
+		quoted = data.head_quoted;
+		update_min_token(&quoted, &data.tmp, &data.min);
+		data.tmp->num = data.i;
+		data.i++;
 	}
 }
 
