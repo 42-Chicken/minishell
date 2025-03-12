@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 14:28:29 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 11:07:18 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 11:58:43 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	wait_all_commands_executions(t_minishell *data)
 	{
 		wpid = wait(&status);
 		if (wpid > 0 && WIFEXITED(status))
+		{
 			data->exit_code = WEXITSTATUS(status);
+		}
 	}
 }
