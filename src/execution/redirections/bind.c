@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:51:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 10:22:32 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 11:04:50 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ static void	bind_redirections(t_btree **head, t_btree *node)
 		open_in_redir_fd(redir);
 	else if (redir->type == REDIRECTION_OUT_TYPE)
 		open_out_redir_fd(redir);
+	if (access(redir->file, F_OK) == -1 && redir->type == REDIRECTION_OUT_TYPE)
+		redir->error = REDIRECTION_NO_SUCH_FILE_OR_DIRECTORY;
 	if (access(redir->file, W_OK) == -1 && redir->type == REDIRECTION_OUT_TYPE)
 		redir->error = REDIRECTION_PERMISSION_DENIED;
 	if (redir->fd == -1 && redir->error == REDIRECTION_NO_ERROR)

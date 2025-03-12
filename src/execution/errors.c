@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:07:17 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 10:48:30 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 11:10:00 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ static void	print_redirections_errors(t_minishell *data, t_btree *node)
 		data->exit_code = DEFAULT_ERROR_EXIT_CODE;
 		if (redir->error == REDIRECTION_UNEXPETED_TOKEN)
 		{
-			data->execution_tree_error = EXECTREE_ERR_UNEXEPTED_OR;
 			data->exit_code = 2;
+			data->execution_tree_error = EXECTREE_ERR_UNEXEPTED_OR;
 		}
 	}
 }
@@ -86,9 +86,7 @@ static void	print_commands_errors(t_minishell *data, t_btree *node)
 	{
 		ft_fprintf(STDERR_FILENO, error, command->argv[0]);
 		if (data->exit_code == 0)
-		{
 			data->exit_code = DEFAULT_ERROR_EXIT_CODE;
-		}
 	}
 }
 
