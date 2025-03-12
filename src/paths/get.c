@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 10:54:00 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 09:16:22 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 08:30:45 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*get_current_folder_name(void)
 	result = NULL;
 	create_safe_memory_context();
 	getcwd(current, MAX_PATH_LENGTH);
-	path = ft_split(current, '/');
+	path = ft_split(current, "/");
 	if (!path)
 		return (exit_safe_memory_context(), ft_strdup(current));
 	i = 0;

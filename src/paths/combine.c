@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:03:06 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 09:47:03 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 08:30:40 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static char	*remove_double_dots(char *path1)
 		return ("/");
 	if (ft_strlen(path1) == 0)
 		return (path1);
-	splitted = ft_split(path1, '/');
+	splitted = ft_split(path1, "/");
 	remove_dots(splitted);
 	path1 = ft_strdup("");
 	i = -1;

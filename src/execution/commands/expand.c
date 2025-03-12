@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:44:01 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 15:55:37 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 10:29:04 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ static void	expand_argv(t_minishell *data, char **argv)
 	i = -1;
 	while (argv && argv[++i])
 	{
-		argv[i] = expand(data, argv[i]);
+		(void)data;
+		// argv[i] = expand(data, argv[i]);
 	}
 }
 
@@ -40,8 +41,9 @@ void	expand_commands_args(t_minishell *data, t_btree *cmd_node)
 		}
 		if (node->type == BTREE_REDIRECTION_TYPE)
 		{
-			((t_btree_redir_node *)node->content)->file = expand(data,
-					((t_btree_redir_node *)node->content)->file);
+			if (((t_btree_redir_node *)node->content)->type != REDIRECTION_HERE_DOC_TYPE)
+				((t_btree_redir_node *)node->content)->file = expand(data,
+						((t_btree_redir_node *)node->content)->file);
 		}
 		node = node->left;
 	}

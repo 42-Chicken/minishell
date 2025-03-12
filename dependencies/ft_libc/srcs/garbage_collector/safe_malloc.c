@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 08:31:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/08 14:15:22 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 08:51:05 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	*safe_malloc(size_t size)
 	if (!memory)
 	{
 		ft_fprintf(STDERR_FILENO,
-			"minishell: a malloc failed during the execution,\
+			"minishell: a malloc failed during the execution, \
 heap memory has been freed entirly\n");
 		safe_exit(EXIT_FAILURE);
 	}

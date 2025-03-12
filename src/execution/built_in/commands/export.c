@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 11:48:19 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 09:10:27 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,16 @@ static bool	handle_env_update(t_minishell *data, char *str)
 	int		index;
 
 	name = get_var_name(str);
-	if (!name)
-		return (false);
+	if (!name || ft_strlen(name) == 0)
+		return (ft_fprintf(STDERR_FILENO, EXPORT_INVALID_ID, name), EXIT_FAILURE);
 	if (!ft_str_only_contain(name, "_"))
-		return (ft_fprintf(STDERR_FILENO, EXPORT_INVALID_ID, name), false);
+		return (ft_fprintf(STDERR_FILENO, EXPORT_INVALID_ID, name), EXIT_FAILURE);
 	if (ft_strlen(str) >= 3 && ft_strncmp(str + ft_strlen(name), "+=", 2) == 0)
 		return (handle_addition(data, name, str));
 	str = ft_strdup(str);
 	str = ft_strreplace(str, "\"", "");
 	if (ft_strncmp(name, ENV_SHLVL, ft_strlen(name)) == 0)
-		return (update_shlvl(data, get_var_value(str), 0), false);
+		return (update_shlvl(data, get_var_value(str), 0), EXIT_SUCCESS);
 	send_pointer_to_main_context(str);
 	index = custom_get_var_env_index(data->envp, name);
 	if (index != -1)
@@ -61,14 +61,16 @@ static bool	handle_env_update(t_minishell *data, char *str)
 	}
 	else
 		add_to_env(&data->envp, str);
-	return (true);
+	return (EXIT_SUCCESS);
 }
 
 int	export_command(t_minishell *data, t_command *command)
 {
 	int	i;
+	int exit_code;
 
 	i = -1;
+	exit_code = EXIT_SUCCESS;
 	if (command->part_of_pipe || command->priority != 0)
 		return (EXIT_SUCCESS);
 	char_sort_array((char **)data->envp);
@@ -83,7 +85,7 @@ int	export_command(t_minishell *data, t_command *command)
 	{
 		i++;
 		while (command->argv[++i])
-			handle_env_update(data, command->argv[i]);
+			exit_code = handle_env_update(data, command->argv[i]);
 	}
-	return (EXIT_SUCCESS);
+	return (exit_code);
 }

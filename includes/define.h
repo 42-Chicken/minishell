@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 08:36:57 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 15:07:23 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 09:27:34 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,14 @@
 # define DEFINE_H
 
 # include "minishell.h"
+
+// ---------------------------------
+//
+// DEFAULT
+//
+// ---------------------------------
+
+# define DEFAULT_ERROR_EXIT_CODE 1
 
 // ---------------------------------
 //
@@ -99,6 +107,10 @@ current working directory !\n"
 : syntax error: unexpected `||'\n"
 # define ERROR_TREE_PIPE "minishell\
 : syntax error: unexpected `|'\n"
+# define ERROR_SINGLE_QUOTE "minishell\
+: syntax error: expected `''\n"
+# define ERROR_DOUBLE_QUOTE "minishell\
+: syntax error: expected `\"'\n"
 
 // ---------------------------------
 //

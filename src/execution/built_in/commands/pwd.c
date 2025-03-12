@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/25 09:32:01 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 09:06:04 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ int	pwd_command(t_minishell *data, t_command *command)
 {
 	char	*path;
 
-	if (char_array_len(command->argv) > 1)
-	{
-		ft_fprintf(command->out_pipe.write, PWD_TOO_MANY_ARGS);
-		return (EXIT_FAILURE);
-	}
+	// if (char_array_len(command->argv) > 1)
+	// {
+	// 	ft_fprintf(command->out_pipe.write, PWD_TOO_MANY_ARGS);
+	// 	return (EXIT_FAILURE);
+	// }
 	path = get_current_path(data);
 	if (path)
 		ft_fprintf(command->out_pipe.write, "%s\n", path);

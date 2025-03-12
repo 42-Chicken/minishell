@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 15:35:15 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 10:05:04 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_command
 	t_pipe					in_pipe;
 	t_pipe					out_pipe;
 	t_command_errors		error;
+	bool					redir_error_printed;
 }							t_command;
 
 typedef struct s_btree_command_node

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 10:21:55 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/10 10:06:36 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 09:04:51 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static char	*handle_tild(t_minishell *data, char *str)
 		if (str[i] == HOME_DIRECTORY_REPRESENTATION[0] && (i == 0
 				|| ft_isspace(str[i - 1])) && (!str[i + 1] || str[i + 1] == '/'
 				|| ft_isspace(str[i + 1])) && is_in_quote_at(str,
-				i) == QUOTE_NONE)
+				i) != QUOTE_SIMPLE)
 		{
 			if (result)
 				return (handle_tild(data, result));

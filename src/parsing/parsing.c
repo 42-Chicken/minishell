@@ -6,10 +6,11 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 17:10:11 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 10:38:27 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "define.h"
 #include "minishell.h"
 #include "parsing.h"
 #include <limits.h>
@@ -189,12 +190,12 @@ int	verif_quote(char *line)
 			if (line[i] == flag)
 				i++;
 			else
-				return (0);
+				return (flag);
 		}
 		else
 			i++;
 	}
-	return (1);
+	return (-1);
 }
 
 t_token	*get_index_lst(int index, t_token *keywords, t_token *args,
@@ -410,8 +411,7 @@ void	create_lst_args(t_list **head, t_token *keywords, t_token *args,
 			else if (current && current->type == TOKEN_WORD
 				&& line_is_empty(current) == 0)
 			{
-				tab = add_tab_to_tab(tab, ft_split(current->value, ' '));
-				// for each spaces
+				tab = add_tab_to_tab(tab, ft_split(current->value, SPACES));
 			}
 			index++;
 			current = get_index_lst(index, keywords, args, quoted);
@@ -511,7 +511,7 @@ bool	check_priorities(char *str)
 	return (false);
 }
 
-t_token	*tokenize(char *input)
+t_token	*tokenize(t_minishell *data, char *input)
 {
 	t_token	*tokens;
 	t_token	*args;
@@ -533,6 +533,7 @@ t_token	*tokenize(char *input)
 				if (input[i] == '|')
 				{
 					printf("Erreur de syntaxe : TRIPLE PIPE\n");
+					data->exit_code = 2;
 					return (NULL);
 				}
 				add_token(&tokens, TOKEN_OR, "||", -1, i - 2,
@@ -943,11 +944,6 @@ t_btree	*create_final_tree(t_list *remaning_nodes, unsigned int priority)
 		node->left = create_final_tree(remaning_nodes->next, priority);
 		if (node->left)
 			node->left->prev = node;
-		node->right = create_final_tree(remaning_nodes->next, priority);
-		if (node->right)
-			node->right->prev = node;
-		if (node->right == node->left)
-			node->right = NULL;
 	}
 	else
 	{
@@ -1054,20 +1050,6 @@ void	extract_quote(t_token **head, t_token *quoted)
 	}
 }
 
-// void	clean_cleaned_list(t_list **head)
-// {
-// 	t_list	*current;
-// 	t_list	*prev;
-
-// 	current = *head;
-// 	prev = NULL;
-// 	while (current)
-// 	{
-// 		if ()
-// 	}
-// 	return
-// }
-
 void	parse_line(t_minishell *data, char *line)
 {
 	t_token	*keywords;
@@ -1077,162 +1059,25 @@ void	parse_line(t_minishell *data, char *line)
 	t_list	*new_args;
 	t_btree	*tree;
 	t_list	*lst;
+	char	quote;
 
-	// t_list	*c;
-	if (verif_quote(line) == 0)
-	{
-		ft_fprintf(STDERR_FILENO, "Erreur de quote\n");
-		return ;
-	}
+	quote = verif_quote(line);
+	if (quote == '\'')
+		return (ft_fprintf(STDERR_FILENO, ERROR_SINGLE_QUOTE), (void)0);
+	else if (quote == '"')
+		return (ft_fprintf(STDERR_FILENO, ERROR_DOUBLE_QUOTE), (void)0);
 	if (check_priorities(line))
 		return ;
 	half_quoted = NULL;
 	args = extract_arg(line, &half_quoted);
-	keywords = tokenize(line);
+	keywords = tokenize(data, line);
 	quoted = NULL;
 	extract_quote(&quoted, half_quoted);
 	init_all_index(keywords, args, quoted);
 	new_args = NULL;
 	create_lst_args(&new_args, keywords, args, quoted);
-	// while (new_args)
-	// {
-	// 	i = 0;
-	// 	while (((t_token *)new_args->content)->argv[i])
-	// 		printf("%s ", ((t_token *)new_args->content)->argv[i++]);
-	// 	printf("\n");
-	// 	new_args = new_args->next;
-	// }
 	lst = create_final_lst(keywords, new_args);
-	// c = lst;
-	// while (c)
-	// {
-	// 	if (((t_token *)c->content)->type == TOKEN_OR)
-	// 		printf(" OR %u", ((t_token *)c->content)->priority);
-	// 	else if (((t_token *)c->content)->type == TOKEN_AND)
-	// 		printf(" AND %u", ((t_token *)c->content)->priority);
-	// 	else if (((t_token *)c->content)->type == TOKEN_PIPE)
-	// 		printf(" | %u", ((t_token *)c->content)->priority);
-	// 	else if (((t_token *)c->content)->type == TOKEN_REDIR_IN)
-	// 		printf(" < %u", ((t_token *)c->content)->priority);
-	// 	else if (((t_token *)c->content)->type == TOKEN_REDIR_OUT)
-	// 		printf(" > %u", ((t_token *)c->content)->priority);
-	// 	else if (((t_token *)c->content)->type == TOKEN_APPEND)
-	// 		printf(" >> %u", ((t_token *)c->content)->priority);
-	// 	else if (((t_token *)c->content)->type == TOKEN_HEREDOC)
-	// 		printf(" << %u", ((t_token *)c->content)->priority);
-	// 	else if (((t_token *)c->content)->type == TOKEN_QUOTED
-	// 		|| ((t_token *)c->content)->type == TOKEN_WORD)
-	// 		printf(" WORD/QUOTED %u", ((t_token *)c->content)->priority);
-	// 	else
-	// 		printf(" OTHER %d", ((t_token *)(c->content))->priority);
-	// 	c = c->next;
-	// }
 	lst = create_btree_nodes_lst(lst);
 	tree = create_final_tree(lst, 0);
-	printf("Parsing finished !\n");
-	data->execution_tree = tree;
-	// c = lst;
-	// while (c)
-	// {
-	// 	if (((t_btree *)c->content)->type == BTREE_OR_TYPE)
-	// 		printf(" OR ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_AND_TYPE)
-	// 		printf(" AND ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_PIPE_TYPE)
-	// 		printf(" | ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
-	// 		printf(" < ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
-	// 		printf(" > ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
-	// 		printf(" >> ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_REDIRECTION_TYPE)
-	// 		printf(" << ");
-	// 	else if (((t_btree *)c->content)->type == BTREE_COMMAND_TYPE)
-	// 		printf(" COMMAND ");
-	// 	else
-	// 		printf(" OTHER ");
-	// 	c = c->next;
-	// }
-	// printf("right : %p\n", tree->right);
-	// printf("left : %p\n", tree->left);
 	data->execution_tree = tree;
 }
-
-// while (new_args)
-// {
-// 	i = 0;
-// 	while (((char **)new_args->content)[i])
-// 		printf("%s", ((char **)new_args->content)[i++]);
-// 		printf("\n");
-// 		new_args = new_args->next;
-// 	}
-// while (quoted)
-// {
-// 	printf("Quoted : [%s] | Index : [%d]\n", quoted->value, quoted->num);
-// 	quoted = quoted->next;
-// }
-// while (keywords)
-// {
-// 	printf("Token : [%s] | Index : [%d]\n", keywords->value, keywords->num);
-// 	keywords = keywords->next;
-// }
-// while (args)
-// {
-// 	printf("arguments : [%s] | Index : [%d]\n", args->value, args->num);
-// 	args = args->next;
-// }
-
-// t_btree	*convert_to_btree(t_btree **tree, int index, t_token *keywords,
-// 		t_token *args, t_token *quoted)
-// {
-// 	t_token		*current;
-// 	t_btree		*node;
-// 	t_command	*command;
-// 	static int	args_index = -1;
-// 	t_list		*organized;
-
-// 	organized = create_new_args(keywords, args, quoted);
-// 	if (args_index == -1)
-// 	{
-// 		args_index = ft_lstsize(organized);
-// 	}
-// 	current = get_index_lst(index, keywords, args, quoted);
-// 	node = NULL;
-// 	if (current->type == TOKEN_AND || current->type == TOKEN_OR)
-// 	{
-// 		if (!tree)
-// 			*tree = btree_create_node(TOKEN_OR);
-// 		(*tree)->right = convert_to_btree(*tree, index + 1, keywords, args,
-// quoted);
-// 	}
-// 	else
-// 	{
-// 		// char **
-// 		if (current->type == TOKEN_PIPE)
-// 			node = btree_create_node(BTREE_PIPE_TYPE);
-// 		else
-// 		{
-// 			node = btree_create_node(BTREE_COMMAND_TYPE);
-// 			command = safe_malloc(sizeof(t_command));
-// 			ft_bzero(command, sizeof(t_command));
-// 			command->argv = get_organized_index(organized, args_index--);
-// 			node->content = command;
-// 		}
-// 		if (current->type == TOKEN_WORD)
-// 		{
-// 			node = btree_create_node(BTREE_REDIRECTION_TYPE);
-// 			node->content = safe_malloc(sizeof(t_btree_redir_node));
-// 			((t_btree_redir_node *)node->content)->doubled = true;
-// 			((t_btree_redir_node *)node->content)->file = true;
-// 		}
-// 		if (current->type == TOKEN_APPEND)
-// 		{
-// 			node = btree_create_node(BTREE_REDIRECTION_TYPE);
-// 			node->content = safe_malloc(sizeof(t_btree_redir_node));
-// 			((t_btree_redir_node*)node->content)->doubled = true;
-// 			((t_btree_redir_node*)node->content)->file = true;
-// 		}
-// 		return (node);
-// 	}
-// }

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 16:27:31 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/28 12:22:04 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 08:47:40 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,10 @@
 //	return ("➜  " BCYN "$PWD " BBLU "git:(" BRED "testing" BBLU ") 🧪 " RESET);
 static const char	*get_base_prompt(void)
 {
-	return ("⦿︎  $SHLVL $CODE " BCYN "$PWD " BBLU "$GIT"
+	return ("⦿︎  $SHLVL $? " BCYN "$PWD " BBLU "$GIT"
 		"🧪 " RESET);
 }
 
-// TO chnage with the expander
 const char	*get_prompt(t_minishell *data)
 {
 	char	*prompt;
@@ -44,7 +43,6 @@ const char	*get_prompt(t_minishell *data)
 				"git:(" BRED "testing" BBLU ") ");
 	else
 		prompt = ft_strreplace(prompt, "$GIT", "");
-	prompt = ft_strreplace(prompt, "$CODE", ft_itoa(data->exit_code));
 	prompt = expand(data, prompt);
 	send_pointer_to_upper_context(prompt);
 	exit_safe_memory_context();

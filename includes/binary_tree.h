@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:47:33 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 15:07:34 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 10:10:50 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ typedef struct s_btree
 // ---------------------------------
 void					btree_foreach(t_btree **head, void (*func)(t_btree **,
 								t_btree *, void *), void *other);
+void					btree_foreach_from_end(t_btree **head,
+							void (*func)(t_btree **, t_btree *, void *),
+							void *other);
 t_btree					*btree_create_node(t_btree_node_type type);
 t_btree					*get_first_previous(t_btree *node,
 							t_btree_node_type type);

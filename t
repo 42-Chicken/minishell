@@ -1,0 +1,12 @@
+dependencies
+en.subject.pdf
+includes
+Makefile
+minishell
+minishell_tester
+objects
+readline.supp
+README.md
+src
+t
+test

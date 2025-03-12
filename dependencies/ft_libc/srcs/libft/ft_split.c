@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 14:48:28 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/02/18 11:17:59 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 08:29:36 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,17 @@ void	free_split(char **tab, int index)
 	free(tab);
 }
 
-size_t	get_next_set_occurency(char const *s, char c)
+size_t	get_next_set_occurency(char const *s, char *set)
 {
 	size_t	i;
 
 	i = 0;
-	while (s[i] && s[i] != c)
+	while (s[i] && !ft_strchr(set, s[i]))
 		i++;
 	return (i);
 }
 
-size_t	get_word_count(char const *s, char c)
+size_t	get_word_count(char const *s, char *set)
 {
 	size_t	i;
 	size_t	is_in_word;
@@ -48,7 +48,7 @@ size_t	get_word_count(char const *s, char c)
 	count = 0;
 	while (s[++i])
 	{
-		if (s[i] == c)
+		if (ft_strchr(set, s[i]))
 			is_in_word = 0;
 		else if (is_in_word++ == 0)
 			count++;
@@ -56,7 +56,7 @@ size_t	get_word_count(char const *s, char c)
 	return (count);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char *set)
 {
 	size_t	i;
 	size_t	total_len;
@@ -64,17 +64,17 @@ char	**ft_split(char const *s, char c)
 	char	**tab;
 
 	i = 0;
-	total_len = get_word_count(s, c) * sizeof(char *) + sizeof(NULL);
+	total_len = get_word_count(s, set) * sizeof(char *) + sizeof(NULL);
 	tab = (char **)MALLOC(total_len);
 	if (!tab)
 		return (NULL);
 	while (*s)
 	{
-		if (*s == c)
+		if (ft_strchr(set, *s))
 			s++;
 		else
 		{
-			next_char_index = get_next_set_occurency(s, c);
+			next_char_index = get_next_set_occurency(s, set);
 			tab[i++] = ft_substr(s, 0, next_char_index);
 			if (!tab[i - 1])
 				free_split(tab, i - 1);

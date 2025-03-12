@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:26:59 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 09:58:23 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 08:30:27 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	try_access(t_command *command, char *path)
 	char	*name;
 
 	i = 0;
-	path_env = ft_split(path, ':');
+	path_env = ft_split(path, ":");
 	while (path_env && path_env[i])
 	{
 		name = ft_strjoin(get_full_path(path_env[i++]), command->argv[0]);

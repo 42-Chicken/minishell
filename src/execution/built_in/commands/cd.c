@@ -6,16 +6,18 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 11:47:52 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 09:13:33 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "define.h"
 #include "minishell.h"
 #include "paths.h"
-#include "define.h"
 
 #define CD_HOME_NOT_SET "minishell: cd: HOME not set\n"
-#define CD_COULD_NOT_OPEN_WORKING_DIRECTORY "minishell: could not open\
+#define CD_TOO_MANY_ARG "minishell: cd: too many arguments\n"
+#define CD_COULD_NOT_OPEN_WORKING_DIRECTORY \
+	"minishell: could not open\
  working directory\n"
 #define CD_COULD_NOT_FIND_DIRECTORY "minishell\
 : cd: %s: No such file or directory\n"
@@ -64,8 +66,8 @@ int	cd_command(t_minishell *data, t_command *command)
 		else
 			target_path = command->argv[1];
 	}
-	if (!target_path)
-		return (EXIT_FAILURE);
+	if (!target_path || char_array_len(command->argv) > 2)
+		return (ft_fprintf(STDERR_FILENO, CD_TOO_MANY_ARG), EXIT_FAILURE);
 	if (!update_env(data, command, ENV_OLDPWD))
 		return (EXIT_FAILURE);
 	if ((command->part_of_pipe && access(target_path, F_OK) == -1)

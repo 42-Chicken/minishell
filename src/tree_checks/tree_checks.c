@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 11:46:25 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 15:55:47 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 10:33:11 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,6 @@ void	check_exec_tree(t_minishell *data)
 {
 	btree_foreach(&data->execution_tree, (void (*)(t_btree **, t_btree *,
 				void *))recursive_check_call, data);
+	if (data->execution_tree_error != EXECTREE_ERR_NONE)
+		data->exit_code = 2;
 }
