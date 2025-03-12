@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 12:17:48 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 14:45:37 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 # define PARSING_H
 
+# include "limits.h"
 # include "minishell.h"
 
 typedef enum TokenType
@@ -57,5 +58,64 @@ void				parse_line(t_minishell *data, char *line);
 char				*ft_strndup(char *str, int n);
 int					ft_tokensize(t_token *lst);
 unsigned int		get_priority_at(char *str, unsigned int index);
+t_token				*extract_arg(char *line, t_token **head);
+t_token				*add_token(t_token **head, t_e_token_type type, char *value,
+						int i, int h, unsigned int priority);
+
+void				init_all_index(t_token *tokens, t_token *args,
+						t_token *quoted);
+t_token				*tokenize(t_minishell *data, char *input);
+
+int					is_keywords(t_token *current);
+
+int					is_keyword(char c, int flag);
+int					get_max_lst(t_token *keywords, t_token *args,
+						t_token *quoted);
+int					line_is_empty(t_token *current);
+
+t_token				*ft_tokenlast(t_token *lst);
+void				ft_tokenadd_back(t_token **lst, t_token *new);
+t_token				*add_token(t_token **head, t_e_token_type type, char *value,
+						int i, int h, unsigned int priority);
+
+int					without_quote(char *str);
+
+int					verif_quote(char *line);
+
+t_token				*get_index_lst(int index, t_token *keywords, t_token *args,
+						t_token *quoted);
+
+int					tab_len(char **str);
+
+char				**add_tab_to_tab(char **old, char **str);
+char				**add_to_tab(char **old, char *str);
+
+unsigned int		get_priority_at(char *str, unsigned int index);
+bool				check_priorities(char *str);
+bool				only_spaces(char *str, unsigned int index);
+int					verif_arg(char *str);
+
+void				lst_add_before_last(t_list **lst, t_list *node);
+t_list				*get_before_last(t_list *head);
+
+t_btree				*get_last_condition(t_list *lst, unsigned int priority);
+
+bool				remain_node_for_priority(t_list *lst,
+						unsigned int priority);
+t_list				*left_truncate_lst(t_list *lst, t_btree *stop);
+t_list				*right_truncate_lst(t_list *lst, t_btree *stop);
+
+char				*allocate_clean_string(char *value);
+void				process_quotes(char *value, char *str, int *i, int *j);
+char				*remove_quotes_from_value(char *value);
+
+void				extract_quote(t_token **head, t_token *quoted);
+int					check_only_quote(char *str);
+
+int					ft_number_quote(char *str);
+
+int					handle_append(t_token **tokens, char *input, int *i);
+
+int					handle_and(t_token **tokens, char *input, int *i);
 
 #endif

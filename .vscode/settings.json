@@ -38,6 +38,7 @@
 		"system_error": "c",
 		"utility": "c",
 		"numbers": "c",
-		"parsing.h": "c"
+		"parsing.h": "c",
+		"limits.h": "c"
 	}
 }

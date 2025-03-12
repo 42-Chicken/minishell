@@ -48,6 +48,20 @@ SRCS				=	src/main.c\
 						src/paths/set.c\
 						src/paths/combine.c\
 						src/parsing/parsing.c\
+						src/parsing/extract_arg.c\
+						src/parsing/indexing.c\
+						src/parsing/tokenize.c\
+						src/parsing/tokenize_keyword.c\
+						src/parsing/keyword.c\
+						src/parsing/utils.c\
+						src/parsing/list_utils.c\
+						src/parsing/lists.c\
+						src/parsing/proprieties.c\
+						src/parsing/args.c\
+						src/parsing/quote.c\
+						src/parsing/quote_utils.c\
+						src/parsing/token.c\
+						src/parsing/tab_utils.c\
 						src/parsing/utils_parsing.c\
 						src/initialisation/init.c\
 						src/line/readline.c\

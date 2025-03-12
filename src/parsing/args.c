@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get.c                                              :+:      :+:    :+:   */
+/*   args.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/17 08:36:00 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 14:42:19 by rguigneb         ###   ########.fr       */
+/*   Created: 2025/03/12 14:32:43 by rguigneb          #+#    #+#             */
+/*   Updated: 2025/03/12 14:40:57 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "define.h"
-#include "execution.h"
-#include "minishell.h"
+#include "parsing.h"
 
-t_pipe	get_pipe(void)
+int	verif_arg(char *str)
 {
-	t_pipe	in_pipe;
+	int	i;
 
-	if (pipe((int *)(&in_pipe)) == -1)
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
 	{
-		ft_fprintf(STDERR_FILENO, FAIL_PIPE_MESSAGE);
-		return ((t_pipe){PIPE_NO_VALUE, PIPE_NO_VALUE});
+		if (str[i] != ' ')
+			return (1);
+		i++;
 	}
-	return (in_pipe);
+	return (0);
 }
