@@ -6,49 +6,12 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 10:21:55 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 13:24:07 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:07:49 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "define.h"
 #include "minishell.h"
-
-char	*ft_custom_strreplace(char *str, char *mask, char *value)
-{
-	char	*result;
-	size_t	i;
-
-	i = 0;
-	result = ft_strdup("");
-	if (!str)
-		return (NULL);
-	if (!mask || !mask[0] || !value)
-		return (ft_strdup(str));
-	while (str[i])
-	{
-		if (ft_strncmp(str + i, mask, ft_strlen(mask)) == 0
-			&& is_in_quote_at(str, i) != QUOTE_SIMPLE)
-		{
-			result = ft_strjoin(result, value);
-			i += ft_strlen(mask);
-		}
-		else
-		{
-			if (get_next_cmp_index(str, mask, i) == 0)
-			{
-				result = ft_strnjoin(result, str + i, 1);
-				i += 1;
-			}
-			else
-			{
-				result = ft_strnjoin(result, str + i, get_next_cmp_index(str,
-							mask, i));
-				i += get_next_cmp_index(str, mask, i);
-			}
-		}
-	}
-	return (result);
-}
 
 t_e_quote_type	is_in_quote_at(char *str, int index)
 {

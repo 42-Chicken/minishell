@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 08:36:57 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 09:27:34 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:04:47 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,10 @@ current working directory !\n"
 : syntax error: expected `''\n"
 # define ERROR_DOUBLE_QUOTE "minishell\
 : syntax error: expected `\"'\n"
+# define ERROR_CLOSING_BRACKET "minishell\
+: syntax error: expected `)'\n"
+# define ERROR_OPENING_BRACKET "minishell\
+: syntax error: expected `('\n"
 
 // ---------------------------------
 //

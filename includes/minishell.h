@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 11:39:45 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:10:59 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,7 @@ bool						is_same_str(char *str1, char *str2);
 int							startswith(char *str, char *substr);
 int							endswith(char *str, char *substr);
 t_e_quote_type				is_in_quote_at(char *str, int index);
+char						*ft_custom_strreplace(char *str, char *mask,
+								char *value);
 
 #endif

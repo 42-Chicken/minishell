@@ -36,6 +36,7 @@ SRCS				=	src/main.c\
 						src/utils/str/is_same_str.c\
 						src/utils/str/endswith.c\
 						src/utils/str/startswith.c\
+						src/utils/str/ft_custom_strreplace.c\
 						src/utils/array/len.c\
 						src/utils/array/sort.c\
 						src/utils/btree/create.c\
@@ -58,6 +59,7 @@ SRCS				=	src/main.c\
 						src/parsing/lists.c\
 						src/parsing/proprieties.c\
 						src/parsing/args.c\
+						src/parsing/redir_node.c\
 						src/parsing/btree.c\
 						src/parsing/btree_nodes.c\
 						src/parsing/lst_args.c\
