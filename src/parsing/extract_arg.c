@@ -6,7 +6,7 @@
 /*   By: efranco <efranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 14:19:11 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 15:28:59 by efranco          ###   ########.fr       */
+/*   Updated: 2025/03/12 21:08:26 by efranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	skip_to_end_of_quoted_section(char *line, int *i)
 void	adjust_start_position(char *line, int *i)
 {
 	while (*i - 1 >= 0 && ((!ft_isspace(line[*i - 1]) && !is_keyword(line[*i
-					- 1], 0)) || (is_keyword(line[*i], 0)
+						- 1], 0)) || (is_keyword(line[*i], 0)
 				&& is_in_quote_at(line, *i) != QUOTE_NONE)))
 	{
 		(*i)--;
@@ -75,12 +75,14 @@ void	process_quoted_section(char *line, t_extract *data, t_token **head)
 		get_priority_at(line, data->h + 1));
 	data->h = data->i;
 }
+
 void	init_data_extract(t_extract *data)
 {
 	data->i = 0;
 	data->args = NULL;
 	data->h = 0;
 }
+
 t_token	*extract_arg(char *line, t_token **head)
 {
 	t_extract	data;

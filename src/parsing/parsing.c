@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: efranco <efranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:28:58 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 14:41:05 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/12 21:22:13 by efranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,62 +15,69 @@
 #include "parsing.h"
 #include <limits.h>
 
+typedef struct s_create_lst
+{
+	char	**tab;
+	int		index;
+	int		priority;
+	int		max;
+	t_token	*current;
+}			t_create_lst;
+
+void	process_current_token(t_token *current, char ***tab, int *priority)
+{
+	*priority = current->priority;
+	if (current->type == TOKEN_QUOTED)
+		*tab = add_to_tab(*tab, current->value);
+	else if (current->type == TOKEN_WORD && line_is_empty(current) == 0)
+		*tab = add_tab_to_tab(*tab, ft_split(current->value, SPACES));
+}
+
+void	add_token_to_list(t_list **head, char ***tab, int priority)
+{
+	t_token	*new_token;
+
+	new_token = safe_malloc(sizeof(t_token));
+	ft_bzero(new_token, sizeof(t_token));
+	new_token->type = TOKEN_WORD;
+	new_token->argv = *tab;
+	new_token->priority = priority;
+	ft_lstadd_back(head, ft_lstnew(new_token));
+	*tab = NULL;
+}
+
+void	init_data_lst(t_create_lst *data, t_token *keywords, t_token *args,
+		t_create_lst *quoted)
+{
+	data->tab = NULL;
+	data->index = 0;
+	data->priority = 0;
+	data->max = get_max_lst(keywords, args, quoted);
+}
+
 void	create_lst_args(t_list **head, t_token *keywords, t_token *args,
 		t_token *quoted)
 {
-	t_list	*lst;
-	char	**tab;
-	int		index;
-	int		max;
-	int		priority;
-	t_token	*current;
-	t_token	*new_token;
+	t_create_lst	data;
+	t_token			*current;
 
-	index = 0;
-	tab = NULL;
-	priority = 0;
-	max = get_max_lst(keywords, args, quoted);
-	lst = NULL;
-	while (index <= max)
+	init_data_lst(&data, keywords, args, quoted);
+	while (data.index <= data.max)
 	{
-		current = get_index_lst(index, keywords, args, quoted);
+		current = get_index_lst(data.index, keywords, args, quoted);
 		while (current && (current->type == TOKEN_WORD
 				|| current->type == TOKEN_QUOTED))
 		{
-			priority = current->priority;
-			if (current && current->type == TOKEN_QUOTED)
-			{
-				tab = add_to_tab(tab, current->value);
-			}
-			else if (current && current->type == TOKEN_WORD
-				&& line_is_empty(current) == 0)
-			{
-				tab = add_tab_to_tab(tab, ft_split(current->value, SPACES));
-			}
-			index++;
-			current = get_index_lst(index, keywords, args, quoted);
+			process_current_token(current, &data.tab, &data.priority);
+			data.index++;
+			current = get_index_lst(data.index, keywords, args, quoted);
 		}
 		if (current && is_keywords(current))
-		{
-			new_token = safe_malloc(sizeof(t_token));
-			ft_bzero(new_token, sizeof(t_token));
-			new_token->type = TOKEN_WORD;
-			new_token->argv = tab;
-			new_token->priority = priority;
-			ft_lstadd_back(head, ft_lstnew(new_token));
-			tab = NULL;
-		}
-		index++;
+			add_token_to_list(head, &data.tab, data.priority);
+		data.index++;
 	}
-	if (tab)
-	{
-		new_token = safe_malloc(sizeof(t_token));
-		ft_bzero(new_token, sizeof(t_token));
-		new_token->type = TOKEN_WORD;
-		new_token->argv = tab;
-		new_token->priority = priority;
-		ft_lstadd_back(head, ft_lstnew(new_token));
-	}
+	if (data.tab)
+		add_token_to_list(head, &data.tab, data.priority);
 }
 
 t_command	*create_command(char **argv, unsigned int priority)
