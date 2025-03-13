@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:07:17 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/13 16:11:53 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:52:21 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,24 @@
 #include "execution.h"
 #include "minishell.h"
 
+static void	handle_error(t_minishell *data, t_btree_redir_node *redir,
+		const char *error)
+{
+	ft_fprintf(STDERR_FILENO, error, redir->file);
+	if (redir->command)
+		redir->command->redir_error_printed = true;
+	else if (!redir->command && data->exit_code == 0)
+		data->exit_code = 1;
+}
+
 static void	print_redirections_errors(t_minishell *data, t_btree *node)
 {
 	const char			*error;
 	t_btree_redir_node	*redir;
 
 	redir = (t_btree_redir_node *)node->content;
-	if (redir->command && redir->command->redir_error_printed)
-		return ;
-	if (redir->error == REDIRECTION_NO_ERROR)
+	if ((redir->command && redir->command->redir_error_printed)
+		|| redir->error == REDIRECTION_NO_ERROR)
 		return ;
 	if (redir->error == REDIRECTION_NO_SUCH_FILE_OR_DIRECTORY)
 		error = ERROR_NO_SUCH_FILE_OR_DIRECTORY;
@@ -37,13 +46,7 @@ static void	print_redirections_errors(t_minishell *data, t_btree *node)
 	if (redir->error == REDIRECTION_UNEXPETED_TOKEN)
 		error = ERROR_UNEXPTED_TOKEN_NEW_LINE;
 	if (error)
-	{
-		ft_fprintf(STDERR_FILENO, error, redir->file);
-		if (redir->command)
-			redir->command->redir_error_printed = true;
-		else if (!redir->command && data->exit_code == 0)
-			data->exit_code = 1;
-	}
+		handle_error(data, redir, error);
 }
 
 static void	print_commands_errors(t_minishell *data, t_btree *node)

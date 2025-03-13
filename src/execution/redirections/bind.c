@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:51:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/13 14:39:32 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:50:10 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,8 @@ static void	bind_redirections(t_btree **head, t_btree *node, t_minishell *data)
 			|| redir->type == REDIRECTION_OUT_TYPE) && !redir->file)
 	{
 		redir->error = REDIRECTION_UNEXPETED_TOKEN;
-		data->exit_code = 2;
 		data->execution_tree_error = EXECTREE_ERR_UNEXPETED_TOKEN;
-		return ;
+		return (data->exit_code = 2, (void)0);
 	}
 	set_error(redir);
 	if (redir->error != REDIRECTION_NO_ERROR)

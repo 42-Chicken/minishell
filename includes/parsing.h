@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/13 13:52:20 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:43:24 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,5 +139,7 @@ t_command			*create_command(char **argv, unsigned int priority);
 
 t_btree				*create_redirection_node(t_list **head, t_list *lst,
 						bool doubled, t_redirection_types type);
+
+int					do_error(t_minishell *data, const char *error);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 14:33:17 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/13 15:38:22 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:55:59 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,7 @@ void	lst_add_before_last(t_list **lst, t_list *node)
 
 	if (ft_lstsize(*lst) <= 1 || (*lst
 			&& ((t_btree *)(*lst)->content)->type == BTREE_COMMAND_TYPE))
-	{
 		ft_lstadd_front(lst, node);
-	}
 	else
 	{
 		current = *lst;

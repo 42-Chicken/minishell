@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:52 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 12:22:17 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:50:43 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,10 @@ int	export_command(t_minishell *data, t_command *command)
 	char_sort_array((char **)data->envp);
 	if (char_array_len(command->argv) <= 1)
 	{
-		while (data->envp && data->envp[++i]
-			&& startswith((char *)data->envp[i], "_=") == 0)
-			ft_fprintf(command->out_pipe.write, "declare -x %s\n",
-				get_formatted_env_line((char *)data->envp[i]));
+		while (data->envp && data->envp[++i])
+			if (!startswith((char *)data->envp[i], "_="))
+				ft_fprintf(command->out_pipe.write, "declare -x %s\n",
+					get_formatted_env_line((char *)data->envp[i]));
 	}
 	else
 	{
