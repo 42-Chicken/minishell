@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 10:54:00 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 08:30:45 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 15:52:38 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ bool	is_directory_file(const char *path)
 {
 	struct stat	path_stat;
 
+	ft_bzero(&path_stat, sizeof(struct stat));
 	stat(path, &path_stat);
 	return (S_ISDIR(path_stat.st_mode));
 }

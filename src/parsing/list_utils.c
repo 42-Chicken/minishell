@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 14:33:17 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/13 14:18:26 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 15:38:22 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_btree	*get_last_condition(t_list *lst, unsigned int priority)
 void	lst_add_before_last(t_list **lst, t_list *node)
 {
 	t_list	*current;
+	t_list	*prev;
 
 	if (ft_lstsize(*lst) <= 1 || (*lst
 			&& ((t_btree *)(*lst)->content)->type == BTREE_COMMAND_TYPE))
@@ -42,18 +43,20 @@ void	lst_add_before_last(t_list **lst, t_list *node)
 	else
 	{
 		current = *lst;
+		prev = NULL;
 		while (current && current->next)
 		{
 			if (((t_btree *)current->next->content)->type == BTREE_COMMAND_TYPE)
-			{
-				node->next = current->next;
-				current->next = node;
-				break ;
-			}
+				prev = current;
 			current = current->next;
 		}
-		if (!node->next)
+		if (!prev)
 			ft_lstadd_front(lst, node);
+		else
+		{
+			node->next = prev->next;
+			prev->next = node;
+		}
 	}
 }
 

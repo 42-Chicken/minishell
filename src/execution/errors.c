@@ -6,27 +6,13 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:07:17 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/13 14:35:53 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:11:53 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "define.h"
 #include "execution.h"
 #include "minishell.h"
-
-static void	print_error(t_btree *node, t_btree_redir_node *redir,
-		const char *error)
-{
-	(void)node;
-	// if (redir->type == REDIRECTION_IN_TYPE && recusrive_left_get(node,
-	// 		BTREE_COMMAND_TYPE) && ((t_command *)recusrive_left_get(node,
-	// 			BTREE_COMMAND_TYPE))->redir_error_printed == false)
-	// 	ft_fprintf(STDERR_FILENO, error, redir->file);
-	// if (redir->type == REDIRECTION_IN_TYPE && recusrive_prev_get(node,
-	// 		BTREE_COMMAND_TYPE) && ((t_command *)recusrive_prev_get(node,
-	// 			BTREE_COMMAND_TYPE))->redir_error_printed == false)
-	ft_fprintf(STDERR_FILENO, error, redir->file);
-}
 
 static void	print_redirections_errors(t_minishell *data, t_btree *node)
 {
@@ -36,17 +22,6 @@ static void	print_redirections_errors(t_minishell *data, t_btree *node)
 	redir = (t_btree_redir_node *)node->content;
 	if (redir->command && redir->command->redir_error_printed)
 		return ;
-	// printf("command : %p\n\n", redir->command);
-	if (redir->type == REDIRECTION_OUT_TYPE && !recusrive_prev_get(node,
-			BTREE_COMMAND_TYPE) && redir->file && ft_strncmp(redir->file,
-			expand(data, "*"), 5) == 0)
-	{
-		data->execution_tree_error = EXECTREE_ERR_CANCEL;
-		if (data->exit_code == 0)
-			data->exit_code = 1;
-		ft_fprintf(STDOUT_FILENO, ERROR_SYNTAX_AMBIGUOUS_REDIR);
-		return ;
-	}
 	if (redir->error == REDIRECTION_NO_ERROR)
 		return ;
 	if (redir->error == REDIRECTION_NO_SUCH_FILE_OR_DIRECTORY)
@@ -63,7 +38,7 @@ static void	print_redirections_errors(t_minishell *data, t_btree *node)
 		error = ERROR_UNEXPTED_TOKEN_NEW_LINE;
 	if (error)
 	{
-		print_error(node, redir, error);
+		ft_fprintf(STDERR_FILENO, error, redir->file);
 		if (redir->command)
 			redir->command->redir_error_printed = true;
 		else if (!redir->command && data->exit_code == 0)
@@ -78,7 +53,11 @@ static void	print_commands_errors(t_minishell *data, t_btree *node)
 
 	(void)data;
 	command = (t_command *)node->content;
-	if (is_built_in_command(command) || command->error == COMMAND_NO_ERROR)
+	if (is_built_in_command(command) || command->error == COMMAND_NO_ERROR
+		|| (command->in_redir
+			&& command->in_redir->error != REDIRECTION_NO_ERROR)
+		|| (command->out_redir
+			&& command->out_redir->error != REDIRECTION_NO_ERROR))
 		return ;
 	if (command->error == COMMAND_NOT_FOUND_ERROR)
 		error = COMMAND_NOT_FOUND;

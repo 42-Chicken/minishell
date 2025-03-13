@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:26:59 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/13 12:44:01 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 15:55:03 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,10 @@ static void	bind_command(t_btree **head, t_btree *node, t_minishell *data)
 		command->error = COMMAND_ARGUMENT_REQUIRED_ERROR;
 	else if (is_path(command->argv[0]) && is_directory_file(command->argv[0])
 		&& access(command->argv[0], F_OK) != -1)
+		command->error = COMMAND_IS_SUCH_FILE_OR_DIRECTORY_ERROR;
+	else if (command->argv[0] && command->argv[0][0] == '/'
+		&& command->error == COMMAND_NO_ERROR && access(command->argv[0],
+			F_OK) != -1)
 		command->error = COMMAND_IS_SUCH_FILE_OR_DIRECTORY_ERROR;
 	else
 		try_access(command, path);

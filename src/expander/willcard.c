@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 08:32:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 15:34:34 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 15:22:23 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,9 @@ char	*handle_wildcard(t_minishell *data, char *str)
 	if (!str || !ft_strchr(str, '*'))
 		return (str);
 	result = str;
-	while (result[i])
+	while (str[i])
 	{
-		if (result[i] == '*' && is_in_quote_at(result, i) == QUOTE_NONE)
+		if (str[i] == '*' && is_in_quote_at(result, i) == QUOTE_NONE)
 			result = filter_wildcard(result, i);
 		i++;
 	}

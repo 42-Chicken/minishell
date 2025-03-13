@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:27:08 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/13 13:37:47 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:14:31 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,12 @@ void	link_commands_redirections(t_btree *tree)
 	}
 }
 
+void	link_redir_command(t_btree_redir_node *redir, t_command *command)
+{
+	redir->command = command;
+	command->in_redir = redir;
+}
+
 void	idk_i_just_want_to_finish_that(t_btree **head, t_btree *node)
 {
 	t_btree_redir_node	*redir;
@@ -79,17 +85,15 @@ void	idk_i_just_want_to_finish_that(t_btree **head, t_btree *node)
 			|| redir->type == REDIRECTION_HERE_DOC_TYPE) && node->left)
 	{
 		if (node->left->type == BTREE_COMMAND_TYPE)
-			redir->command = (t_command *)node->left->content;
+			link_redir_command(redir, (t_command *)node->left->content);
 		else if (recusrive_left_get(node, BTREE_COMMAND_TYPE))
-			redir->command = (t_command *)recusrive_left_get(node,
-					BTREE_COMMAND_TYPE)->content;
+			link_redir_command(redir, (t_command *)recusrive_left_get(node,
+					BTREE_COMMAND_TYPE)->content);
 	}
 	else if (redir && redir->type == REDIRECTION_OUT_TYPE && node->prev
 		&& recusrive_prev_get(node, BTREE_COMMAND_TYPE))
-	{
-		redir->command = (t_command *)recusrive_prev_get(node,
-			BTREE_COMMAND_TYPE)->content;
-	}
+		link_redir_command(redir, (t_command *)recusrive_prev_get(node,
+				BTREE_COMMAND_TYPE)->content);
 }
 
 void	link_commands_and_redirections_together(t_minishell *data)

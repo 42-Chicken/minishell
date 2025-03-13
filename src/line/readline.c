@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/03/13 11:56:05 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 15:23:55 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	handle_readline(t_minishell *data)
 	char	*line;
 	char	*expanded;
 
-	line = get_next_line(STDIN_FILENO);
-	// line = readline(get_prompt(data));
+	// line = get_next_line(STDIN_FILENO);
+	line = readline(get_prompt(data));
 	expanded = expand(data, line);
 	if (expanded && ft_strlen(expanded) > 0)
 	{

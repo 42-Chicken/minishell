@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:20:12 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/13 14:30:09 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:05:00 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ static void	handle_prev(t_list **head, t_list *lst, t_token *lst_next_content,
 		&& ((t_btree *)prev->content)->type == BTREE_COMMAND_TYPE)
 	{
 		prev_node = ((t_btree *)prev->content);
-		((t_command *)prev_node->content)->argv = add_tab_to_tab(((t_command *)prev_node->content)->argv,
+		((t_command *)prev_node->content)->argv = \
+			add_tab_to_tab(((t_command *)prev_node->content)->argv,
 				lst_next_content->argv + 1);
 	}
 	else if (is_valid_redir(type, lst_next_content))

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 14:20:57 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/13 14:27:24 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:03:53 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ int	handle_redirection(t_minishell *data, t_token **tokens, char *input, int *i)
 				do_error(data, ERROR_CLOSSING_REDIR);
 				return (1);
 			}
-			else if (is_keyword(input[*i - 1], 0))
+			else if (is_keyword(input[*i], 0) != 0)
 				return (do_error(data, ERROR_TREE_PIPE), 1);
 			add_token(tokens, TOKEN_HEREDOC, (t_token_data){"<<", -1, *i - 2,
 				get_priority_at(input, *i - 2)});
 		}
-		else if (is_keyword(input[*i + 1], 0))
-			do_error(data, ERROR_UNEXPTED_TOKEN_NEW_LINE);
+		else if (is_keyword(input[*i + 1], 0) != 0)
+			return (do_error(data, ERROR_UNEXPTED_TOKEN_NEW_LINE), 1);
 		else
 		{
 			add_token(tokens, TOKEN_REDIR_IN, (t_token_data){"<", -1, *i - 1,

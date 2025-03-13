@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 14:42:57 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/13 12:34:29 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 15:58:59 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,16 @@ int	handle_append(t_minishell *data, t_token **tokens, char *input, int *i)
 {
 	if (input[*i] == '>' && is_in_quote_at(input, *i) == QUOTE_NONE)
 	{
+		if (input[*i + 1] == '|')
+		{
+			printf(ERROR_OPENING_REDIR);
+			data->execution_tree_error = EXECTREE_ERR_CANCEL;
+			data->exit_code = 2;
+			return (1);
+		}
 		if (is_keyword(input[*i + 1], 4))
 			(*i)++;
-		if (input[*i + 1] == '>')
+		if (input[*i] && input[*i + 1] == '>')
 		{
 			*i += 2;
 			if (input[*i] == '>')
