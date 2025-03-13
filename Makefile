@@ -97,7 +97,6 @@ SRCS				=	src/main.c\
 						src/execution/pipes/links/redirections.c\
 						src/execution/pipes/utils/safe_close.c\
 						src/execution/execution.c\
-						src/execution/debug.c\
 						src/env/utils.c\
 						src/env/get.c\
 						src/env/set.c
