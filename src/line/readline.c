@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/03/13 08:46:31 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 08:51:40 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	handle_readline(t_minishell *data)
 	}
 	if (!line)
 	{
-		ft_fprintf(STDOUT_FILENO, "\n");
+		ft_fprintf(STDOUT_FILENO, "exit\n");
 		data->stop = true;
 	}
 	safe_free(line);
