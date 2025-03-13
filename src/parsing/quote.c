@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 14:28:15 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 14:44:29 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 08:39:38 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ void	extract_quote(t_token **head, t_token *quoted)
 			continue ;
 		}
 		str = remove_quotes_from_value(quoted->value);
-		add_token(head, TOKEN_QUOTED, str, -1, quoted->index,
-			get_priority_at(str, quoted->index));
+		add_token(head, TOKEN_QUOTED, (t_token_data){str, -1, quoted->index,
+			get_priority_at(str, quoted->index)});
 		quoted = quoted->next;
 	}
 }

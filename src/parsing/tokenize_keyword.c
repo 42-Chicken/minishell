@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 14:42:57 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 14:43:01 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 08:39:23 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ int	handle_append(t_token **tokens, char *input, int *i)
 				printf("Erreur de syntaxe : TRIPLE APPEND\n");
 				return (1);
 			}
-			add_token(tokens, TOKEN_APPEND, ">>", -1, *i - 2,
-				get_priority_at(input, *i - 2));
+			add_token(tokens, TOKEN_APPEND, (t_token_data){">>", -1, *i - 2,
+				get_priority_at(input, *i - 2)});
 		}
 		else
 		{
-			add_token(tokens, TOKEN_REDIR_OUT, ">", -1, *i - 1,
-				get_priority_at(input, *i));
+			add_token(tokens, TOKEN_REDIR_OUT, (t_token_data){">", -1, *i - 1,
+				get_priority_at(input, *i)});
 			(*i)++;
 		}
 	}
@@ -51,8 +51,8 @@ int	handle_and(t_token **tokens, char *input, int *i)
 				printf("Erreur de syntaxe : TRIPLE AND\n");
 				return (1);
 			}
-			add_token(tokens, TOKEN_AND, "&&", -1, *i - 2,
-				get_priority_at(input, *i - 2));
+			add_token(tokens, TOKEN_AND, (t_token_data){"&&", -1, *i - 2,
+				get_priority_at(input, *i - 2)});
 		}
 		else
 		{

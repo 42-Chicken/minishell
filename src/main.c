@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:25:23 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 12:06:11 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 08:46:45 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int	main(int argc, char const **argv, const char **envp)
 	data.argc = argc;
 	data.argv = argv;
 	data.envp = envp;
-	// if (isatty(0) == 0 || isatty(1) != 0 || isatty(2) != 0)
-	// 	return (EXIT_FAILURE);
+	if (isatty(0) == 0 || isatty(1) != 0 || isatty(2) != 0)
+		return (EXIT_FAILURE);
 	init_minishell(&data);
 	while (!data.stop)
 	{
@@ -36,5 +36,3 @@ int	main(int argc, char const **argv, const char **envp)
 	free_all_contexts_garbage();
 	return (data.exit_code);
 }
-// ft_fprintf(STDOUT_FILENO,
-// "[1]    3586310 segmentation fault (core dumped)  ./minishell\n");

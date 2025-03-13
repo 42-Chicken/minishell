@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 14:27:33 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 14:47:01 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 08:37:12 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,23 @@ void	ft_tokenadd_back(t_token **lst, t_token *new)
 	last->next = new;
 }
 
-t_token	*add_token(t_token **head, t_e_token_type type, char *value, int i,
-		int h, unsigned int priority)
+t_token	*add_token(t_token **head, t_e_token_type type, t_token_data data)
 {
 	t_token	*new;
 
 	new = safe_malloc(sizeof(t_token));
 	ft_bzero(new, sizeof(t_token));
 	new->type = type;
-	if (i == -1)
-		new->value = ft_strdup(value);
+	if (data.i == -1)
+		new->value = ft_strdup(data.value);
 	else
-		new->value = ft_strndup(value, i);
+		new->value = ft_strndup(data.value, data.i);
 	if (new->value && ft_strlen(new->value) > 0 && type == TOKEN_WORD)
 		new->value = ft_strtrim(new->value, SPACES "()");
 	new->next = NULL;
-	new->index = h;
+	new->index = data.h;
 	new->num = -1;
-	new->priority = priority;
+	new->priority = data.priority;
 	ft_tokenadd_back(head, new);
 	return (new);
 }

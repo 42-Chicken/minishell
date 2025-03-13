@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 14:20:57 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 14:45:13 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 08:39:00 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ int	handle_pipe(t_token **tokens, t_minishell *data, char *input, int *i)
 				data->exit_code = 2;
 				return (1);
 			}
-			add_token(tokens, TOKEN_OR, "||", -1, *i - 2, get_priority_at(input,
-					*i - 2));
+			add_token(tokens, TOKEN_OR, (t_token_data){"||", -1, *i - 2,
+				get_priority_at(input, *i - 2)});
 		}
 		else
 		{
-			add_token(tokens, TOKEN_PIPE, "|", -1, *i - 1,
-				get_priority_at(input, *i));
+			add_token(tokens, TOKEN_PIPE, (t_token_data){"|", -1, *i - 1,
+				get_priority_at(input, *i)});
 			(*i)++;
 		}
 	}
@@ -50,13 +50,13 @@ int	handle_redirection(t_token **tokens, char *input, int *i)
 				printf("Erreur de syntaxe : TRIPLE HEREDOC\n");
 				return (1);
 			}
-			add_token(tokens, TOKEN_HEREDOC, "<<", -1, *i - 2,
-				get_priority_at(input, *i - 2));
+			add_token(tokens, TOKEN_HEREDOC, (t_token_data){"<<", -1, *i - 2,
+				get_priority_at(input, *i - 2)});
 		}
 		else
 		{
-			add_token(tokens, TOKEN_REDIR_IN, "<", -1, *i - 1,
-				get_priority_at(input, *i));
+			add_token(tokens, TOKEN_REDIR_IN, (t_token_data){"<", -1, *i - 1,
+				get_priority_at(input, *i)});
 			(*i)++;
 		}
 	}

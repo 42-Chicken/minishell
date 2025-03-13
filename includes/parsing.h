@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/13 08:35:24 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 08:39:55 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ typedef struct s_direction
 
 typedef struct s_token_data
 {
-	t_token			*right_keyword;
-	t_token			*left_keyword;
-	t_list			*right_arg;
-	t_list			*left_arg;
+	char			*value;
+	int				i;
+	int				h;
+	unsigned int	priority;
 }					t_token_data;
 // ---------------------------------
 //
@@ -81,8 +81,8 @@ int					line_is_empty(t_token *current);
 
 t_token				*ft_tokenlast(t_token *lst);
 void				ft_tokenadd_back(t_token **lst, t_token *new);
-t_token				*add_token(t_token **head, t_e_token_type type, char *value,
-						int i, int h, unsigned int priority);
+t_token				*add_token(t_token **head, t_e_token_type type,
+						t_token_data data);
 
 int					without_quote(char *str);
 

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 14:49:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 14:49:44 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 08:40:55 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,7 @@ void	create_lst_args(t_list **head, t_token *keywords, t_token *args,
 				|| current->type == TOKEN_QUOTED))
 		{
 			process_token(current, &tab, &priority);
-			index++;
-			current = get_index_lst(index, keywords, args, quoted);
+			current = get_index_lst(++index, keywords, args, quoted);
 		}
 		if (current && is_keywords(current))
 			add_new_token(head, &tab, priority);
