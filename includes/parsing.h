@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 15:21:43 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 08:35:24 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,14 @@ typedef struct s_direction
 	t_list			*right_arg;
 	t_list			*left_arg;
 }					t_direction;
+
+typedef struct s_token_data
+{
+	t_token			*right_keyword;
+	t_token			*left_keyword;
+	t_list			*right_arg;
+	t_list			*left_arg;
+}					t_token_data;
 // ---------------------------------
 //
 // PARSING
@@ -59,8 +67,6 @@ char				*ft_strndup(char *str, int n);
 int					ft_tokensize(t_token *lst);
 unsigned int		get_priority_at(char *str, unsigned int index);
 t_token				*extract_arg(char *line, t_token **head);
-t_token				*add_token(t_token **head, t_e_token_type type, char *value,
-						int i, int h, unsigned int priority);
 
 void				init_all_index(t_token *tokens, t_token *args,
 						t_token *quoted);
