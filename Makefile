@@ -112,7 +112,6 @@ all : $(NAME)
 
 $(NAME) : header $(FT_LIBC) $(OBJ_DIR)
 		@$(CC) $(CFLAGS) $(READLINE_FLAG) $(OBJS) $(FT_LIBC) -o $(NAME)
-		@cp $(NAME) ./minishell_bonus
 
 $(OBJ_DIR)/%.o: %.c
 		@mkdir -p $(dir $@)
