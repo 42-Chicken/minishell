@@ -6,13 +6,13 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:07:07 by romain            #+#    #+#             */
-/*   Updated: 2025/03/12 08:48:45 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 11:42:39 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "define.h"
 #include "minishell.h"
 #include "signals.h"
-#include "define.h"
 #include <signal.h>
 
 // 4 because there is the fd of the file and the dup fd of stdout
@@ -48,6 +48,7 @@ void	switch_to_heredoc_mode(void)
 	signal(SIGINT, close_heredoc);
 }
 
+// signal(SIGPIPE, SIG_IGN);
 void	reset_signals(bool nl)
 {
 	if (nl)

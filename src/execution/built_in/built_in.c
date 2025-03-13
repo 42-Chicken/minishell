@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:31:09 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/10 10:01:38 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:17:03 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,13 @@ static void	handle_execution(t_minishell *data, t_command *command,
 		int (*func)(t_minishell *, t_command *))
 {
 	create_safe_memory_context();
-	data->exit_code = func(data, command);
+	if (
+		(command->out_redir && command->out_redir->error != REDIRECTION_NO_ERROR)
+		|| (command->in_redir && command->in_redir->error != REDIRECTION_NO_ERROR)
+	)
+		data->exit_code = 1;
+	else
+		data->exit_code = func(data, command);
 	exit_safe_memory_context();
 }
 

@@ -6,13 +6,22 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 14:20:57 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/13 08:39:00 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:27:24 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+#include <define.h>
 
-int	handle_pipe(t_token **tokens, t_minishell *data, char *input, int *i)
+int	do_error(t_minishell *data, const char *error)
+{
+	printf("%s", error);
+	data->execution_tree_error = EXECTREE_ERR_CANCEL;
+	data->exit_code = 2;
+	return (1);
+}
+
+int	handle_pipe(t_minishell *data, t_token **tokens, char *input, int *i)
 {
 	if (input[*i] == '|' && is_in_quote_at(input, *i) == QUOTE_NONE)
 	{
@@ -21,8 +30,7 @@ int	handle_pipe(t_token **tokens, t_minishell *data, char *input, int *i)
 			*i += 2;
 			if (input[*i] == '|')
 			{
-				printf("Erreur de syntaxe : TRIPLE PIPE\n");
-				data->exit_code = 2;
+				do_error(data, ERROR_TREE_PIPE);
 				return (1);
 			}
 			add_token(tokens, TOKEN_OR, (t_token_data){"||", -1, *i - 2,
@@ -38,7 +46,7 @@ int	handle_pipe(t_token **tokens, t_minishell *data, char *input, int *i)
 	return (0);
 }
 
-int	handle_redirection(t_token **tokens, char *input, int *i)
+int	handle_redirection(t_minishell *data, t_token **tokens, char *input, int *i)
 {
 	if (input[*i] == '<' && is_in_quote_at(input, *i) == QUOTE_NONE)
 	{
@@ -47,12 +55,16 @@ int	handle_redirection(t_token **tokens, char *input, int *i)
 			*i += 2;
 			if (input[*i] == '<')
 			{
-				printf("Erreur de syntaxe : TRIPLE HEREDOC\n");
+				do_error(data, ERROR_CLOSSING_REDIR);
 				return (1);
 			}
+			else if (is_keyword(input[*i - 1], 0))
+				return (do_error(data, ERROR_TREE_PIPE), 1);
 			add_token(tokens, TOKEN_HEREDOC, (t_token_data){"<<", -1, *i - 2,
 				get_priority_at(input, *i - 2)});
 		}
+		else if (is_keyword(input[*i + 1], 0))
+			do_error(data, ERROR_UNEXPTED_TOKEN_NEW_LINE);
 		else
 		{
 			add_token(tokens, TOKEN_REDIR_IN, (t_token_data){"<", -1, *i - 1,
@@ -81,17 +93,17 @@ t_token	*tokenize(t_minishell *data, char *input)
 
 	tokens = NULL;
 	i = 0;
-	while (ft_isspace(input[i]))
+	while (input[i] && ft_isspace(input[i]))
 		i++;
-	while (input[i])
+	while (i < (int)ft_strlen(input) && input[i])
 	{
-		if (handle_pipe(&tokens, data, input, &i))
+		if (handle_pipe(data, &tokens, input, &i))
 			return (NULL);
-		if (handle_redirection(&tokens, input, &i))
+		if (handle_redirection(data, &tokens, input, &i))
 			return (NULL);
-		if (handle_append(&tokens, input, &i))
+		if (handle_append(data, &tokens, input, &i))
 			return (NULL);
-		if (handle_and(&tokens, input, &i))
+		if (handle_and(data, &tokens, input, &i))
 			return (NULL);
 		if (input[i] == '"' || input[i] == '\'')
 		{

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:07:17 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 12:26:15 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:35:53 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,37 +17,15 @@
 static void	print_error(t_btree *node, t_btree_redir_node *redir,
 		const char *error)
 {
-	t_btree	*cmd_node;
-
-	if (redir->type == REDIRECTION_IN_TYPE)
-		cmd_node = recusrive_left_get(node, BTREE_COMMAND_TYPE);
-	else
-		cmd_node = recusrive_prev_get(node, BTREE_COMMAND_TYPE);
-	if (cmd_node && !((t_command *)cmd_node->content)->redir_error_printed)
-	{
-		((t_command *)cmd_node->content)->redir_error_printed = true;
-		ft_fprintf(STDERR_FILENO, error, redir->file);
-	}
-}
-
-static void	handle_weird_usescases(t_minishell *data, t_btree *node,
-		t_btree_redir_node *redir)
-{
-	if (redir->error == REDIRECTION_UNEXPETED_TOKEN)
-	{
-		data->exit_code = 2;
-		data->execution_tree_error = EXECTREE_ERR_CANCEL;
-	}
-	if (redir->error == REDIRECTION_NO_SUCH_FILE_OR_DIRECTORY)
-	{
-		if (redir->type == REDIRECTION_IN_TYPE
-			&& !recusrive_left_get(recusrive_left_get(node, BTREE_COMMAND_TYPE),
-				BTREE_COMMAND_TYPE))
-		{
-			data->exit_code = 1;
-			data->execution_tree_error = EXECTREE_ERR_CANCEL;
-		}
-	}
+	(void)node;
+	// if (redir->type == REDIRECTION_IN_TYPE && recusrive_left_get(node,
+	// 		BTREE_COMMAND_TYPE) && ((t_command *)recusrive_left_get(node,
+	// 			BTREE_COMMAND_TYPE))->redir_error_printed == false)
+	// 	ft_fprintf(STDERR_FILENO, error, redir->file);
+	// if (redir->type == REDIRECTION_IN_TYPE && recusrive_prev_get(node,
+	// 		BTREE_COMMAND_TYPE) && ((t_command *)recusrive_prev_get(node,
+	// 			BTREE_COMMAND_TYPE))->redir_error_printed == false)
+	ft_fprintf(STDERR_FILENO, error, redir->file);
 }
 
 static void	print_redirections_errors(t_minishell *data, t_btree *node)
@@ -56,6 +34,19 @@ static void	print_redirections_errors(t_minishell *data, t_btree *node)
 	t_btree_redir_node	*redir;
 
 	redir = (t_btree_redir_node *)node->content;
+	if (redir->command && redir->command->redir_error_printed)
+		return ;
+	// printf("command : %p\n\n", redir->command);
+	if (redir->type == REDIRECTION_OUT_TYPE && !recusrive_prev_get(node,
+			BTREE_COMMAND_TYPE) && redir->file && ft_strncmp(redir->file,
+			expand(data, "*"), 5) == 0)
+	{
+		data->execution_tree_error = EXECTREE_ERR_CANCEL;
+		if (data->exit_code == 0)
+			data->exit_code = 1;
+		ft_fprintf(STDOUT_FILENO, ERROR_SYNTAX_AMBIGUOUS_REDIR);
+		return ;
+	}
 	if (redir->error == REDIRECTION_NO_ERROR)
 		return ;
 	if (redir->error == REDIRECTION_NO_SUCH_FILE_OR_DIRECTORY)
@@ -73,8 +64,10 @@ static void	print_redirections_errors(t_minishell *data, t_btree *node)
 	if (error)
 	{
 		print_error(node, redir, error);
-		data->exit_code = DEFAULT_ERROR_EXIT_CODE;
-		handle_weird_usescases(data, node, redir);
+		if (redir->command)
+			redir->command->redir_error_printed = true;
+		else if (!redir->command && data->exit_code == 0)
+			data->exit_code = 1;
 	}
 }
 
@@ -83,6 +76,7 @@ static void	print_commands_errors(t_minishell *data, t_btree *node)
 	const char	*error;
 	t_command	*command;
 
+	(void)data;
 	command = (t_command *)node->content;
 	if (is_built_in_command(command) || command->error == COMMAND_NO_ERROR)
 		return ;
@@ -93,17 +87,12 @@ static void	print_commands_errors(t_minishell *data, t_btree *node)
 	if (command->error == COMMAND_IS_SUCH_FILE_OR_DIRECTORY_ERROR)
 		error = IS_DIRECTORY_PATH;
 	if (command->error == COMMAND_PERMISSION_DENIED_ERROR)
-		error = ERROR_NO_SUCH_FILE_OR_DIRECTORY;
+		error = ERROR_PERMISSION_DENIED;
 	if (command->error == COMMAND_ARGUMENT_REQUIRED_ERROR)
 		error = ERROR_COMMAND_ARGUMENTS;
-	if (error && (!node->prev || (node->prev
-				&& node->prev->type == BTREE_REDIRECTION_TYPE
-				&& ((t_btree_redir_node *)node->prev->content)->error != \
-				REDIRECTION_NO_ERROR)))
+	if (error)
 	{
 		ft_fprintf(STDERR_FILENO, error, command->argv[0]);
-		if (data->exit_code == 0)
-			data->exit_code = DEFAULT_ERROR_EXIT_CODE;
 	}
 }
 

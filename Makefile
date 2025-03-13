@@ -99,7 +99,8 @@ SRCS				=	src/main.c\
 						src/execution/execution.c\
 						src/env/utils.c\
 						src/env/get.c\
-						src/env/set.c
+						src/env/set.c\
+						src/debug.c
 
 SRC_COUNT			=	$(words $(SRCS))
 
@@ -111,6 +112,7 @@ all : $(NAME)
 
 $(NAME) : header $(FT_LIBC) $(OBJ_DIR)
 		@$(CC) $(CFLAGS) $(READLINE_FLAG) $(OBJS) $(FT_LIBC) -o $(NAME)
+		@cp $(NAME) ./minishell_bonus
 
 $(OBJ_DIR)/%.o: %.c
 		@mkdir -p $(dir $@)

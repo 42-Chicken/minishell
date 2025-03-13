@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 08:36:57 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 15:04:47 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 10:24:14 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,19 +102,29 @@ current working directory !\n"
 # define ERROR_UNEXPTED_TOKEN_NEW_LINE "minishell\
 : syntax error near unexpected token `newline'\n"
 # define ERROR_TREE_AND "minishell\
-: syntax error: unexpected `&&'\n"
+: syntax error near unexpected token `&&'\n"
 # define ERROR_TREE_OR "minishell\
-: syntax error: unexpected `||'\n"
+: syntax error near unexpected token `||'\n"
 # define ERROR_TREE_PIPE "minishell\
-: syntax error: unexpected `|'\n"
+: syntax error near unexpected token `|'\n"
 # define ERROR_SINGLE_QUOTE "minishell\
-: syntax error: expected `''\n"
+: syntax error near unexpected token `''\n"
 # define ERROR_DOUBLE_QUOTE "minishell\
-: syntax error: expected `\"'\n"
+: syntax error near unexpected token `\"'\n"
 # define ERROR_CLOSING_BRACKET "minishell\
-: syntax error: expected `)'\n"
+: syntax error near unexpected token `)'\n"
 # define ERROR_OPENING_BRACKET "minishell\
-: syntax error: expected `('\n"
+: syntax error near unexpected token `('\n"
+# define ERROR_OPENING_REDIR "minishell\
+: syntax error near unexpected token `>'\n"
+# define ERROR_CLOSSING_REDIR "minishell\
+: syntax error near unexpected token `<'\n"
+# define ERROR_SYNTAX_AND "minishell\
+: syntax error near unexpected token `&&&'\n"
+# define ERROR_SYNTAX_UNIQUE_AND "minishell\
+: syntax error near unexpected token `&'\n"
+# define ERROR_SYNTAX_AMBIGUOUS_REDIR "minishell\
+: *: ambiguous redirect\n"
 
 // ---------------------------------
 //

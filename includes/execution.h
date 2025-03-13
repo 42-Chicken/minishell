@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 12:26:36 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 13:37:30 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,19 @@ typedef enum e_redirection_types
 	REDIRECTION_OUT_TYPE
 }							t_redirection_types;
 
+typedef struct s_command	t_command;
+
+typedef struct s_btree_redirection_node
+{
+	int						fd;
+	char					*file;
+	char					*limiter;
+	bool					doubled;
+	t_redirection_errors	error;
+	t_redirection_types		type;
+	t_command				*command;
+}							t_btree_redir_node;
+
 typedef struct s_command
 {
 	char					**argv;
@@ -73,7 +86,10 @@ typedef struct s_command
 	t_pipe					in_pipe;
 	t_pipe					out_pipe;
 	t_command_errors		error;
+	t_btree_redir_node		*out_redir;
+	t_btree_redir_node		*in_redir;
 	bool					redir_error_printed;
+	bool					should_not_execute;
 }							t_command;
 
 typedef struct s_btree_command_node
@@ -82,16 +98,6 @@ typedef struct s_btree_command_node
 	t_pipe					in_pipe;
 	t_pipe					out_pipe;
 }							t_btree_command_node;
-
-typedef struct s_btree_redirection_node
-{
-	int						fd;
-	char					*file;
-	char					*limiter;
-	bool					doubled;
-	t_redirection_errors	error;
-	t_redirection_types		type;
-}							t_btree_redir_node;
 
 // ---------------------------------
 //
@@ -141,6 +147,7 @@ void						exec_command(t_minishell *data, t_btree *cmd_node,
 								t_command *command);
 void						expand_commands_args(t_minishell *data,
 								t_btree *cmd_node);
+void						link_commands_and_redirections_together(t_minishell *data);
 
 // ---------------------------------
 //
@@ -161,7 +168,8 @@ void						link_commands_redirections(t_btree *redir_node);
 // ---------------------------------
 void						print_execution_tree(t_minishell *data);
 
-# define GIGACHAD "\
+# define GIGACHAD \
+	"\
 🌕🌕🌕🌕🌕🌕🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕\n\
 🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌕🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕\n\
 🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌕🌕🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌖🌕🌖🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕\n\

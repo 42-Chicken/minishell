@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_fprintf.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 12:02:25 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/01/29 10:15:30 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 08:57:37 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,8 @@ int	ft_fprintf(int fd, const char *format, ...)
 		else
 		{
 			len = get_next_percent_index(format + i);
-			write(fd, format + i, len);
+			if (write(fd, format + i, len) == -1)
+				return (va_end(args), total_len);
 			i += len - 1;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/13 08:39:55 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 13:52:20 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,11 @@ int					check_only_quote(char *str);
 
 int					ft_number_quote(char *str);
 
-int					handle_append(t_token **tokens, char *input, int *i);
+int					handle_append(t_minishell *data, t_token **tokens,
+						char *input, int *i);
 
-int					handle_and(t_token **tokens, char *input, int *i);
+int					handle_and(t_minishell *data, t_token **tokens, char *input,
+						int *i);
 
 void				process_token(t_token *current, char ***tab, int *priority);
 void				add_new_token(t_list **head, char ***tab, int priority);

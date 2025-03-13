@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:00:26 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/11 15:27:16 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 11:17:07 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ static void	handle_heredocs_unlink(t_btree **head, t_btree *node)
 	if (!redir || redir->type != REDIRECTION_HERE_DOC_TYPE || !redir->file)
 		return ;
 	unlink(redir->file);
+	close(redir->fd);
 }
 
 void	save_heredocs_tmp_files(t_minishell *data)

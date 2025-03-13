@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:01:37 by romain            #+#    #+#             */
-/*   Updated: 2025/03/13 08:51:40 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 11:56:05 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,20 @@
 #include "parsing.h"
 #include "paths.h"
 
-// line = get_next_line(STDIN_FILENO);
 void	handle_readline(t_minishell *data)
 {
 	char	*line;
 	char	*expanded;
 
-	line = readline(get_prompt(data));
+	line = get_next_line(STDIN_FILENO);
+	// line = readline(get_prompt(data));
 	expanded = expand(data, line);
 	if (expanded && ft_strlen(expanded) > 0)
+	{
+		data->execution_tree_error = EXECTREE_ERR_NONE;
+		data->exit_code = 0;
 		add_history(line);
+	}
 	line = expanded;
 	data->execution_tree_error = EXECTREE_ERR_NONE;
 	data->execution_tree = NULL;

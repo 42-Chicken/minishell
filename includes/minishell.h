@@ -6,7 +6,7 @@
 /*   By: rguigneb <rguigneb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 12:26:37 by rguigneb          #+#    #+#             */
-/*   Updated: 2025/03/12 15:10:59 by rguigneb         ###   ########.fr       */
+/*   Updated: 2025/03/13 12:05:49 by rguigneb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef enum e_exec_tree_errors
 	EXECTREE_ERR_UNEXEPTED_OR,
 	EXECTREE_ERR_UNEXEPTED_AND,
 	EXECTREE_ERR_CANCEL,
+	EXECTREE_ERR_UNEXPETED_TOKEN,
 }							t_e_exec_tree_errors;
 
 typedef struct s_command	t_command;
