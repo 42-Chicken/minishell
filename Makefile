@@ -99,8 +99,7 @@ SRCS				=	src/main.c\
 						src/execution/execution.c\
 						src/env/utils.c\
 						src/env/get.c\
-						src/env/set.c\
-						src/debug.c
+						src/env/set.c
 
 SRC_COUNT			=	$(words $(SRCS))
 
